@@ -81,5 +81,6 @@ int	main(void)
     mlx_mouse_hook(img.win, mouse_hook, &img);
     mlx_loop(img.mlx);
 
+    get_next_line(0);
     return (0);
 }

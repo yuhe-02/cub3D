@@ -10,7 +10,8 @@
 # include <unistd.h>
 # include <math.h>
 # include <stdint.h>
-#include "../minilibx-linux/mlx.h"
+# include "../minilibx-linux/mlx.h"
+# include "../gnl/get_next_line.h"
 
 # define WIDTH 800
 # define HEIGHT 800
