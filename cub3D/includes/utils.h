@@ -10,6 +10,9 @@
 # include <unistd.h>
 # include <math.h>
 # include <stdint.h>
+#include <fcntl.h>//add
+#include <string.h>//add
+#include <errno.h>//add
 # include "../minilibx-linux/mlx.h"
 # include "../gnl/get_next_line.h"
 
