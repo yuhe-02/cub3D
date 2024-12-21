@@ -6,8 +6,13 @@ LIBFT_DIR := ../../libft
 LIBFT := $(LIBFT_DIR)/libft.a
 
 # SRCS
-SRCDIR := srcs
+SRCDIR := ./
 SRCS += $(SRCDIR)/main.c
+
+# ADD GNL
+GNL_DIL := ../../gnl
+SRCS += $(GNL_DIL)/get_next_line.c
+SRCS += $(GNL_DIL)/get_next_line_utils.c
 
 # OBJS
 OBJDIR := objs
