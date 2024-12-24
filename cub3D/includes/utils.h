@@ -13,6 +13,7 @@
 #include <fcntl.h>//add
 #include <string.h>//add
 #include <errno.h>//add
+#include <ctype.h>//add
 # include "../minilibx-linux/mlx.h"
 # include "../gnl/get_next_line.h"
 
