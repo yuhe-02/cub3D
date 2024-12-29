@@ -1,86 +1,166 @@
 #include "utils.h"
+#include <math.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <mlx.h>
 
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
+#define mapWidth 24
+#define mapHeight 24
+
+int worldMap[mapWidth][mapHeight] = {
+  {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,2,2,2,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
+  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,3,0,0,0,3,0,0,0,1},
+  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,2,2,0,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,0,0,0,0,5,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,0,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
+};
+
+void my_mlx_pixel_put(t_data *data, int x, int y, int color) 
 {
-	char	*dst;
+    char *dst;
 
-	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
-	*(unsigned int*)dst = color;
+    if (x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT)
+    {
+        dst = data->addr + (y * data->llen + x * (data->bpp / 8));
+        *(unsigned int *)dst = color;
+    }
 }
 
-int close_window(t_data *data) {
-    mlx_destroy_image(data->mlx, data->img);
-    mlx_destroy_window(data->mlx, data->win);
-    exit(0);
+void draw_vertical_line(t_data *data, int x, int start, int end, int color) {
+    int y;
+
+    y = start;
+    while (y <= end)
+    {
+        my_mlx_pixel_put(data, x, y, color);
+        y++;
+    }
 }
 
-int key_hook(int keycode, t_data *data) {
-    if (keycode == 65307) // ESC key
-        close_window(data);
-    return (0);
-}
+void raycast(t_data *data, t_player *player)
+{
+    int		x;
+    int		color;
+    t_ray	ray;
+    int		line_height;
+    int		draw_start;
+    int		draw_end;
 
-void draw_julia_set(t_data *img) {
+    x = 0;
+    while (x < WIDTH)
+    {
+        ray.camera_x = 2 * x / (double)WIDTH - 1;
+        ray.ray_dir_x = player->dir_x + player->plane_x * ray.camera_x;
+        ray.ray_dir_y = player->dir_y + player->plane_y * ray.camera_x;
+        ray.map_x = (int)player->pos_x;
+        ray.map_y = (int)player->pos_y;
+        ray.delta_dist_x = fabs(1 / ray.ray_dir_x);
+        ray.delta_dist_y = fabs(1 / ray.ray_dir_y);
+        ray.hit = 0;
 
-	// C の実部と虚部
-	double	cx = -0.3;
-	double	cy = -0.63;
-
-    // フラクタルの描画処理
-    for (int y = 0; y < HEIGHT; y++) {
-        for (int x = 0; x < WIDTH; x++) {
-            double zx = (x - (WIDTH / 2)) / (0.5 * img->zoom * WIDTH) + img->offsetX;
-            double zy = (y - (HEIGHT / 2)) / (0.5 * img->zoom *HEIGHT) + img->offsetY;
-            int i = 0;
-            while (zx * zx + zy * zy < 4 && i < ACRAC) {
-                double tmp = zx * zx - zy * zy + cx;
-                zy = 2.0 * zx * zy + cy;
-                zx = tmp;
-                i++;
-            }
-            if (i == ACRAC)
-                i = 0;
-            int color = i * 10000;
-            my_mlx_pixel_put(img, x, y, color);
+        if (ray.ray_dir_x < 0)
+        {
+            ray.step_x = -1;
+            ray.side_dist_x = (player->pos_x - ray.map_x) * ray.delta_dist_x;
+        } 
+        else
+        {
+            ray.step_x = 1;
+            ray.side_dist_x = (ray.map_x + 1.0 - player->pos_x) * ray.delta_dist_x;
         }
+
+        if (ray.ray_dir_y < 0)
+        {
+            ray.step_y = -1;
+            ray.side_dist_y = (player->pos_y - ray.map_y) * ray.delta_dist_y;
+        } 
+        else
+        {
+            ray.step_y = 1;
+            ray.side_dist_y = (ray.map_y + 1.0 - player->pos_y) * ray.delta_dist_y;
+        }
+
+        // DDAアルゴリズム
+        while (ray.hit == 0)
+        {
+            if (ray.side_dist_x < ray.side_dist_y)
+            {
+                ray.side_dist_x += ray.delta_dist_x;
+                ray.map_x += ray.step_x;
+                ray.side = 0;
+            }
+            else
+            {
+                ray.side_dist_y += ray.delta_dist_y;
+                ray.map_y += ray.step_y;
+                ray.side = 1;
+            }
+            if (worldMap[ray.map_x][ray.map_y] > 0) 
+                ray.hit = 1;
+        }
+
+        // 壁の距離計算
+        if (ray.side == 0)
+            ray.perp_wall_dist = (ray.side_dist_x - ray.delta_dist_x);
+        else
+            ray.perp_wall_dist = (ray.side_dist_y - ray.delta_dist_y);
+
+        line_height = (int)(HEIGHT / ray.perp_wall_dist);
+
+        draw_start = -line_height / 2 + HEIGHT / 2;
+        if (draw_start < 0) 
+            draw_start = 0;
+
+        draw_end = line_height / 2 + HEIGHT / 2;
+        if (draw_end >= HEIGHT) 
+            draw_end = HEIGHT - 1;
+
+        // 壁の色設定
+        color = 0xFFFF00;
+        if (worldMap[ray.map_x][ray.map_y] == 1)
+            color = 0xFF0000;
+        else if (worldMap[ray.map_x][ray.map_y] == 2)
+            color = 0x00FF00;
+        else if (worldMap[ray.map_x][ray.map_y] == 3)
+            color = 0x0000FF;
+        else if (worldMap[ray.map_x][ray.map_y] == 4)
+            color = 0xFFFFFF;
+        if (ray.side == 1)
+            color /= 2; // 明るさを調整
+        draw_vertical_line(data, x, draw_start, draw_end, color);
+        x++;
     }
-    mlx_put_image_to_window(img->mlx, img->win, img->img, 0, 0);
 }
 
-
-int mouse_hook(int button, int x, int y, void *param) {
-    t_data *img = (t_data *)param;
-    if (button == 4) { // マウスホイールアップ（ズームイン）
-        img->zoom *= 1.2;
-    } else if (button == 5) { // マウスホイールダウン（ズームアウト）
-        img->zoom /= 1.2;
-    }
-    mlx_clear_window(img->mlx, img->win);
-    draw_julia_set(img);
+int main()
+{
+    t_data data;
+    t_player player = {22, 12, -1, 0, 0, 0.66};
+    data.mlx = mlx_init();
+    data.win = mlx_new_window(data.mlx, WIDTH, HEIGHT, "Raycaster");
+    data.img = mlx_new_image(data.mlx, WIDTH, HEIGHT);
+    data.addr = mlx_get_data_addr(data.img, &data.bpp, &data.llen, &data.eda);
+    raycast(&data, &player);
+    mlx_put_image_to_window(data.mlx, data.win, data.img, 0, 0);
+    mlx_loop(data.mlx);
     return 0;
-}
-
-int	main(void)
-{    // MiniLibX の初期化
-    void	*mlx = mlx_init();
-    void	*win = mlx_new_window(mlx, WIDTH, HEIGHT, "Julia Set");
-    t_data	img;
-
-    img.mlx = mlx;
-    img.win = win;
-    img.img = mlx_new_image(img.mlx, WIDTH, HEIGHT);
-    img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
-    img.zoom = 1.0;
-    img.offsetX = 0.0;
-    img.offsetY = 0.0;
-
-	draw_julia_set(&img);
-
-    mlx_hook(img.win, 17, 0, close_window, &img);
-    mlx_key_hook(img.win, key_hook, &img);
-    mlx_mouse_hook(img.win, mouse_hook, &img);
-    mlx_loop(img.mlx);
-
-    get_next_line(0);
-    return (0);
 }
