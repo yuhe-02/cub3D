@@ -146,5 +146,5 @@ int main() {
     mlx_loop(game.mlx);
     return 0;
 }
-
-
+    void    *mlx;
+    void    *win;

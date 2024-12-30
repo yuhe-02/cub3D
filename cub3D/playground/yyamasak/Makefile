@@ -16,7 +16,7 @@ SRCS += $(GNL_DIL)/get_next_line_utils.c
 
 # ADD EVENT
 EVENTS_DIR := ../../srcs/events
-# SRCS += $(EVENTS_DIR)/key_hooks.c
+SRCS += $(EVENTS_DIR)/key_hooks.c
 SRCS += $(EVENTS_DIR)/close_window.c
 
 # OBJS

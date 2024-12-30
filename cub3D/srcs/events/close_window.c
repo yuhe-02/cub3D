@@ -6,7 +6,7 @@
 /*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 13:01:56 by yyamasak          #+#    #+#             */
-/*   Updated: 2024/12/24 13:29:30 by yyamasak         ###   ########.fr       */
+/*   Updated: 2024/12/30 11:50:16 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,20 @@
 // TODO 時間あったらなおす
 int	close_window(t_params *param)
 {
-	if (!param)
+	t_data	*data;
+
+	data = param->data;
+	if (!data)
 		exit(0);
-	if (param->data.img)
-		mlx_destroy_image(param->mlx, param->data.img);
-	if (param->win)
-		mlx_destroy_window(param->mlx, param->win);
-	// if (param->mlx)
+	if (data->img)
+		mlx_destroy_image(data->mlx, data->img);
+	if (data->win)
+		mlx_destroy_window(data->mlx, data->win);
+	// if (data->mlx)
 	// {
-	// 	// mlx_destroy_display(param->mlx);
-	// 	// free(param->mlx);
-	// 	// param->mlx = NULL;
+	// 	// mlx_destroy_display(data->mlx);
+	// 	// free(data->mlx);
+	// 	// data->mlx = NULL;
 	// }
 	exit(0);
 	return (0);
