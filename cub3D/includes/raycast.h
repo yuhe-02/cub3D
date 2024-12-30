@@ -91,8 +91,7 @@ typedef struct	s_params
 {
     t_data *data;
     t_player *player;
-
-
+    t_ray   *ray;
 }				t_params;
 
 int	key_hook(int keycode, void *arg);
