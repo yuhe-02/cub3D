@@ -1,10 +1,7 @@
 #include "utils.h"
 
-#define mapWidth 24
-#define mapHeight 24
-
 int worldMap[mapWidth][mapHeight] = {
-  {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+  {1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
@@ -79,8 +76,8 @@ void	raycast(t_params *params)
 		ray->camera_x = (2 * x / (double)data->width) - 1;
 		ray->ray_dir_x = player->dir_x + player->plane_x * ray->camera_x;
 		ray->ray_dir_y = player->dir_y + player->plane_y * ray->camera_x;
-		ray->map_x = (int)player->pos_x;
-		ray->map_y = (int)player->pos_y;
+		ray->map_x = (int)(player->pos_x);
+		ray->map_y = (int)(player->pos_y);
 		ray->delta_dist_x = fabs(1 / ray->ray_dir_x);
 		ray->delta_dist_y = fabs(1 / ray->ray_dir_y);
 		ray->hit = 0;
@@ -151,8 +148,8 @@ void	raycast(t_params *params)
             color = 0x0000FF;
         else if (worldMap[ray->map_x][ray->map_y] == 4)
             color = 0xFFFFFF;
-        if (ray->side == 1)
-            color /= 2; // 明るさを調整
+        // if (ray->side == 1)
+        //     color /= 2; // 明るさを調整
 		draw_vertical_line(data, x, draw_start, draw_end, color);
 		x++;
 	}
@@ -167,6 +164,7 @@ int	main_loop(void *arg)
 	data = params->data;
 	player = params->player;
 	raycast(params);
+	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
 	return (0);
 }
 
@@ -174,12 +172,15 @@ int	main(void)
 {
 	t_params params;
 	t_data data;
-	t_player player = {22, 12, -1, 0, 0, 0.66};
+	t_player player = {2, 2, -1, 0, 0, 0.66};
 	t_ray	ray;
 
 	params.data = &data;
 	params.player = &player;
 	params.ray = &ray;
+	params.map = worldMap;
+	params.map_width = mapWidth;
+	params.map_height = mapHeight;
 	data.width = WIDTH;
 	data.height = HEIGHT;
 	data.mlx = mlx_init();

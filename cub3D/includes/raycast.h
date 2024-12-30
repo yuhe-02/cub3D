@@ -29,6 +29,8 @@
 # define KEY_L_DIR 65361
 # define WINDOW_CLOSE 17
 # define ACRAC 1000
+# define mapWidth 24
+# define mapHeight 24
 
 // typedef struct	s_data {
 // 	void		*img;
@@ -92,6 +94,9 @@ typedef struct	s_params
     t_data *data;
     t_player *player;
     t_ray   *ray;
+    int     (*map)[mapHeight];
+    int     map_width;
+    int     map_height;
 }				t_params;
 
 int	key_hook(int keycode, void *arg);

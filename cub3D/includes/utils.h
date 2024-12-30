@@ -12,6 +12,7 @@
 # include <stdint.h>
 # include "../minilibx-linux/mlx.h"
 # include "../gnl/get_next_line.h"
+# include "../libft/libft.h"
 # include "raycast.h"
 
 #endif
