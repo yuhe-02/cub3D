@@ -29,8 +29,9 @@
 # define KEY_L_DIR 65361
 # define WINDOW_CLOSE 17
 # define ACRAC 1000
-# define mapWidth 24
-# define mapHeight 24
+# define mapWidth 3
+# define mapHeight 3
+# define PI 3.141582653589793
 
 // typedef struct	s_data {
 // 	void		*img;
@@ -63,6 +64,10 @@ typedef struct s_player
     double dir_y;
     double plane_x; // カメラ平面
     double plane_y;
+    int     horizontal_flag;
+    int     vertical_flag;
+    int     counterclockwise_flag;
+
 }  				t_player;
 
 typedef struct s_ray

@@ -6,7 +6,7 @@
 /*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 13:02:04 by yyamasak          #+#    #+#             */
-/*   Updated: 2024/12/30 14:15:28 by yyamasak         ###   ########.fr       */
+/*   Updated: 2024/12/30 15:41:08 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 // TODO 移動するピクセル数がよくわからんので調整
 // TODO 横の壁にぶつかったとき不自然すぎる
 // TODO 回転幅の調整等
+// TODO 一回転するとセグフォする
 static int	move_by_key(int keycode, t_params *param)
 {
 	t_player *player;
@@ -24,79 +25,17 @@ static int	move_by_key(int keycode, t_params *param)
 	player = param->player;
 
 	if (keycode == KEY_W)
-	{
-		double next_x = player->pos_x + player->dir_x * move_speed;
-		double next_y = player->pos_y + player->dir_y * move_speed;
-		if (param->map[(int)next_x][(int)player->pos_y] == 0)
-			player->pos_x = next_x;
-		if (param->map[(int)player->pos_x][(int)next_y] == 0)
-			player->pos_y = next_y;
-
-		printf("move forward (x, y)=(%f, %f)\n", player->pos_x, player->pos_y);
-	}
-
+		player->vertical_flag = 1;
 	if (keycode == KEY_S)
-	{
-		double next_x = player->pos_x - player->dir_x * move_speed;
-		double next_y = player->pos_y - player->dir_y * move_speed;
-		if (param->map[(int)next_x][(int)player->pos_y] == 0)
-			player->pos_x = next_x;
-		if (param->map[(int)player->pos_x][(int)next_y] == 0)
-			player->pos_y = next_y;
-
-		printf("move back (x, y)=(%f, %f)\n", player->pos_x, player->pos_y);
-	}
-
+		player->vertical_flag = -1;
 	if (keycode == KEY_A)
-	{
-		double next_x = player->pos_x - player->plane_x * move_speed;
-		double next_y = player->pos_y - player->plane_y * move_speed;
-		if (param->map[(int)next_x][(int)player->pos_y] == 0)
-			player->pos_x = next_x;
-		if (param->map[(int)player->pos_x][(int)next_y] == 0)
-			player->pos_y = next_y;
-
-		printf("move left (x, y)=(%f, %f)\n", player->pos_x, player->pos_y);
-	}
+		player->horizontal_flag = -1;
 	if (keycode == KEY_D)
-	{
-		double next_x = player->pos_x + player->plane_x * move_speed;
-		double next_y = player->pos_y + player->plane_y * move_speed;
-		if (param->map[(int)next_x][(int)player->pos_y] == 0)
-			player->pos_x = next_x;
-		if (param->map[(int)player->pos_x][(int)next_y] == 0)
-			player->pos_y = next_y;
-
-		printf("move right (x, y)=(%f, %f)\n", player->pos_x, player->pos_y);
-	}
-
+		player->horizontal_flag = 1;
 	if (keycode == KEY_R_DIR)
-	{
-		double rot_speed = 0.05;
-		double old_dir_x = player->dir_x;
-		player->dir_x = player->dir_x * cos(-rot_speed) - player->dir_y * sin(-rot_speed);
-		player->dir_y = old_dir_x * sin(-rot_speed) + player->dir_y * cos(-rot_speed);
-
-		double old_plane_x = player->plane_x;
-		player->plane_x = player->plane_x * cos(-rot_speed) - player->plane_y * sin(-rot_speed);
-		player->plane_y = old_plane_x * sin(-rot_speed) + player->plane_y * cos(-rot_speed);
-
-		printf("turn right direction\n");
-	}
-
+		player->counterclockwise_flag = -1;
 	if (keycode == KEY_L_DIR)
-	{
-		double rot_speed = 0.05;
-		double old_dir_x = player->dir_x;
-		player->dir_x = player->dir_x * cos(rot_speed) - player->dir_y * sin(rot_speed);
-		player->dir_y = old_dir_x * sin(rot_speed) + player->dir_y * cos(rot_speed);
-
-		double old_plane_x = player->plane_x;
-		player->plane_x = player->plane_x * cos(rot_speed) - player->plane_y * sin(rot_speed);
-		player->plane_y = old_plane_x * sin(rot_speed) + player->plane_y * cos(rot_speed);
-		printf("turn left direction\n");
-	}
-
+		player->counterclockwise_flag = 1;
 	return (0);
 }
 
