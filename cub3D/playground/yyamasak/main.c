@@ -1,7 +1,7 @@
 #include "utils.h"
 
-// int worldMap[mapWidth][mapHeight] = {
-//   {1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+// int world_map[mapWidth][mapHeight] = {
+//   {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 //   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 //   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 //   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
@@ -27,23 +27,13 @@
 //   {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
 // };
 
-int worldMap[mapWidth][mapHeight] = {
-  {1,1,1},
-  {1,2,1},
-  {1,1,1},
+char world_map[mapWidth][mapHeight + 1] = 
+{
+  "111",
+  "101",
+  "111",
 };
 
-void	ft_mlx_pixel_put(t_data *data, int x, int y, int color)
-{
-	char	*dst;
-
-	if (x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT)
-	{
-		dst = data->addr + (y * data->llen + x * (data->bpp / 8));
-		*(unsigned int *)dst = color;
-	}
-	return ;
-}
 
 void draw_vertical_line(t_data *data, int x, int start, int end, int color)
 {
@@ -155,7 +145,7 @@ void	raycast(t_params *params)
 				ray->side = 1;
 			}
 			// printf("ray map value: %d, %d\n", ray->map_x, ray->map_y);
-			if (worldMap[ray->map_x][ray->map_y] > 0)
+			if (params->map[ray->map_x][ray->map_y] == '1' || params->map[ray->map_x][ray->map_y] == '2')
 				ray->hit = 1;
 		}
 		// calculate distance of wall
@@ -244,24 +234,14 @@ int	main_loop(void *arg)
 
 int	main(void)
 {
-	t_params params;
-	t_data data;
-	t_player player = {1.5, 1.5, -1, 0, 0, 0.66};
-	t_ray	ray;
+	t_params	params;
+	t_data		data;
+	t_player	player;
+	t_ray		ray;
 
-	params.data = &data;
-	params.player = &player;
-	params.ray = &ray;
-	params.map = worldMap;
-	params.map_width = mapWidth;
-	params.map_height = mapHeight;
-	data.width = WIDTH;
-	data.height = HEIGHT;
-	data.mlx = mlx_init();
-	data.win = mlx_new_window(data.mlx, data.width, data.height, "Raycaster sample");
-	data.img = mlx_new_image(data.mlx, data.width, data.height);
-	data.addr = mlx_get_data_addr(data.img, &(data.bpp), &(data.llen),
-			&(data.eda));
+	init_params(&params, &data, &ray, &player, world_map);
+	init_data(params.data);
+	init_player(&player, 2, 2);
 	raycast(&params);
 	mlx_put_image_to_window(data.mlx, data.win, data.img, 0, 0);
 	mlx_hook(data.win, 17, 0, close_window, &params);
