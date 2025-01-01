@@ -29,8 +29,12 @@
 # define KEY_L_DIR 65361
 # define WINDOW_CLOSE 17
 # define ACRAC 1000
-# define mapWidth 3
-# define mapHeight 3
+# define mapWidth 24
+# define mapHeight 24
+# define red_16 0xFF0000
+# define blue_16 0x0000FF
+# define yellow_16 0xFFFF00
+# define green_16 0x00FF00
 # define PI 3.141582653589793
 
 // typedef struct	s_data {
@@ -105,6 +109,7 @@ typedef struct	s_params
 }				t_params;
 
 int	key_hook(int keycode, void *arg);
+int		key_release_hook(int keycode, t_params *param);
 int	close_window(t_params *param);
 
 #endif
