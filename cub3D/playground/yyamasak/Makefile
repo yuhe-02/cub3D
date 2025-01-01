@@ -1,6 +1,6 @@
 CC := cc
 CFLAGS := -Wall -Werror -Wextra
-CFLAGS :=
+CFLAGS := -fsanitize=address
 
 LIBFT_DIR := ../../libft
 LIBFT := $(LIBFT_DIR)/libft.a
@@ -13,6 +13,11 @@ SRCS += $(SRCDIR)/main.c
 GNL_DIL := ../../gnl
 SRCS += $(GNL_DIL)/get_next_line.c
 SRCS += $(GNL_DIL)/get_next_line_utils.c
+
+# ADD EVENT
+EVENTS_DIR := ../../srcs/events
+SRCS += $(EVENTS_DIR)/key_hooks.c
+SRCS += $(EVENTS_DIR)/close_window.c
 
 # OBJS
 OBJDIR := objs
