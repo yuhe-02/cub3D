@@ -35,6 +35,8 @@
 # define blue_16 0x0000FF
 # define yellow_16 0xFFFF00
 # define green_16 0x00FF00
+# define black_16 0x000000
+# define white_16 0xFFFFFF
 # define PI 3.141582653589793
 
 // typedef struct	s_data {

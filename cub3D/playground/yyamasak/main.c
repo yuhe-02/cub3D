@@ -49,10 +49,22 @@ void draw_vertical_line(t_data *data, int x, int start, int end, int color)
 {
     int y;
 
-    y = start;
+    y = 0;
+	// draw ceiling
+	while (y < start)
+	{
+		ft_mlx_pixel_put(data, x, y, white_16);
+        y++;
+	}
     while (y <= end)
     {
         ft_mlx_pixel_put(data, x, y, color);
+        y++;
+    }
+	// draw floor
+	while (y <= data->height)
+    {
+        ft_mlx_pixel_put(data, x, y, black_16);
         y++;
     }
 }
