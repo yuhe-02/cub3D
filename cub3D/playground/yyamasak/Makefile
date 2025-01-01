@@ -26,6 +26,10 @@ SRCS += $(INITS_DIR)/init_params.c
 SRCS += $(INITS_DIR)/init_data.c
 SRCS += $(INITS_DIR)/init_player.c
 
+# ADD MATH
+MATHS_DIL := ../../srcs/math
+SRCS += $(MATHS_DIL)/convert_angle.c
+
 # OBJS
 OBJDIR := objs
 OBJS = $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%$(SUFFIX).o)

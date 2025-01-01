@@ -53,7 +53,7 @@ void draw_vertical_line(t_data *data, int x, int start, int end, int color)
         y++;
     }
 	// draw floor
-	while (y <= data->height)
+	while (y <= data->img.height)
     {
         ft_mlx_pixel_put(data, x, y, black_16);
         y++;
@@ -75,7 +75,7 @@ void	raycast(t_params *params)
 	player = params->player;
 	ray = params->ray;
 	x = 0;
-	while (x < data->width)
+	while (x < data->img.width)
 	{
 		// printf("loop first\n");
 		/**
@@ -83,7 +83,7 @@ void	raycast(t_params *params)
 		 *  このカメラは、ピクセル(x)が、スクリーンのどの位置にあるのかを-1 , 1の範囲で正規化している。
 		 *  左端は、-1,右端は、1になるように計算されている。FOVは90度を前提にしている。
 		 */
-		ray->camera_x = 2 * x / (double)data->width - 1;
+		ray->camera_x = 2 * x / (double)data->img.width - 1;
 		ray->ray_dir_x = player->dir_x + player->plane_x * ray->camera_x;
 		ray->ray_dir_y = player->dir_y + player->plane_y * ray->camera_x;
 		ray->map_x = (int)(player->pos_x);
@@ -160,14 +160,14 @@ void	raycast(t_params *params)
 		else
 			ray->perp_wall_dist = (ray->map_y - player->pos_y +
 				(1 - ray->step_y) / 2) / ray->ray_dir_y;
-		line_height = (int)(data->height / ray->perp_wall_dist);
+		line_height = (int)(data->img.height / ray->perp_wall_dist);
 
-		draw_start = -line_height / 2 + data->height / 2;
+		draw_start = -line_height / 2 + data->img.height / 2;
 		if (draw_start < 0)
 			draw_start = 0;
-		draw_end = line_height / 2 + data->height / 2;
-		if (draw_end >= data->height)
-			draw_end = data->height - 1;
+		draw_end = line_height / 2 + data->img.height / 2;
+		if (draw_end >= data->img.height)
+			draw_end = data->img.height - 1;
 		
 		// set wall color
 		if (ray->side == 0)
@@ -224,12 +224,12 @@ int	main_loop(void *arg)
 	params = (t_params *)arg;
 	data = params->data;
 	player = params->player;
-	if (data->mlx && data->win && data->img)
-		ft_bzero(data->addr, data->llen * data->height);
+	if (data->mlx && data->win && data->img.img)
+		ft_bzero(data->img.addr, data->img.llen * data->img.height);
 	update_player(params, player);
 	raycast(params);
-	if (data->mlx && data->win && data->img)
-		mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
+	if (data->mlx && data->win && data->img.img)
+		mlx_put_image_to_window(data->mlx, data->win, data->img.img, 0, 0);
 	return (0);
 }
 
@@ -240,9 +240,9 @@ int	main(void)
 	t_player	player;
 	t_ray		ray;
 
-	init_params(&params, &data, &ray, &player, world_map);
 	init_data(params.data);
 	init_player(&player, 2, 2);
+	init_params(&params, &data, &ray, &player, world_map);
 	mlx_hook(data.win, 17, 0, close_window, &params);
 	mlx_hook(data.win, KeyPress, KeyPressMask, key_hook, &params);
 	mlx_hook(data.win, KeyRelease, KeyReleaseMask, key_release_hook, &params);

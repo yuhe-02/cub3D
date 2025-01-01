@@ -6,7 +6,7 @@
 /*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 13:01:56 by yyamasak          #+#    #+#             */
-/*   Updated: 2025/01/01 05:50:20 by yyamasak         ###   ########.fr       */
+/*   Updated: 2025/01/01 07:18:26 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,10 @@ int	close_window(t_params *param)
 	data = param->data;
 	if (!data)
 		exit(0);
-	if (data->img)
+	if (data->img.img)
 	{
-		mlx_destroy_image(data->mlx, data->img);
-		data->img = NULL;
+		mlx_destroy_image(data->mlx, data->img.img);
+		data->img.img = NULL;
 	}
 	if (data->win)
 	{

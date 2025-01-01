@@ -1,30 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_calloc.c                                        :+:      :+:    :+:   */
+/*   convert_angle.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/01 05:52:36 by yyamasak          #+#    #+#             */
-/*   Updated: 2025/01/01 06:30:41 by yyamasak         ###   ########.fr       */
+/*   Created: 2025/01/01 07:01:51 by yyamasak          #+#    #+#             */
+/*   Updated: 2025/01/01 07:03:49 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "utils.h"
 
-void	*ft_calloc(size_t count, size_t size)
+double	convert_to_radian(int degree)
+{	
+	double	res;
+
+	res = (double)((double)degree * 180 / PI);
+	return (res);
+}
+
+int		convert_to_degree(double radian)
 {
-	char	*result;
+	int	res;
 
-	if (size != 0 && SIZE_MAX / size < count)
-	{
-		return (NULL);
-	}
-	result = malloc(count * size);
-	if (!result)
-	{
-		return (NULL);
-	}
-	ft_bzero(result, count * size);
-	return (result);
+	res = (int)(radian * 180 / PI);
+	return (res);
 }

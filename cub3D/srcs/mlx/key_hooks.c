@@ -6,7 +6,7 @@
 /*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 13:02:04 by yyamasak          #+#    #+#             */
-/*   Updated: 2025/01/01 05:22:26 by yyamasak         ###   ########.fr       */
+/*   Updated: 2025/01/01 06:46:21 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ static int	move_by_key(int keycode, t_params *param)
 	if (keycode == KEY_D)
 		player->horizontal_flag = 1;
 	if (keycode == KEY_R_DIR)
-		player->counterclockwise_flag = -1;
-	if (keycode == KEY_L_DIR)
 		player->counterclockwise_flag = 1;
+	if (keycode == KEY_L_DIR)
+		player->counterclockwise_flag = -1;
 	return (0);
 }
 
