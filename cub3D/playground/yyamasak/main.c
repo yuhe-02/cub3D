@@ -1,38 +1,39 @@
 #include "utils.h"
 
-// int world_map[mapWidth][mapHeight] = {
-//   {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-//   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//   {1,0,0,0,0,0,2,2,2,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
-//   {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//   {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,3,0,0,0,3,0,0,0,1},
-//   {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//   {1,0,0,0,0,0,2,2,0,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
-//   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//   {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//   {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//   {1,4,0,0,0,0,5,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//   {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//   {1,4,0,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//   {1,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//   {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//   {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
-// };
-
 char world_map[mapWidth][mapHeight + 1] = 
 {
-  "111",
-  "101",
-  "111",
+  "111111111111111111111111",
+  "100000000000000000000001",
+  "100000000000000000000001",
+  "100000000000000000000001",
+  "100000222220000202020001",
+  "100000200020000000000001",
+  "100000200020000200020001",
+  "100000200020000000000001",
+  "100000220220000202020001",
+  "100000000000000000000001",
+  "100000000000000000000001",
+  "100000000000000000000001",
+  "100000000000000000000001",
+  "100000000000000000000001",
+  "100000000000000000000001",
+  "100000000000000000000001",
+  "122222222000000000000001",
+  "120200002000000000000001",
+  "120000202000000000000001",
+  "120200002000000000000001",
+  "120222222000000000000001",
+  "120000000000000000000001",
+  "122222222000000000000001",
+  "111111111111111111111111"
 };
+
+// char world_map[mapWidth][mapHeight + 1] = 
+// {
+//   "111",
+//   "101",
+//   "111",
+// };
 
 
 void draw_vertical_line(t_data *data, int x, int start, int end, int color)
@@ -186,7 +187,7 @@ void	update_player(t_params *param, t_player *player)
 	if (player->counterclockwise_flag != 0)
 	{
 		printf("kakudo: %f, %f\n",player->dir_x, player->dir_y);
-		double rot_speed = PI / 4;
+		double rot_speed = PI / 200;
 		double old_dir_x = player->dir_x;
 		player->dir_x = player->dir_x * cos(player->counterclockwise_flag * rot_speed) - player->dir_y * sin(player->counterclockwise_flag * rot_speed);
 		player->dir_y = old_dir_x * sin(player->counterclockwise_flag * rot_speed) + player->dir_y * cos(player->counterclockwise_flag * rot_speed);
@@ -194,27 +195,24 @@ void	update_player(t_params *param, t_player *player)
 		double old_plane_x = player->plane_x;
 		player->plane_x = player->plane_x * cos(player->counterclockwise_flag * rot_speed) - player->plane_y * sin(player->counterclockwise_flag * rot_speed);
 		player->plane_y = old_plane_x * sin(player->counterclockwise_flag * rot_speed) + player->plane_y * cos(player->counterclockwise_flag * rot_speed);
-		player->counterclockwise_flag = 0;
 	}
 	else if (player->horizontal_flag != 0)
 	{
 		double next_x = player->pos_x + player->horizontal_flag * player->plane_x * move_speed;
 		double next_y = player->pos_y + player->horizontal_flag * player->plane_y * move_speed;
-		if (param->map[(int)next_x][(int)player->pos_y] == 0)
+		if (param->map[(int)next_x][(int)player->pos_y] == '0')
 			player->pos_x = next_x;
-		if (param->map[(int)player->pos_x][(int)next_y] == 0)
+		if (param->map[(int)player->pos_x][(int)next_y] == '0')
 			player->pos_y = next_y;
-		player->horizontal_flag = 0;
 	}
 	else if (player->vertical_flag != 0)
 	{
 		double next_x = player->pos_x + player->vertical_flag * player->dir_x * move_speed;
 		double next_y = player->pos_y + player->vertical_flag * player->dir_y * move_speed;
-		if (param->map[(int)next_x][(int)player->pos_y] == 0)
+		if (param->map[(int)next_x][(int)player->pos_y] == '0')
 			player->pos_x = next_x;
-		if (param->map[(int)player->pos_x][(int)next_y] == 0)
+		if (param->map[(int)player->pos_x][(int)next_y] == '0')
 			player->pos_y = next_y;
-		player->vertical_flag = 0;
 	}
 }
 int	main_loop(void *arg)
@@ -226,9 +224,12 @@ int	main_loop(void *arg)
 	params = (t_params *)arg;
 	data = params->data;
 	player = params->player;
+	if (data->mlx && data->win && data->img)
+		ft_bzero(data->addr, data->llen * data->height);
 	update_player(params, player);
 	raycast(params);
-	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
+	if (data->mlx && data->win && data->img)
+		mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
 	return (0);
 }
 
@@ -242,8 +243,6 @@ int	main(void)
 	init_params(&params, &data, &ray, &player, world_map);
 	init_data(params.data);
 	init_player(&player, 2, 2);
-	raycast(&params);
-	mlx_put_image_to_window(data.mlx, data.win, data.img, 0, 0);
 	mlx_hook(data.win, 17, 0, close_window, &params);
 	mlx_hook(data.win, KeyPress, KeyPressMask, key_hook, &params);
 	mlx_hook(data.win, KeyRelease, KeyReleaseMask, key_release_hook, &params);

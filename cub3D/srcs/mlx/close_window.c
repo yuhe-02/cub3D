@@ -6,11 +6,24 @@
 /*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 13:01:56 by yyamasak          #+#    #+#             */
-/*   Updated: 2024/12/30 11:50:16 by yyamasak         ###   ########.fr       */
+/*   Updated: 2025/01/01 05:50:20 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
+
+void	free_maps(t_params *params)
+{
+	int i;
+
+	i = 0;
+	while (0 < params->map_height)
+	{
+		free(params->map[i]);
+		i++;
+	}
+	free(params->map);
+}
 
 // TODO 時間あったらなおす
 int	close_window(t_params *param)
@@ -21,15 +34,23 @@ int	close_window(t_params *param)
 	if (!data)
 		exit(0);
 	if (data->img)
+	{
 		mlx_destroy_image(data->mlx, data->img);
+		data->img = NULL;
+	}
 	if (data->win)
+	{
 		mlx_destroy_window(data->mlx, data->win);
-	// if (data->mlx)
-	// {
-	// 	// mlx_destroy_display(data->mlx);
-	// 	// free(data->mlx);
-	// 	// data->mlx = NULL;
-	// }
-	exit(0);
+		data->win = NULL;
+	}
+	// if (param)
+	// 	free_maps(param);
+	if (data->mlx)
+	{
+		// mlx_destroy_display((void *)(data->mlx));
+		// free(data->mlx);
+		// data->mlx = NULL;
+	}
+	// exit(0);
 	return (0);
 }

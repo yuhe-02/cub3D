@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yyamasak <yyamasak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/20 17:08:59 by yyamasak            #+#    #+#             */
-/*   Updated: 2024/07/20 20:49:05 by yyamasak           ###   ########.fr       */
+/*   Created: 2025/01/01 05:55:30 by yyamasak          #+#    #+#             */
+/*   Updated: 2025/01/01 05:55:38 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdio.h>
 
 static size_t	ft_count_words(char const *s, char c)
 {

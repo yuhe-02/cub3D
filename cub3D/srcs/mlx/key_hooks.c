@@ -6,17 +6,14 @@
 /*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 13:02:04 by yyamasak          #+#    #+#             */
-/*   Updated: 2025/01/01 02:45:17 by yyamasak         ###   ########.fr       */
+/*   Updated: 2025/01/01 05:22:26 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 
-// TODO プレイヤーの向いている方向に対して移動しないといけないから修正
-// TODO 移動するピクセル数がよくわからんので調整
-// TODO 横の壁にぶつかったとき不自然すぎる
+// TODO リファクタリング
 // TODO 回転幅の調整等
-// TODO 一回転するとセグフォする
 static int	move_by_key(int keycode, t_params *param)
 {
 	t_player *player;
@@ -54,7 +51,6 @@ int	key_hook(int keycode, void *arg)
 		move_by_key(keycode, params);
 	else
 		return (0);
-	ft_bzero(data->addr, data->llen * data->height);
 	return (0);
 }
 
