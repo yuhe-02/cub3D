@@ -1,35 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   close_window.c                                     :+:      :+:    :+:   */
+/*   put_pixel.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/24 13:01:56 by yyamasak          #+#    #+#             */
-/*   Updated: 2024/12/30 11:50:16 by yyamasak         ###   ########.fr       */
+/*   Created: 2025/01/01 03:45:46 by yyamasak          #+#    #+#             */
+/*   Updated: 2025/01/01 05:35:22 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 
-// TODO 時間あったらなおす
-int	close_window(t_params *param)
+void	ft_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
-	t_data	*data;
+	char	*dst;
 
-	data = param->data;
-	if (!data)
-		exit(0);
-	if (data->img)
-		mlx_destroy_image(data->mlx, data->img);
-	if (data->win)
-		mlx_destroy_window(data->mlx, data->win);
-	// if (data->mlx)
-	// {
-	// 	// mlx_destroy_display(data->mlx);
-	// 	// free(data->mlx);
-	// 	// data->mlx = NULL;
-	// }
-	exit(0);
-	return (0);
+	if (x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT && data->img)
+	{
+		dst = data->addr + (y * data->llen + x * (data->bpp / 8));
+		*(unsigned int *)dst = color;
+	}
+	return ;
 }

@@ -1,18 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isprint.c                                       :+:      :+:    :+:   */
+/*   init_params.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/01 05:53:25 by yyamasak          #+#    #+#             */
-/*   Updated: 2025/01/01 05:53:26 by yyamasak         ###   ########.fr       */
+/*   Created: 2025/01/01 03:48:15 by yyamasak          #+#    #+#             */
+/*   Updated: 2025/01/01 04:19:15 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "utils.h"
 
-int	ft_isprint(int c)
+// TODO change map, map_width, map_height paramter into char **
+void	init_params(t_params* params, t_data *data, t_ray *ray, t_player *player, char (*world_map)[mapHeight + 1])
 {
-	return (32 <= c && c <= 126);
+	params->data = data;
+	params->player = player;
+	params->ray = ray;
+	params->map = world_map;
+	params->map_width = mapWidth;
+	params->map_height = mapHeight;
 }

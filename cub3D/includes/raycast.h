@@ -29,19 +29,15 @@
 # define KEY_L_DIR 65361
 # define WINDOW_CLOSE 17
 # define ACRAC 1000
-# define mapWidth 3
-# define mapHeight 3
+# define mapWidth 24
+# define mapHeight 24
+# define red_16 0xFF0000
+# define blue_16 0x0000FF
+# define yellow_16 0xFFFF00
+# define green_16 0x00FF00
+# define black_16 0x000000
+# define white_16 0xFFFFFF
 # define PI 3.141582653589793
-
-// typedef struct	s_data {
-// 	void		*img;
-// 	char		*addr;
-// 	int			bpp;
-// 	int			llen;
-// 	int			eda;
-// 	int			width;
-// 	int			height;
-// }				t_data;
 
 typedef struct s_data
 {
@@ -99,12 +95,17 @@ typedef struct	s_params
     t_data *data;
     t_player *player;
     t_ray   *ray;
-    int     (*map)[mapHeight];
+    char    (*map)[mapHeight + 1];
     int     map_width;
     int     map_height;
 }				t_params;
 
-int	key_hook(int keycode, void *arg);
-int	close_window(t_params *param);
+int     key_hook(int keycode, void *arg);
+int		key_release_hook(int keycode, t_params *param);
+int     close_window(t_params *param);
+void	ft_mlx_pixel_put(t_data *data, int x, int y, int color);
+void	init_params(t_params* params, t_data *data, t_ray *ray, t_player *player, char (*world_map)[mapHeight + 1]);
+void	init_data(t_data *data);
+void	init_player(t_player *player, int x, int y);
 
 #endif

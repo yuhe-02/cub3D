@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_isdigit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kitaoryoma <kitaoryoma@student.42.fr>      +#+  +:+       +#+        */
+/*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/14 00:30:53 by kitaoryoma        #+#    #+#             */
-/*   Updated: 2024/04/20 00:06:25 by kitaoryoma       ###   ########.fr       */
+/*   Created: 2025/01/01 05:53:18 by yyamasak          #+#    #+#             */
+/*   Updated: 2025/01/01 05:53:19 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
