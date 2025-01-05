@@ -104,7 +104,7 @@ typedef struct	s_params
     t_data      *data;
     t_player    *player;
     t_ray       *ray;
-    char        (*map)[mapHeight + 1];
+    char        (*map)[mapWidth + 1];
     int         map_width;
     int         map_height;
 
@@ -115,7 +115,7 @@ int     key_hook(int keycode, void *arg);
 int		key_release_hook(int keycode, t_params *param);
 int     close_window(t_params *param);
 void	ft_mlx_pixel_put(t_data *data, int x, int y, int color);
-void	init_params(t_params* params, t_data *data, t_ray *ray, t_player *player, char (*world_map)[mapHeight + 1]);
+void	init_params(t_params* params, t_data *data, t_ray *ray, t_player *player, char (*world_map)[mapWidth + 1]);
 void	init_data(t_data *data);
 void	init_player(t_player *player, int x, int y);
 double	convert_to_radian(int degree);

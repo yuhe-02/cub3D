@@ -1,9 +1,9 @@
 #include "utils.h"
 
-char world_map[mapWidth][mapHeight + 1] = 
+char world_map[mapHeight][mapWidth + 1] = 
 {
   "111111111111111111111111",
-  "100000000000000000000001",
+  "102000000000000000000001",
   "100000000000000000000001",
   "100000000000000000000001",
   "100000222220000202020001",
@@ -150,7 +150,7 @@ void	raycast(t_params *params)
 				ray->side = 1;
 			}
 			// printf("ray map value: %d, %d\n", ray->map_x, ray->map_y);
-			if (params->map[ray->map_x][ray->map_y] == '1' || params->map[ray->map_x][ray->map_y] == '2')
+			if (params->map[ray->map_y][ray->map_x] == '1' || params->map[ray->map_y][ray->map_x] == '2')
 				ray->hit = 1;
 		}
 		// calculate distance of wall
@@ -209,20 +209,12 @@ void	raycast(t_params *params)
 		{
 			int tex_y = (int)tex_pos & (image->height - 1);
 			tex_pos += step;
-
 			// Calculate pixel position in the texture
 			char *tex_pixel = image->addr + (tex_y * image->llen + tex_x * (image->bpp / 8));
-
 			// Convert texture pixel color (assuming 32-bit color depth)
 			int color = *(int *)tex_pixel;
-
-			// Apply shadow effect for sides
-			if (ray->side == 1)
-				color = (color >> 1) & 0x7F7F7F;
-
 			// Set pixel to image buffer
-			char *dst_pixel = data->img.addr + (y * data->img.llen + x * (data->img.bpp / 8));
-			*(int *)dst_pixel = color;
+			ft_mlx_pixel_put(data, x, y, color);
 
 			y++;
 		}
@@ -250,18 +242,18 @@ void	update_player(t_params *param, t_player *player)
 	{
 		double next_x = player->pos_x + player->horizontal_flag * player->plane_x * move_speed;
 		double next_y = player->pos_y + player->horizontal_flag * player->plane_y * move_speed;
-		if (param->map[(int)next_x][(int)player->pos_y] == '0')
+		if (param->map[(int)player->pos_y][(int)next_x] == '0')
 			player->pos_x = next_x;
-		if (param->map[(int)player->pos_x][(int)next_y] == '0')
+		if (param->map[(int)next_y][(int)player->pos_x] == '0')
 			player->pos_y = next_y;
 	}
 	else if (player->vertical_flag != 0)
 	{
 		double next_x = player->pos_x + player->vertical_flag * player->dir_x * move_speed;
 		double next_y = player->pos_y + player->vertical_flag * player->dir_y * move_speed;
-		if (param->map[(int)next_x][(int)player->pos_y] == '0')
+		if (param->map[(int)player->pos_y][(int)next_x] == '0')
 			player->pos_x = next_x;
-		if (param->map[(int)player->pos_x][(int)next_y] == '0')
+		if (param->map[(int)next_y][(int)player->pos_x]== '0')
 			player->pos_y = next_y;
 	}
 }

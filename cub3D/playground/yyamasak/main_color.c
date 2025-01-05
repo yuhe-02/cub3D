@@ -1,39 +1,40 @@
 #include "utils.h"
 
-char world_map[mapWidth][mapHeight + 1] = 
-{
-  "111111111111111111111111",
-  "100000000000000000000001",
-  "100000000000000000000001",
-  "100000000000000000000001",
-  "100000222220000202020001",
-  "100000200020000000000001",
-  "100000200020000200020001",
-  "100000200020000000000001",
-  "100000220220000202020001",
-  "100000000000000000000001",
-  "100000000000000000000001",
-  "100000000000000000000001",
-  "100000000000000000000001",
-  "100000000000000000000001",
-  "100000000000000000000001",
-  "100000000000000000000001",
-  "122222222000000000000001",
-  "120200002000000000000001",
-  "120000202000000000000001",
-  "120200002000000000000001",
-  "120222222000000000000001",
-  "120000000000000000000001",
-  "122222222000000000000001",
-  "111111111111111111111111"
-};
-
 // char world_map[mapWidth][mapHeight + 1] = 
 // {
-//   "111",
-//   "101",
-//   "111",
+//   "111111111111111111111111",
+//   "101000000000000000000001",
+//   "100000000000000000000001",
+//   "100000000000000000000001",
+//   "100000000000000000000001",
+//   "100000000000000000000001",
+//   "100000000000000000000001",
+//   "100000000000000000000001",
+//   "100000000000000000000001",
+//   "100000000000000000000001",
+//   "100000000000000000000001",
+//   "100000000000000000000001",
+//   "100000000000000000000001",
+//   "100000000000000000000001",
+//   "100000000000000000000001",
+//   "100000000000000000000001",
+//   "100000000000000000000001",
+//   "100000000000000000000001",
+//   "100000000000000000000001",
+//   "100000000000000000000001",
+//   "100000000000000000000001",
+//   "100000000000000000000001",
+//   "100000000000000000000001",
+//   "111111111111111111111111"
 // };
+
+char world_map[mapHeight][mapWidth + 1] = 
+{
+  "111111",
+  "100001",
+  "101001",
+  "111111"
+};
 
 
 void draw_vertical_line(t_data *data, int x, int start, int end, int color)
@@ -43,7 +44,7 @@ void draw_vertical_line(t_data *data, int x, int start, int end, int color)
 
     y = 0;
 	relative_height = (end - start);
-	printf("x: %d, relative height: %d\n", x, relative_height);
+	// printf("x: %d, relative height: %d\n", x, relative_height);
 	// draw ceiling
 	while (y < start)
 	{
@@ -150,7 +151,8 @@ void	raycast(t_params *params)
 				ray->side = 1;
 			}
 			// printf("ray map value: %d, %d\n", ray->map_x, ray->map_y);
-			if (params->map[ray->map_x][ray->map_y] == '1' || params->map[ray->map_x][ray->map_y] == '2')
+			// if (params->map[ray->map_x][ray->map_y] == '1' || params->map[ray->map_x][ray->map_y] == '2')
+			if (params->map[ray->map_y][ray->map_x] == '1' || params->map[ray->map_y][ray->map_x] == '2')
 				ray->hit = 1;
 		}
 		// calculate distance of wall
@@ -210,18 +212,18 @@ void	update_player(t_params *param, t_player *player)
 	{
 		double next_x = player->pos_x + player->horizontal_flag * player->plane_x * move_speed;
 		double next_y = player->pos_y + player->horizontal_flag * player->plane_y * move_speed;
-		if (param->map[(int)next_x][(int)player->pos_y] == '0')
+		if (param->map[(int)player->pos_y][(int)next_x]== '0')
 			player->pos_x = next_x;
-		if (param->map[(int)player->pos_x][(int)next_y] == '0')
+		if (param->map[(int)next_y][(int)player->pos_x] == '0')
 			player->pos_y = next_y;
 	}
 	else if (player->vertical_flag != 0)
 	{
 		double next_x = player->pos_x + player->vertical_flag * player->dir_x * move_speed;
 		double next_y = player->pos_y + player->vertical_flag * player->dir_y * move_speed;
-		if (param->map[(int)next_x][(int)player->pos_y] == '0')
+		if (param->map[(int)player->pos_y][(int)next_x] == '0')
 			player->pos_x = next_x;
-		if (param->map[(int)player->pos_x][(int)next_y] == '0')
+		if (param->map[(int)next_y][(int)player->pos_x] == '0')
 			player->pos_y = next_y;
 	}
 }
