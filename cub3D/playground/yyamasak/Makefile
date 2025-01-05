@@ -1,6 +1,6 @@
 CC := cc
-CFLAGS := -Wall -Werror -Wextra
-CFLAGS := -fsanitize=address
+# CFLAGS := -Wall -Werror -Wextra
+# CFLAGS := -fsanitize=address
 
 LIBFT_DIR := ../../libft
 LIBFT := $(LIBFT_DIR)/libft.a
