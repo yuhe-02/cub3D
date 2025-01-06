@@ -6,12 +6,11 @@
 /*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 05:52:36 by yyamasak          #+#    #+#             */
-/*   Updated: 2025/01/01 05:52:38 by yyamasak         ###   ########.fr       */
+/*   Updated: 2025/01/01 06:30:41 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdint.h>
 
 void	*ft_calloc(size_t count, size_t size)
 {

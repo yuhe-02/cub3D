@@ -1,6 +1,6 @@
 CC := cc
-CFLAGS := -Wall -Werror -Wextra
-CFLAGS := -fsanitize=address
+# CFLAGS := -Wall -Werror -Wextra
+# CFLAGS := -fsanitize=address
 
 LIBFT_DIR := ../../libft
 LIBFT := $(LIBFT_DIR)/libft.a
@@ -25,6 +25,10 @@ INITS_DIR := ../../srcs/init
 SRCS += $(INITS_DIR)/init_params.c
 SRCS += $(INITS_DIR)/init_data.c
 SRCS += $(INITS_DIR)/init_player.c
+
+# ADD MATH
+MATHS_DIL := ../../srcs/math
+SRCS += $(MATHS_DIL)/convert_angle.c
 
 # OBJS
 OBJDIR := objs

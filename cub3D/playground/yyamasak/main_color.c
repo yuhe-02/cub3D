@@ -1,39 +1,40 @@
 #include "utils.h"
 
-char world_map[mapHeight][mapWidth + 1] = 
-{
-  "111111111111111111111111",
-  "102000000000000000000001",
-  "100000000000000000000001",
-  "100000000000000000000001",
-  "100000222220000202020001",
-  "100000200020000000000001",
-  "100000200020000200020001",
-  "100000200020000000000001",
-  "100000220220000202020001",
-  "100000000000000000000001",
-  "100000000000000000000001",
-  "100000000000000000000001",
-  "100000000000000000000001",
-  "100000000000000000000001",
-  "100000000000000000000001",
-  "100000000000000000000001",
-  "122222222000000000000001",
-  "120200002000000000000001",
-  "120000202000000000000001",
-  "120200002000000000000001",
-  "120222222000000000000001",
-  "120000000000000000000001",
-  "122222222000000000000001",
-  "111111111111111111111111"
-};
-
 // char world_map[mapWidth][mapHeight + 1] = 
 // {
-//   "111",
-//   "101",
-//   "111",
+//   "111111111111111111111111",
+//   "101000000000000000000001",
+//   "100000000000000000000001",
+//   "100000000000000000000001",
+//   "100000000000000000000001",
+//   "100000000000000000000001",
+//   "100000000000000000000001",
+//   "100000000000000000000001",
+//   "100000000000000000000001",
+//   "100000000000000000000001",
+//   "100000000000000000000001",
+//   "100000000000000000000001",
+//   "100000000000000000000001",
+//   "100000000000000000000001",
+//   "100000000000000000000001",
+//   "100000000000000000000001",
+//   "100000000000000000000001",
+//   "100000000000000000000001",
+//   "100000000000000000000001",
+//   "100000000000000000000001",
+//   "100000000000000000000001",
+//   "100000000000000000000001",
+//   "100000000000000000000001",
+//   "111111111111111111111111"
 // };
+
+char world_map[mapHeight][mapWidth + 1] = 
+{
+  "111111",
+  "100001",
+  "101001",
+  "111111"
+};
 
 
 void draw_vertical_line(t_data *data, int x, int start, int end, int color)
@@ -43,7 +44,7 @@ void draw_vertical_line(t_data *data, int x, int start, int end, int color)
 
     y = 0;
 	relative_height = (end - start);
-	printf("x: %d, relative height: %d\n", x, relative_height);
+	// printf("x: %d, relative height: %d\n", x, relative_height);
 	// draw ceiling
 	while (y < start)
 	{
@@ -150,6 +151,7 @@ void	raycast(t_params *params)
 				ray->side = 1;
 			}
 			// printf("ray map value: %d, %d\n", ray->map_x, ray->map_y);
+			// if (params->map[ray->map_x][ray->map_y] == '1' || params->map[ray->map_x][ray->map_y] == '2')
 			if (params->map[ray->map_y][ray->map_x] == '1' || params->map[ray->map_y][ray->map_x] == '2')
 				ray->hit = 1;
 		}
@@ -183,41 +185,9 @@ void	raycast(t_params *params)
 		if (ray->side == 0)
 			image = (ray->step_x > 0) ? &(data->tex_west) : &(data->tex_east);
 		else
-			image = (ray->step_y > 0) ? &(data->tex_north) : &(data->tex_south);
+			image = (ray->step_y > 0) ? &(data->tex_south) : &(data->tex_north);
 		// printf("wrinting\n");
-		// draw_vertical_line(data, x, draw_start, draw_end, color);
-				// calculate texture X coordinate
-		double wall_x;
-		if (ray->side == 0)
-			wall_x = player->pos_y + ray->perp_wall_dist * ray->ray_dir_y;
-		else
-			wall_x = player->pos_x + ray->perp_wall_dist * ray->ray_dir_x;
-		wall_x -= floor(wall_x);
-
-		int tex_x = (int)(wall_x * (double)image->width);
-		if (ray->side == 0 && ray->ray_dir_x > 0)
-			tex_x = image->width - tex_x - 1;
-		if (ray->side == 1 && ray->ray_dir_y < 0)
-			tex_x = image->width - tex_x - 1;
-
-		// draw the pixels of the stripe as a vertical line
-		double step = 1.0 * image->height / line_height;
-		double tex_pos = (draw_start - data->img.height / 2 + line_height / 2) * step;
-
-		int y = draw_start;
-		while (y < draw_end)
-		{
-			int tex_y = (int)tex_pos & (image->height - 1);
-			tex_pos += step;
-			// Calculate pixel position in the texture
-			char *tex_pixel = image->addr + (tex_y * image->llen + tex_x * (image->bpp / 8));
-			// Convert texture pixel color (assuming 32-bit color depth)
-			int color = *(int *)tex_pixel;
-			// Set pixel to image buffer
-			ft_mlx_pixel_put(data, x, y, color);
-
-			y++;
-		}
+		draw_vertical_line(data, x, draw_start, draw_end, color);
 		x++;
 	}
 }
@@ -242,7 +212,7 @@ void	update_player(t_params *param, t_player *player)
 	{
 		double next_x = player->pos_x + player->horizontal_flag * player->plane_x * move_speed;
 		double next_y = player->pos_y + player->horizontal_flag * player->plane_y * move_speed;
-		if (param->map[(int)player->pos_y][(int)next_x] == '0')
+		if (param->map[(int)player->pos_y][(int)next_x]== '0')
 			player->pos_x = next_x;
 		if (param->map[(int)next_y][(int)player->pos_x] == '0')
 			player->pos_y = next_y;
@@ -253,7 +223,7 @@ void	update_player(t_params *param, t_player *player)
 		double next_y = player->pos_y + player->vertical_flag * player->dir_y * move_speed;
 		if (param->map[(int)player->pos_y][(int)next_x] == '0')
 			player->pos_x = next_x;
-		if (param->map[(int)next_y][(int)player->pos_x]== '0')
+		if (param->map[(int)next_y][(int)player->pos_x] == '0')
 			player->pos_y = next_y;
 	}
 }

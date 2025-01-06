@@ -39,17 +39,26 @@
 # define white_16 0xFFFFFF
 # define PI 3.141582653589793
 
-typedef struct s_data
+typedef struct s_image
 {
-    void *mlx;
-    void *win;
     void *img;
     char *addr;
     int bpp;
     int llen;
     int eda;
-    int			width;
-    int			height;
+    int	width;
+    int	height;
+}               t_image;
+
+typedef struct s_data
+{
+    void    *mlx;
+    void    *win;
+    t_image img;
+    t_image tex_north;
+    t_image tex_south;
+    t_image tex_west;
+    t_image tex_east;
 } t_data;
 
 typedef struct s_player
@@ -92,20 +101,24 @@ typedef struct s_vector {
 
 typedef struct	s_params
 {
-    t_data *data;
-    t_player *player;
-    t_ray   *ray;
-    char    (*map)[mapHeight + 1];
-    int     map_width;
-    int     map_height;
+    t_data      *data;
+    t_player    *player;
+    t_ray       *ray;
+    char        (*map)[mapWidth + 1];
+    int         map_width;
+    int         map_height;
+
+
 }				t_params;
 
 int     key_hook(int keycode, void *arg);
 int		key_release_hook(int keycode, t_params *param);
 int     close_window(t_params *param);
 void	ft_mlx_pixel_put(t_data *data, int x, int y, int color);
-void	init_params(t_params* params, t_data *data, t_ray *ray, t_player *player, char (*world_map)[mapHeight + 1]);
+void	init_params(t_params* params, t_data *data, t_ray *ray, t_player *player, char (*world_map)[mapWidth + 1]);
 void	init_data(t_data *data);
 void	init_player(t_player *player, int x, int y);
+double	convert_to_radian(int degree);
+int		convert_to_degree(double radian);
 
 #endif
