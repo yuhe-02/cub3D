@@ -55,10 +55,14 @@ typedef struct s_data
     void    *mlx;
     void    *win;
     t_image img;
+    // ryomori
     t_image tex_north;
     t_image tex_south;
     t_image tex_west;
     t_image tex_east;
+    int     ceilling_color;
+    int     floor_color;
+    // end ryomori
 } t_data;
 
 typedef struct s_player
@@ -72,7 +76,20 @@ typedef struct s_player
     int     horizontal_flag;
     int     vertical_flag;
     int     counterclockwise_flag;
-
+    // ryomori
+    // (init_userdir_x, init_userdir_y)
+    // North = (0, -1)
+    // South = (0, 1)
+    // West = (-1, 0)
+    // East = (1, 0)
+    int     init_userdir_x;
+    int     init_userdir_y;
+    // end ryomori
+    // ryomori
+    // マップの左上が、(1, 1)として設定する
+    int     init_userpos_x;
+    int     init_userpos_y; 
+    // end ryomori
 }  				t_player;
 
 typedef struct s_ray
@@ -104,11 +121,11 @@ typedef struct	s_params
     t_data      *data;
     t_player    *player;
     t_ray       *ray;
+    // ryomori
     char        (*map)[mapWidth + 1];
     int         map_width;
     int         map_height;
-
-
+    // end ryomori
 }				t_params;
 
 int     key_hook(int keycode, void *arg);
