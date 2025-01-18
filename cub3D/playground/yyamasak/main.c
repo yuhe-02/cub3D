@@ -44,23 +44,17 @@ void draw_vertical_line(t_data *data, int x, int start, int end, int color)
     y = 0;
 	relative_height = (end - start);
 	printf("x: %d, relative height: %d\n", x, relative_height);
-	// draw ceiling
-	while (y < start)
-	{
-		ft_mlx_pixel_put(data, x, y, white_16);
-        y++;
-	}
-    while (y <= end)
-    {
-        ft_mlx_pixel_put(data, x, y, color);
-        y++;
-    }
-	// draw floor
+	printf("x: %d, relative height: %d\n", x, start);
 	while (y <= data->img.height)
-    {
-        ft_mlx_pixel_put(data, x, y, black_16);
-        y++;
-    }
+	{
+		if (y < start)
+			ft_mlx_pixel_put(data, x, y, white_16);
+		else if (y <= end) 
+			ft_mlx_pixel_put(data, x, y, color);
+		else
+			ft_mlx_pixel_put(data, x, y, black_16);
+		y++;
+	}
 }
 
 void	raycast(t_params *params)
@@ -92,22 +86,22 @@ void	raycast(t_params *params)
 		ray->ray_dir_y = player->dir_y + player->plane_y * ray->camera_x;
 		ray->map_x = (int)(player->pos_x);
 		ray->map_y = (int)(player->pos_y);
-		if (ray->ray_dir_x == 0)
-			ray->delta_dist_x = 1e30;
-		else
-		{
-			ray->delta_dist_x = (1 / ray->ray_dir_x) < 0 ?
-			-1 * (1 / ray->ray_dir_x) : (1 / ray->ray_dir_x);
-		}
-		if (ray->ray_dir_y == 0)
-			ray->delta_dist_y = 1e30;
-		else
-		{
-			ray->delta_dist_y = (1 / ray->ray_dir_y) < 0 ?
-			-1 * (1 / ray->ray_dir_y) : (1 / ray->ray_dir_y);
-		}
-		// ray->delta_dist_x = fabs(1 / ray->ray_dir_x);
-		// ray->delta_dist_y = fabs(1 / ray->ray_dir_y);
+		// if (ray->ray_dir_x == 0)
+		// 	ray->delta_dist_x = 1e30;
+		// else
+		// {
+		// 	ray->delta_dist_x = (1 / ray->ray_dir_x) < 0 ?
+		// 	-1 * (1 / ray->ray_dir_x) : (1 / ray->ray_dir_x);
+		// }
+		// if (ray->ray_dir_y == 0)
+		// 	ray->delta_dist_y = 1e30;
+		// else
+		// {
+		// 	ray->delta_dist_y = (1 / ray->ray_dir_y) < 0 ?
+		// 	-1 * (1 / ray->ray_dir_y) : (1 / ray->ray_dir_y);
+		// }
+		ray->delta_dist_x = fabs(1 / ray->ray_dir_x);
+		ray->delta_dist_y = fabs(1 / ray->ray_dir_y);
 		ray->hit = 0;
 
 		// detect next direction per index and distance
@@ -204,7 +198,14 @@ void	raycast(t_params *params)
 		double step = 1.0 * image->height / line_height;
 		double tex_pos = (draw_start - data->img.height / 2 + line_height / 2) * step;
 
+		// contens drawer
 		int y = draw_start;
+		int tmpy = 0;
+		while (tmpy < draw_start)
+		{
+			ft_mlx_pixel_put(data, x, tmpy, white_16);
+			tmpy++;
+		}
 		while (y < draw_end)
 		{
 			int tex_y = (int)tex_pos & (image->height - 1);
@@ -218,30 +219,40 @@ void	raycast(t_params *params)
 
 			y++;
 		}
+		tmpy = y;
+		while (tmpy < data->img.height)
+		{
+			ft_mlx_pixel_put(data, x, y, black_16);
+			tmpy++;
+		}
 		x++;
 	}
 }
 
 void	update_player(t_params *param, t_player *player)
 {
-	double move_speed = 0.1;
+	double	move_speed = 0.1;
+	double 	rot_speed;
+	double old_dir_x;
+	double old_plane_x;
+	double	next_x;
+	double	next_y;
 
 	if (player->counterclockwise_flag != 0)
 	{
 		printf("kakudo: %f, %f\n",player->dir_x, player->dir_y);
-		double rot_speed = PI / 200;
-		double old_dir_x = player->dir_x;
+		rot_speed = PI / 200;
+		old_dir_x = player->dir_x;
 		player->dir_x = player->dir_x * cos(player->counterclockwise_flag * rot_speed) - player->dir_y * sin(player->counterclockwise_flag * rot_speed);
 		player->dir_y = old_dir_x * sin(player->counterclockwise_flag * rot_speed) + player->dir_y * cos(player->counterclockwise_flag * rot_speed);
-
-		double old_plane_x = player->plane_x;
+		old_plane_x = player->plane_x;
 		player->plane_x = player->plane_x * cos(player->counterclockwise_flag * rot_speed) - player->plane_y * sin(player->counterclockwise_flag * rot_speed);
 		player->plane_y = old_plane_x * sin(player->counterclockwise_flag * rot_speed) + player->plane_y * cos(player->counterclockwise_flag * rot_speed);
 	}
 	else if (player->horizontal_flag != 0)
 	{
-		double next_x = player->pos_x + player->horizontal_flag * player->plane_x * move_speed;
-		double next_y = player->pos_y + player->horizontal_flag * player->plane_y * move_speed;
+		next_x = player->pos_x + player->horizontal_flag * player->plane_x * move_speed;
+		next_y = player->pos_y + player->horizontal_flag * player->plane_y * move_speed;
 		if (param->map[(int)player->pos_y][(int)next_x] == '0')
 			player->pos_x = next_x;
 		if (param->map[(int)next_y][(int)player->pos_x] == '0')
@@ -249,8 +260,8 @@ void	update_player(t_params *param, t_player *player)
 	}
 	else if (player->vertical_flag != 0)
 	{
-		double next_x = player->pos_x + player->vertical_flag * player->dir_x * move_speed;
-		double next_y = player->pos_y + player->vertical_flag * player->dir_y * move_speed;
+		next_x = player->pos_x + player->vertical_flag * player->dir_x * move_speed;
+		next_y = player->pos_y + player->vertical_flag * player->dir_y * move_speed;
 		if (param->map[(int)player->pos_y][(int)next_x] == '0')
 			player->pos_x = next_x;
 		if (param->map[(int)next_y][(int)player->pos_x]== '0')
@@ -288,9 +299,7 @@ int	main(void)
 	init_data(params.data);
 	init_player(&player, 2, 2);
 	init_params(&params, &data, &ray, &player, world_map);
-	mlx_hook(data.win, 17, 0, close_window, &params);
-	mlx_hook(data.win, KeyPress, KeyPressMask, key_hook, &params);
-	mlx_hook(data.win, KeyRelease, KeyReleaseMask, key_release_hook, &params);
+	set_event(&data, &params);
 	mlx_loop_hook(data.mlx, &main_loop, (void *)&params);
 	mlx_loop(data.mlx);
 	return (0);
