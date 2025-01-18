@@ -231,7 +231,7 @@ void	raycast(t_params *params)
 
 void	update_player(t_params *param, t_player *player)
 {
-	double	move_speed = 0.1;
+	double	move_speed = 0.05;
 	double 	rot_speed;
 	double old_dir_x;
 	double old_plane_x;
