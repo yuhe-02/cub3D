@@ -326,33 +326,64 @@ void print_map_content(t_params *params)
 //==============================================================
 int main(void)
 {
-	char		**line;
-	int			line_count;
-	const char *map_file = "test.txt";
-    t_data data;
-	t_player player;
-	t_params params;
+    char        **line;
+    int         line_count;
+    const char  *map_file = "test.txt";
+    t_data      *data;
+    t_player    *player;
+    t_params    params;
 
+    // t_data と t_player のメモリを確保
+    data = malloc(sizeof(t_data));
+    if (!data)
+    {
+        perror("malloc failed for data");
+        return (1);
+    }
+    player = malloc(sizeof(t_player));
+    if (!player)
+    {
+        free(data);
+        perror("malloc failed for player");
+        return (1);
+    }
 
-    // 初期化
-	memset(&data, 0, sizeof(t_data));
-	memset(&player, 0, sizeof(t_player));
-	memset(&params, 0, sizeof(t_params));
+    // メモリ確保後、初期化
+    memset(data, 0, sizeof(t_data));
+    memset(player, 0, sizeof(t_player));
+    memset(&params, 0, sizeof(t_params));
 
-	// マップデータの読み込み
+    // params 構造体にポインタを設定
+    params.data = data;
+    params.player = player;
 
-	line_count = 0;
-	line = read_map(map_file, &line_count);
-	if (!line)
-		return (1);
-	if (parse_map(line, line_count, &params) != 0)
-	{
-		write (2, "Error\nInvalid map\n", 18);
-		free_char_array(line, line_count);
-		return (1);
-	}
-	print_map_content(&params);
+    // マップデータの読み込み
+    line_count = 0;
+    line = read_map(map_file, &line_count);
+    if (!line)
+    {
+        free(data);
+        free(player);
+        return (1);
+    }
 
-	free_char_array(line, line_count);
-	return (0);
+    if (parse_map(line, line_count, &params) != 0)
+    {
+        write(2, "Error\nInvalid map\n", 18);
+        free_char_array(line, line_count);
+        free(data);
+        free(player);
+        return (1);
+    }
+
+    // マップ内容の表示
+    print_map_content(&params);
+
+    // 使用したメモリを解放
+    free_char_array(line, line_count);
+    free_params(&params);
+    free(data);
+    free(player);
+
+    return (0);
 }
