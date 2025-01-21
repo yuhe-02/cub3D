@@ -143,5 +143,4 @@ void	init_player(t_player *player, int x, int y);
 double	convert_to_radian(int degree);
 int		convert_to_degree(double radian);
 void	set_event(t_data *data, t_params *params);
-
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstdelone.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kitaoryoma <kitaoryoma@student.42.fr>      +#+  +:+       +#+        */
+/*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/20 22:01:09 by yyamasak            #+#    #+#             */
-/*   Updated: 2024/04/21 22:13:07 by kitaoryoma       ###   ########.fr       */
+/*   Created: 2025/01/01 05:52:08 by yyamasak          #+#    #+#             */
+/*   Updated: 2025/01/01 05:52:11 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

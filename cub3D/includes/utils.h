@@ -10,10 +10,6 @@
 # include <unistd.h>
 # include <math.h>
 # include <stdint.h>
-#include <fcntl.h>//add
-#include <string.h>//add
-#include <errno.h>//add
-#include <ctype.h>//add
 # include "../minilibx-linux/mlx.h"
 # include "../gnl/get_next_line.h"
 
@@ -33,7 +29,4 @@
 //     double offsetX;
 //     double offsetY;
 // }				t_data;
-
-#define ACRAC 1000
-
 #endif

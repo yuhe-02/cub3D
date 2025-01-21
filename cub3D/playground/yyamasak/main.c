@@ -1,86 +1,297 @@
 #include "utils.h"
 
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
+char world_map[mapHeight][mapWidth + 1] = 
 {
-	char	*dst;
+  "111111111111111111111111",
+  "102000000000000000000001",
+  "100000000000000000000001",
+  "100000000000000000000001",
+  "100000222220000202020001",
+  "100000200020000000000001",
+  "100000200020000200020001",
+  "100000200020000000000001",
+  "100000220220000202020001",
+  "100000000000000000000001",
+  "100000000000000000000001",
+  "100000000000000000000001",
+  "100000000000000000000001",
+  "100000000000000000000001",
+  "100000000000000000000001",
+  "100000000000000000000001",
+  "122222222000000000000001",
+  "120200002000000000000001",
+  "120000202000000000000001",
+  "120200002000000000000001",
+  "120222222000000000000001",
+  "120000000000000000000001",
+  "122222222000000000000001",
+  "111111111111111111111111"
+};
 
-	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
-	*(unsigned int*)dst = color;
+// char world_map[mapWidth][mapHeight + 1] = 
+// {
+//   "111",
+//   "101",
+//   "111",
+// };
+
+
+void draw_vertical_line(t_data *data, int x, int start, int end, int color)
+{
+    int y;
+	int	relative_height;
+
+    y = 0;
+	relative_height = (end - start);
+	printf("x: %d, relative height: %d\n", x, relative_height);
+	// draw ceiling
+	while (y < start)
+	{
+		ft_mlx_pixel_put(data, x, y, white_16);
+        y++;
+	}
+    while (y <= end)
+    {
+        ft_mlx_pixel_put(data, x, y, color);
+        y++;
+    }
+	// draw floor
+	while (y <= data->img.height)
+    {
+        ft_mlx_pixel_put(data, x, y, black_16);
+        y++;
+    }
 }
 
-int close_window(t_data *data) {
-    mlx_destroy_image(data->mlx, data->img);
-    mlx_destroy_window(data->mlx, data->win);
-    exit(0);
-}
+void	raycast(t_params *params)
+{
+	t_data		*data;
+	t_player	*player;
+	t_ray		*ray;
+	t_image		*image;
+	int			x;
+	int			color;
+	int			line_height;
+	int			draw_start;
+	int			draw_end;
 
-int key_hook(int keycode, t_data *data) {
-    if (keycode == 65307) // ESC key
-        close_window(data);
-    return (0);
-}
+	data = params->data;
+	player = params->player;
+	ray = params->ray;
+	x = 0;
+	while (x < data->img.width)
+	{
+		// printf("loop first\n");
+		/**
+		 * memo
+		 *  このカメラは、ピクセル(x)が、スクリーンのどの位置にあるのかを-1 , 1の範囲で正規化している。
+		 *  左端は、-1,右端は、1になるように計算されている。FOVは90度を前提にしている。
+		 */
+		ray->camera_x = 2 * x / (double)data->img.width - 1;
+		ray->ray_dir_x = player->dir_x + player->plane_x * ray->camera_x;
+		ray->ray_dir_y = player->dir_y + player->plane_y * ray->camera_x;
+		ray->map_x = (int)(player->pos_x);
+		ray->map_y = (int)(player->pos_y);
+		if (ray->ray_dir_x == 0)
+			ray->delta_dist_x = 1e30;
+		else
+		{
+			ray->delta_dist_x = (1 / ray->ray_dir_x) < 0 ?
+			-1 * (1 / ray->ray_dir_x) : (1 / ray->ray_dir_x);
+		}
+		if (ray->ray_dir_y == 0)
+			ray->delta_dist_y = 1e30;
+		else
+		{
+			ray->delta_dist_y = (1 / ray->ray_dir_y) < 0 ?
+			-1 * (1 / ray->ray_dir_y) : (1 / ray->ray_dir_y);
+		}
+		// ray->delta_dist_x = fabs(1 / ray->ray_dir_x);
+		// ray->delta_dist_y = fabs(1 / ray->ray_dir_y);
+		ray->hit = 0;
 
-void draw_julia_set(t_data *img) {
-
-	// C の実部と虚部
-	double	cx = -0.3;
-	double	cy = -0.63;
-
-    // フラクタルの描画処理
-    for (int y = 0; y < HEIGHT; y++) {
-        for (int x = 0; x < WIDTH; x++) {
-            double zx = (x - (WIDTH / 2)) / (0.5 * img->zoom * WIDTH) + img->offsetX;
-            double zy = (y - (HEIGHT / 2)) / (0.5 * img->zoom *HEIGHT) + img->offsetY;
-            int i = 0;
-            while (zx * zx + zy * zy < 4 && i < ACRAC) {
-                double tmp = zx * zx - zy * zy + cx;
-                zy = 2.0 * zx * zy + cy;
-                zx = tmp;
-                i++;
-            }
-            if (i == ACRAC)
-                i = 0;
-            int color = i * 10000;
-            my_mlx_pixel_put(img, x, y, color);
+		// detect next direction per index and distance
+		if (ray->ray_dir_x < 0)
+		{
+			ray->step_x = -1;
+			ray->side_dist_x = (player->pos_x - ray->map_x) * ray->delta_dist_x;
+		}
+		else
+        {
+            ray->step_x = 1;
+            ray->side_dist_x = (ray->map_x + 1.0 - player->pos_x) * ray->delta_dist_x;
         }
-    }
-    mlx_put_image_to_window(img->mlx, img->win, img->img, 0, 0);
+
+		if (ray->ray_dir_y < 0)
+		{
+			ray->step_y = -1;
+			ray->side_dist_y = (player->pos_y - ray->map_y) * ray->delta_dist_y;
+		}
+		else
+		{
+			ray->step_y = 1;
+			ray->side_dist_y = (ray->map_y + 1.0 - player->pos_y) *ray->delta_dist_y;
+		}
+
+		// DDA algorithm
+		// printf("loop second\n");
+		while (ray->hit == 0)
+		{
+			if (ray->side_dist_x < ray->side_dist_y)
+			{
+				ray->side_dist_x += ray->delta_dist_x;
+				ray->map_x += ray->step_x;
+				ray->side = 0;
+			}
+			else 
+			{
+				ray->side_dist_y += ray->delta_dist_y;
+				ray->map_y += ray->step_y;
+				ray->side = 1;
+			}
+			// printf("ray map value: %d, %d\n", ray->map_x, ray->map_y);
+			if (params->map[ray->map_y][ray->map_x] == '1' || params->map[ray->map_y][ray->map_x] == '2')
+				ray->hit = 1;
+		}
+		// calculate distance of wall
+		// if (ray->side == 0)
+		// 	ray->perp_wall_dist = (ray->side_dist_x - ray->delta_dist_x);
+		// else
+		// 	ray->perp_wall_dist = (ray->side_dist_y - ray->delta_dist_y);
+		if (ray->side == 0)
+			ray->perp_wall_dist = (ray->map_x - player->pos_x +
+				(1 - ray->step_x) / 2) / ray->ray_dir_x;
+		else
+			ray->perp_wall_dist = (ray->map_y - player->pos_y +
+				(1 - ray->step_y) / 2) / ray->ray_dir_y;
+		line_height = (int)(data->img.height / ray->perp_wall_dist);
+
+		draw_start = -line_height / 2 + data->img.height / 2;
+		if (draw_start < 0)
+			draw_start = 0;
+		draw_end = line_height / 2 + data->img.height / 2;
+		if (draw_end >= data->img.height)
+			draw_end = data->img.height - 1;
+		
+		// set wall color
+		if (ray->side == 0)
+			color = (ray->step_x > 0) ? red_16 : green_16;
+		else
+			color = (ray->step_y > 0) ? blue_16 : yellow_16;
+
+		// set wall texture
+		if (ray->side == 0)
+			image = (ray->step_x > 0) ? &(data->tex_west) : &(data->tex_east);
+		else
+			image = (ray->step_y > 0) ? &(data->tex_north) : &(data->tex_south);
+		// printf("wrinting\n");
+		// draw_vertical_line(data, x, draw_start, draw_end, color);
+				// calculate texture X coordinate
+		double wall_x;
+		if (ray->side == 0)
+			wall_x = player->pos_y + ray->perp_wall_dist * ray->ray_dir_y;
+		else
+			wall_x = player->pos_x + ray->perp_wall_dist * ray->ray_dir_x;
+		wall_x -= floor(wall_x);
+
+		int tex_x = (int)(wall_x * (double)image->width);
+		if (ray->side == 0 && ray->ray_dir_x > 0)
+			tex_x = image->width - tex_x - 1;
+		if (ray->side == 1 && ray->ray_dir_y < 0)
+			tex_x = image->width - tex_x - 1;
+
+		// draw the pixels of the stripe as a vertical line
+		double step = 1.0 * image->height / line_height;
+		double tex_pos = (draw_start - data->img.height / 2 + line_height / 2) * step;
+
+		int y = draw_start;
+		while (y < draw_end)
+		{
+			int tex_y = (int)tex_pos & (image->height - 1);
+			tex_pos += step;
+			// Calculate pixel position in the texture
+			char *tex_pixel = image->addr + (tex_y * image->llen + tex_x * (image->bpp / 8));
+			// Convert texture pixel color (assuming 32-bit color depth)
+			int color = *(int *)tex_pixel;
+			// Set pixel to image buffer
+			ft_mlx_pixel_put(data, x, y, color);
+
+			y++;
+		}
+		x++;
+	}
 }
 
+void	update_player(t_params *param, t_player *player)
+{
+	double move_speed = 0.1;
 
-int mouse_hook(int button, int x, int y, void *param) {
-    t_data *img = (t_data *)param;
-    if (button == 4) { // マウスホイールアップ（ズームイン）
-        img->zoom *= 1.2;
-    } else if (button == 5) { // マウスホイールダウン（ズームアウト）
-        img->zoom /= 1.2;
-    }
-    mlx_clear_window(img->mlx, img->win);
-    draw_julia_set(img);
-    return 0;
+	if (player->counterclockwise_flag != 0)
+	{
+		printf("kakudo: %f, %f\n",player->dir_x, player->dir_y);
+		double rot_speed = PI / 200;
+		double old_dir_x = player->dir_x;
+		player->dir_x = player->dir_x * cos(player->counterclockwise_flag * rot_speed) - player->dir_y * sin(player->counterclockwise_flag * rot_speed);
+		player->dir_y = old_dir_x * sin(player->counterclockwise_flag * rot_speed) + player->dir_y * cos(player->counterclockwise_flag * rot_speed);
+
+		double old_plane_x = player->plane_x;
+		player->plane_x = player->plane_x * cos(player->counterclockwise_flag * rot_speed) - player->plane_y * sin(player->counterclockwise_flag * rot_speed);
+		player->plane_y = old_plane_x * sin(player->counterclockwise_flag * rot_speed) + player->plane_y * cos(player->counterclockwise_flag * rot_speed);
+	}
+	else if (player->horizontal_flag != 0)
+	{
+		double next_x = player->pos_x + player->horizontal_flag * player->plane_x * move_speed;
+		double next_y = player->pos_y + player->horizontal_flag * player->plane_y * move_speed;
+		if (param->map[(int)player->pos_y][(int)next_x] == '0')
+			player->pos_x = next_x;
+		if (param->map[(int)next_y][(int)player->pos_x] == '0')
+			player->pos_y = next_y;
+	}
+	else if (player->vertical_flag != 0)
+	{
+		double next_x = player->pos_x + player->vertical_flag * player->dir_x * move_speed;
+		double next_y = player->pos_y + player->vertical_flag * player->dir_y * move_speed;
+		if (param->map[(int)player->pos_y][(int)next_x] == '0')
+			player->pos_x = next_x;
+		if (param->map[(int)next_y][(int)player->pos_x]== '0')
+			player->pos_y = next_y;
+	}
+}
+int	main_loop(void *arg)
+{
+	t_params	*params;
+	t_data		*data;
+	t_player	*player;
+
+	params = (t_params *)arg;
+	data = params->data;
+	player = params->player;
+	if (data->mlx && data->win && data->img.img)
+		ft_bzero(data->img.addr, data->img.llen * data->img.height);
+	update_player(params, player);
+	raycast(params);
+	if (data->mlx && data->win && data->img.img)
+		mlx_put_image_to_window(data->mlx, data->win, data->img.img, 0, 0);
+	return (0);
 }
 
 int	main(void)
-{    // MiniLibX の初期化
-    void	*mlx = mlx_init();
-    void	*win = mlx_new_window(mlx, WIDTH, HEIGHT, "Julia Set");
-    t_data	img;
+{
+	t_params	params;
+	t_data		data;
+	t_player	player;
+	t_ray		ray;
 
-    img.mlx = mlx;
-    img.win = win;
-    img.img = mlx_new_image(img.mlx, WIDTH, HEIGHT);
-    img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
-    img.zoom = 1.0;
-    img.offsetX = 0.0;
-    img.offsetY = 0.0;
-
-	draw_julia_set(&img);
-
-    mlx_hook(img.win, 17, 0, close_window, &img);
-    mlx_key_hook(img.win, key_hook, &img);
-    mlx_mouse_hook(img.win, mouse_hook, &img);
-    mlx_loop(img.mlx);
-
-    get_next_line(0);
-    return (0);
+	params.data = &data;
+	params.ray = &ray;
+	params.player = &player;
+	init_data(params.data);
+	init_player(&player, 2, 2);
+	init_params(&params, &data, &ray, &player, world_map);
+	mlx_hook(data.win, 17, 0, close_window, &params);
+	mlx_hook(data.win, KeyPress, KeyPressMask, key_hook, &params);
+	mlx_hook(data.win, KeyRelease, KeyReleaseMask, key_release_hook, &params);
+	mlx_loop_hook(data.mlx, &main_loop, (void *)&params);
+	mlx_loop(data.mlx);
+	return (0);
 }

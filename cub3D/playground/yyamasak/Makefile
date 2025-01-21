@@ -1,6 +1,6 @@
 CC := cc
-CFLAGS := -Wall -Werror -Wextra
-CFLAGS :=
+# CFLAGS := -Wall -Werror -Wextra
+# CFLAGS := -fsanitize=address
 
 LIBFT_DIR := ../../libft
 LIBFT := $(LIBFT_DIR)/libft.a
@@ -13,6 +13,22 @@ SRCS += $(SRCDIR)/main.c
 GNL_DIL := ../../gnl
 SRCS += $(GNL_DIL)/get_next_line.c
 SRCS += $(GNL_DIL)/get_next_line_utils.c
+
+# ADD MLX
+MLXS_DIR := ../../srcs/mlx
+SRCS += $(MLXS_DIR)/key_hooks.c
+SRCS += $(MLXS_DIR)/close_window.c
+SRCS += $(MLXS_DIR)/put_pixel.c
+
+# ADD INIT
+INITS_DIR := ../../srcs/init
+SRCS += $(INITS_DIR)/init_params.c
+SRCS += $(INITS_DIR)/init_data.c
+SRCS += $(INITS_DIR)/init_player.c
+
+# ADD MATH
+MATHS_DIL := ../../srcs/math
+SRCS += $(MATHS_DIL)/convert_angle.c
 
 # OBJS
 OBJDIR := objs
