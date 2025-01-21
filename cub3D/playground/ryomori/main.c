@@ -187,6 +187,10 @@ int	parse_map(char **line, int line_count, t_params *params)
 				params->player->init_userdir_y = -1;
 				params->player->init_userpos_x = k;
 				params->player->init_userpos_y = j;
+
+				fprintf(stderr, "Player (x: %d,y: %d), Position (x: %d, y: %d)\n",
+                params->player->init_userdir_x, params->player->init_userdir_y,
+                params->player->init_userpos_x, params->player->init_userpos_y);
 			}
 			else if (params->map[j][k] == 'S')
 			{
@@ -194,6 +198,10 @@ int	parse_map(char **line, int line_count, t_params *params)
 				params->player->init_userdir_y = 1;
 				params->player->init_userpos_x = k;
 				params->player->init_userpos_y = j;
+
+				fprintf(stderr, "Player (x: %d,y: %d), Position (x: %d, y: %d)\n",
+				params->player->init_userdir_x, params->player->init_userdir_y,
+				params->player->init_userpos_x, params->player->init_userpos_y);
 			}
 			else if (params->map[j][k] == 'W')
 			{
@@ -201,6 +209,10 @@ int	parse_map(char **line, int line_count, t_params *params)
 				params->player->init_userdir_y = 0;
 				params->player->init_userpos_x = k;
 				params->player->init_userpos_y = j;
+
+				fprintf(stderr, "Player (x: %d,y: %d), Position (x: %d, y: %d)\n",
+				params->player->init_userdir_x, params->player->init_userdir_y,
+				params->player->init_userpos_x, params->player->init_userpos_y);
 			}
 			else if (params->map[j][k] == 'E')
 			{
@@ -208,11 +220,11 @@ int	parse_map(char **line, int line_count, t_params *params)
 				params->player->init_userdir_y = 0;
 				params->player->init_userpos_x = k;
 				params->player->init_userpos_y = j;
+
+				fprintf(stderr, "Player (x: %d,y: %d), Position (x: %d, y: %d)\n",
+				params->player->init_userdir_x, params->player->init_userdir_y,	
+				params->player->init_userpos_x, params->player->init_userpos_y);
 			}
-			fprintf(stderr, "params->player->init_userdir_x = %d\n", params->player->init_userdir_x);
-			fprintf(stderr, "params->player->init_userdir_y = %d\n", params->player->init_userdir_y);
-			fprintf(stderr, "params->player->init_userpos_x = %d\n", params->player->init_userpos_x);
-			fprintf(stderr, "params->player->init_userpos_y = %d\n", params->player->init_userpos_y);
 			k++;
 		}
 		params->map[j][k] = '\0';
