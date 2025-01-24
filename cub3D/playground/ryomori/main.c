@@ -3,8 +3,6 @@
 #include "libft.h"
 #include "raycast.h"
 
-void	free_char_array(char **line, int line_count);
-
 //==============================================================
 // utils_fanctions
 //==============================================================
@@ -26,212 +24,18 @@ void	remove_newline(char *str)
 		*newline = '\0';
 }
 
-//==============================================================
-// parse_functions
-//==============================================================
 
-int		parse_color(char *line, int *color)
+
+
+int parse_map(char **line, int line_count, t_params *params)
 {
-	int		i;
-	char	**rgb;
-	int		hex_color;
-	int		rgb_color[3];
-
-	if (!line)
+	int start_index = parse_map_settings(line, line_count, params);
+	if (start_index < 0)
 		return (-1);
-	rgb = ft_split(line, ',');
-	if (!rgb)
-	{
-		write(2, "Error : split\n", 14);
-		return (-1);
-	}
-	
-	rgb_color[0] = ft_atoi(rgb[0]);
-	rgb_color[1] = ft_atoi(rgb[1]);
-	rgb_color[2] = ft_atoi(rgb[2]);
-
-	i = 0;
-	while(i < 3)
-	{
-		if (rgb_color[i] < 0 || rgb_color[i] > 255)
-		{
-			write(2, "Error : color range\n", 20);
-			free_char_array(rgb, 3);
-			return (-1);
-		}
-		i++;
-	}
-	i = 0;
-	hex_color = 0;
-	while (i < 3)
-	{
-		hex_color = hex_color * 256;
-		hex_color += rgb_color[i];
-		i++;
-	}
-	*color = hex_color;
-
-	i = 0;
-	while (rgb[i])
-	{
-		free(rgb[i]);
-		i++;
-	}
-	free(rgb);
+	parse_map_data(line, start_index, line_count, params);
 	return (0);
 }
 
-
-//==============================================================
-// parse_map
-//==============================================================
-
-int	parse_map(char **line, int line_count, t_params *params)
-{
-	int i;
-
-	i = 0;
-	while (i < line_count)
-	{
-		if(strncmp(line[i], "NO ", 3) == 0)
-		{
-			line[i] = is_spase(line[i]);
-			params->data->tex_north.addr = ft_strdup(line[i] + 3);
-			remove_newline(params->data->tex_north.addr);
-			fprintf(stderr, "tex_north.img = %s\n", params->data->tex_north.addr);
-		}
-		else if(strncmp(line[i], "SO ", 3) == 0)
-		{
-			line[i] = is_spase(line[i]);
-			params->data->tex_south.addr = ft_strdup(line[i] + 3);
-			remove_newline(params->data->tex_south.addr);
-			fprintf(stderr, "tex_south.img = %s\n", params->data->tex_south.addr);
-		}
-		else if (strncmp(line[i], "WE ", 3) == 0)
-		{
-			line[i] = is_spase(line[i]);
-			params->data->tex_west.addr = ft_strdup(line[i] + 3);
-			remove_newline(params->data->tex_west.addr);
-			fprintf(stderr, "params->data->tex_west = %s\n", params->data->tex_west.addr);
-		}
-		else if (strncmp(line[i], "EA ", 3) == 0)
-		{
-			line[i] = is_spase(line[i]);
-			params->data->tex_east.addr = ft_strdup(line[i] + 3);
-			remove_newline(params->data->tex_east.addr);
-			fprintf(stderr, "params->data->tex_east.img = %s\n",params->data->tex_east.addr);
-		}
-		else if(strncmp(line[i], "F ", 2) == 0)
-		{
-			line[i] = is_spase(line[i]);
-			if (parse_color(line[i] + 2, &params->data->floor_color ) != 0)
-			{
-				write(2, "Error : floor_color\n", 21);
-				return (-1);
-			}
-			fprintf(stderr, "floor_color = %d\n", params->data->floor_color);
-		}
-		else if (strncmp(line[i], "C ", 2) == 0)
-		{
-			line[i] = is_spase(line[i]);
-			if(parse_color(line[i] + 2, &params->data->ceilling_color) != 0)
-			{
-				write(2, "Error : ceiling_color\n", 23);
-				return (-1);
-			}
-			fprintf(stderr, "ceilling_color = %d\n", params->data->ceilling_color);
-		}
-		else if(line[i][0] == '\n' && line[i][1] == '\0')//空欄の行のとき
-		{
-			fprintf(stderr, "spase line\n");
-			i++;
-			continue;
-		}
-		else
-		{
-			break;
-		}
-		i++;
-	}
-
-	params->map_height = line_count - i;//mapの開始位置を格納 すべての行数―現在の行数
-	params->map = malloc(params->map_height * sizeof(char *));
-	if (!params->map)
-	{
-		write(2, "malloc failed for map\n", 23);
-		return (-1);
-	}
-	int j = 0;
-	while(j < params->map_height)
-	{
-		if (!line[i + j])
-		{
-			write(2, "Error : Map line is NULL\n", 25);
-			return (-1);
-		}
-		int line_len = ft_strlen(line[i + j]);
-		params->map[j] = malloc(line_len + 1);
-		if (!params->map[j])
-		{
-			write(2, "Error : malloc\n", 15);
-			return (-1);
-		}
-		int k = 0;
-		while (k < line_len)
-		{
-			// element->map_inf[j][k] = line[i + j][k];
-			params->map[j][k] = line[i + j][k];
-			if (params->map[j][k] == 'N')
-			{
-				params->player->init_userdir_x = 0;
-				params->player->init_userdir_y = -1;
-				params->player->init_userpos_x = k;
-				params->player->init_userpos_y = j;
-
-				fprintf(stderr, "Player (x: %d,y: %d), Position (x: %d, y: %d)\n",
-                params->player->init_userdir_x, params->player->init_userdir_y,
-                params->player->init_userpos_x, params->player->init_userpos_y);
-			}
-			else if (params->map[j][k] == 'S')
-			{
-				params->player->init_userdir_x = 0;
-				params->player->init_userdir_y = 1;
-				params->player->init_userpos_x = k;
-				params->player->init_userpos_y = j;
-
-				fprintf(stderr, "Player (x: %d,y: %d), Position (x: %d, y: %d)\n",
-				params->player->init_userdir_x, params->player->init_userdir_y,
-				params->player->init_userpos_x, params->player->init_userpos_y);
-			}
-			else if (params->map[j][k] == 'W')
-			{
-				params->player->init_userdir_x = -1;
-				params->player->init_userdir_y = 0;
-				params->player->init_userpos_x = k;
-				params->player->init_userpos_y = j;
-
-				fprintf(stderr, "Player (x: %d,y: %d), Position (x: %d, y: %d)\n",
-				params->player->init_userdir_x, params->player->init_userdir_y,
-				params->player->init_userpos_x, params->player->init_userpos_y);
-			}
-			else if (params->map[j][k] == 'E')
-			{
-				params->player->init_userdir_x = 1;
-				params->player->init_userdir_y = 0;
-				params->player->init_userpos_x = k;
-				params->player->init_userpos_y = j;
-
-				fprintf(stderr, "Player (x: %d,y: %d), Position (x: %d, y: %d)\n",
-				params->player->init_userdir_x, params->player->init_userdir_y,	
-				params->player->init_userpos_x, params->player->init_userpos_y);
-			}
-			k++;
-		}
-		params->map[j][k] = '\0';
-		j++;
-	}
-	return (0);
-}
 
 //==============================================================
 // read_functions

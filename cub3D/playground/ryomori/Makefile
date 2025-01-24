@@ -7,7 +7,7 @@ LIBFT := $(LIBFT_DIR)/libft.a
 
 # SRCS
 SRCDIR := ./
-SRCS += $(SRCDIR)/main.c
+SRCS += $(SRCDIR)/main.c parse_color.c map_tex_settings.c parse_map_data.c
 
 # ADD GNL
 GNL_DIL := ../../gnl
