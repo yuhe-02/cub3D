@@ -133,8 +133,10 @@ void	ft_mlx_pixel_put(t_data *data, int x, int y, int color);
 void	init_params(t_params* params, t_data *data, t_ray *ray, t_player *player, char (*world_map)[mapWidth + 1]);
 void	init_data(t_data *data);
 void	init_player(t_player *player, int x, int y);
+void	update_player(t_params *param, t_player *player);
 double	convert_to_radian(int degree);
 int		convert_to_degree(double radian);
 void	set_event(t_data *data, t_params *params);
+void	raycast(t_params *params);
 
 #endif
