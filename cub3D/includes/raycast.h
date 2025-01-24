@@ -143,4 +143,12 @@ void	init_player(t_player *player, int x, int y);
 double	convert_to_radian(int degree);
 int		convert_to_degree(double radian);
 void	set_event(t_data *data, t_params *params);
+
+// ryomori
+int		parse_color(char *line, int *color);
+char	*is_spase(char *str);
+void	remove_newline(char *str);
+int		parse_map_settings(char **line, int line_count, t_params *params);
+int parse_map_data(char **line, int start_index, int line_count, t_params *params);
+
 #endif
