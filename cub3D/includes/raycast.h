@@ -38,6 +38,8 @@
 # define black_16 0x000000
 # define white_16 0xFFFFFF
 # define PI 3.141582653589793
+# define MOVE_SPEED 0.05
+# define ROT_SPEED PI / 200
 
 typedef struct s_image
 {
@@ -73,9 +75,9 @@ typedef struct s_player
     double dir_y;
     double plane_x; // カメラ平面
     double plane_y;
-    int     horizontal_flag;
-    int     vertical_flag;
-    int     counterclockwise_flag;
+    int     side_flg;
+    int     approx_flg;
+    int     rotate_flg;
     // ryomori
     // (init_userdir_x, init_userdir_y)
     // North = (0, -1)

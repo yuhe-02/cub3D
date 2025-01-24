@@ -196,31 +196,31 @@ void	update_player(t_params *param, t_player *player)
 {
 	double move_speed = 0.1;
 
-	if (player->counterclockwise_flag != 0)
+	if (player->rotate_flg != 0)
 	{
 		printf("kakudo: %f, %f\n",player->dir_x, player->dir_y);
 		double rot_speed = PI / 200;
 		double old_dir_x = player->dir_x;
-		player->dir_x = player->dir_x * cos(player->counterclockwise_flag * rot_speed) - player->dir_y * sin(player->counterclockwise_flag * rot_speed);
-		player->dir_y = old_dir_x * sin(player->counterclockwise_flag * rot_speed) + player->dir_y * cos(player->counterclockwise_flag * rot_speed);
+		player->dir_x = player->dir_x * cos(player->rotate_flg * rot_speed) - player->dir_y * sin(player->rotate_flg * rot_speed);
+		player->dir_y = old_dir_x * sin(player->rotate_flg * rot_speed) + player->dir_y * cos(player->rotate_flg * rot_speed);
 
 		double old_plane_x = player->plane_x;
-		player->plane_x = player->plane_x * cos(player->counterclockwise_flag * rot_speed) - player->plane_y * sin(player->counterclockwise_flag * rot_speed);
-		player->plane_y = old_plane_x * sin(player->counterclockwise_flag * rot_speed) + player->plane_y * cos(player->counterclockwise_flag * rot_speed);
+		player->plane_x = player->plane_x * cos(player->rotate_flg * rot_speed) - player->plane_y * sin(player->rotate_flg * rot_speed);
+		player->plane_y = old_plane_x * sin(player->rotate_flg * rot_speed) + player->plane_y * cos(player->rotate_flg * rot_speed);
 	}
-	else if (player->horizontal_flag != 0)
+	else if (player->side_flg != 0)
 	{
-		double next_x = player->pos_x + player->horizontal_flag * player->plane_x * move_speed;
-		double next_y = player->pos_y + player->horizontal_flag * player->plane_y * move_speed;
+		double next_x = player->pos_x + player->side_flg * player->plane_x * move_speed;
+		double next_y = player->pos_y + player->side_flg * player->plane_y * move_speed;
 		if (param->map[(int)player->pos_y][(int)next_x]== '0')
 			player->pos_x = next_x;
 		if (param->map[(int)next_y][(int)player->pos_x] == '0')
 			player->pos_y = next_y;
 	}
-	else if (player->vertical_flag != 0)
+	else if (player->approx_flg != 0)
 	{
-		double next_x = player->pos_x + player->vertical_flag * player->dir_x * move_speed;
-		double next_y = player->pos_y + player->vertical_flag * player->dir_y * move_speed;
+		double next_x = player->pos_x + player->approx_flg * player->dir_x * move_speed;
+		double next_y = player->pos_y + player->approx_flg * player->dir_y * move_speed;
 		if (param->map[(int)player->pos_y][(int)next_x] == '0')
 			player->pos_x = next_x;
 		if (param->map[(int)next_y][(int)player->pos_x] == '0')

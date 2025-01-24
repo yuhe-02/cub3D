@@ -6,7 +6,7 @@
 /*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 13:02:04 by yyamasak          #+#    #+#             */
-/*   Updated: 2025/01/01 06:46:21 by yyamasak         ###   ########.fr       */
+/*   Updated: 2025/01/24 14:24:14 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,17 +22,17 @@ static int	move_by_key(int keycode, t_params *param)
 	player = param->player;
 
 	if (keycode == KEY_W)
-		player->vertical_flag = 1;
+		player->approx_flg = 1;
 	if (keycode == KEY_S)
-		player->vertical_flag = -1;
+		player->approx_flg = -1;
 	if (keycode == KEY_A)
-		player->horizontal_flag = -1;
+		player->side_flg = -1;
 	if (keycode == KEY_D)
-		player->horizontal_flag = 1;
+		player->side_flg = 1;
 	if (keycode == KEY_R_DIR)
-		player->counterclockwise_flag = 1;
+		player->rotate_flg = 1;
 	if (keycode == KEY_L_DIR)
-		player->counterclockwise_flag = -1;
+		player->rotate_flg = -1;
 	return (0);
 }
 
@@ -60,10 +60,10 @@ int		key_release_hook(int keycode, t_params *param)
 
 	player = param->player;
 	if (keycode == KEY_W || keycode == KEY_S)
-		player->vertical_flag = 0;
+		player->approx_flg = 0;
 	if (keycode == KEY_A || keycode == KEY_D)
-		player->horizontal_flag = 0;
+		player->side_flg = 0;
 	if (keycode == KEY_R_DIR || keycode == KEY_L_DIR)
-		player->counterclockwise_flag = 0;
+		player->rotate_flg = 0;
 	return (0);
 }
