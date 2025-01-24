@@ -62,7 +62,7 @@ int prosess_map_line_content(char *map_line, int j, int line_len, t_params *para
 	int k;
 
 	k = 0;
-	while (k < line_len)
+	while (k < line_len)//※治してない：どれか一つでも条件に合致したら、その位置を記録する2つあったらエラー
 	{
 		params->map[j][k] = map_line[k];
 		if (params->map[j][k] == 'N')
@@ -117,11 +117,15 @@ int process_map_line(char *map_line, int j, t_params *params)
 
 int parse_map_data(char **line, int start_index, int line_count, t_params *params)
 {
+	int j;
+	int tmp_start_index;
+
+	tmp_start_index = start_index;//※治してない：start_index
 	// マップ全体のメモリを確保
 	if (allocate_map_memory(line, start_index, line_count, params) != 0)
 		return (-1);
 	// 各行を処理
-	int j = 0;
+	j = 0;
 	while (j < params->map_height)
 	{
 		if (!line[start_index + j])

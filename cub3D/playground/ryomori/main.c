@@ -120,9 +120,9 @@ void	free_char_array(char **line, int line_count)
 
 void print_map_content(t_params *params)
 {
-    int i;
+	int i;
 
-    // テクスチャパスの出力
+	// テクスチャパスの出力
 	printf("NO : %s\n", params->data->tex_north.addr);
 	printf("SO : %s\n", params->data->tex_south.addr);
 	printf("WE : %s\n", params->data->tex_west.addr);
@@ -140,66 +140,133 @@ void print_map_content(t_params *params)
 //==============================================================
 // main
 //==============================================================
-int main(void)
+void init_structs(t_data **data, t_player **player, t_params *params)
 {
-    char        **line;
-    int         line_count;
-    const char  *map_file = "test.txt";
-    t_data      *data;
-    t_player    *player;
-    t_params    params;
-
-    // t_data と t_player のメモリを確保
-    data = malloc(sizeof(t_data));
-    if (!data)
-    {
-        perror("malloc failed for data");
-        return (1);
-    }
-    player = malloc(sizeof(t_player));
-    if (!player)
-    {
-        free(data);
-        perror("malloc failed for player");
-        return (1);
-    }
-
-    // メモリ確保後、初期化
-    memset(data, 0, sizeof(t_data));
-    memset(player, 0, sizeof(t_player));
-    memset(&params, 0, sizeof(t_params));
-
-    // params 構造体にポインタを設定
-    params.data = data;
-    params.player = player;
-
-    // マップデータの読み込み
-    line_count = 0;
-    line = read_map(map_file, &line_count);
-    if (!line)
-    {
-        free(data);
-        free(player);
-        return (1);
-    }
-
-    if (parse_map(line, line_count, &params) != 0)
-    {
-        write(2, "Error\nInvalid map\n", 18);
-        free_char_array(line, line_count);
-        free(data);
-        free(player);
-        return (1);
-    }
-
-    // マップ内容の表示
-    print_map_content(&params);
-
-    // 使用したメモリを解放
-    free_char_array(line, line_count);
-    free_params(&params);
-    free(data);
-    free(player);
-
-    return (0);
+	// データ構造体のメモリ確保
+	*data = malloc(sizeof(t_data));
+	if (!*data)
+	{
+		perror("malloc failed for data");
+		exit(1);
+	}
+	
+	*player = malloc(sizeof(t_player));
+	if (!*player)
+	{
+		free(*data);
+		perror("malloc failed for player");
+		exit(1);
+	}
+		// メモリ初期化
+	memset(*data, 0, sizeof(t_data));
+	memset(*player, 0, sizeof(t_player));
+	memset(params, 0, sizeof(t_params));
+		// params 構造体にポインタを設定
+	params->data = *data;
+	params->player = *player;
 }
+
+void free_all_structs(char **line, int line_count, t_params *params)
+{
+	free_char_array(line, line_count);
+	free_params(params);
+	free(params->data);
+	free(params->player);
+}
+
+int main(void)
+
+{
+	char	**line;
+	int		line_count;
+	const char	*map_file = "test.txt";
+	t_data		*data;
+	t_player	*player;
+	t_params	params;
+
+	// 構造体の初期化を関数に抽出
+	init_structs(&data, &player, &params);
+	// マップデータの読み込み
+	line_count = 0;
+	line = read_map(map_file, &line_count);
+	if (!line)
+	{
+		free_all_structs(NULL, 0, &params);
+		return (1);
+	}
+
+	if (parse_map(line, line_count, &params) != 0)
+	{
+		write(2, "Error\nInvalid map\n", 18);
+		free_all_structs(line, line_count, &params);
+		return (1);
+	}
+	// マップ内容の表示
+	print_map_content(&params);
+	// メモリ解放を関数に抽出
+	free_all_structs(line, line_count, &params);
+	return (0);
+}
+// int main(void)
+// {
+//     char        **line;
+//     int         line_count;
+//     const char  *map_file = "test.txt";
+//     t_data      *data;
+//     t_player    *player;
+//     t_params    params;
+
+//     // t_data と t_player のメモリを確保
+//     data = malloc(sizeof(t_data));
+//     if (!data)
+//     {
+//         perror("malloc failed for data");
+//         return (1);
+//     }
+//     player = malloc(sizeof(t_player));
+//     if (!player)
+//     {
+//         free(data);
+//         perror("malloc failed for player");
+//         return (1);
+//     }
+
+//     // メモリ確保後、初期化
+//     memset(data, 0, sizeof(t_data));
+//     memset(player, 0, sizeof(t_player));
+//     memset(&params, 0, sizeof(t_params));
+
+//     // params 構造体にポインタを設定
+//     params.data = data;
+//     params.player = player;
+
+//     // マップデータの読み込み
+//     line_count = 0;
+//     line = read_map(map_file, &line_count);
+//     if (!line)
+//     {
+//         free(data);
+//         free(player);
+//         return (1);
+//     }
+
+//     if (parse_map(line, line_count, &params) != 0)
+//     {
+//         write(2, "Error\nInvalid map\n", 18);
+//         free_char_array(line, line_count);
+//         free(data);
+//         free(player);
+//         return (1);
+//     }
+
+//     // マップ内容の表示
+//     print_map_content(&params);
+
+//     // 使用したメモリを解放
+//     free_char_array(line, line_count);
+//     free_params(&params);
+//     free(data);
+//     free(player);
+
+//     return (0);
+// }
