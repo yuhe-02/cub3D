@@ -38,6 +38,18 @@
 # define black_16 0x000000
 # define white_16 0xFFFFFF
 # define PI 3.141582653589793
+# define MOVE_SPEED 0.05
+# define ROT_SPEED PI / 200
+
+typedef struct s_vector {
+	double		x;
+	double		y;
+}				t_vector;
+
+typedef struct s_ivec {
+	int		x;
+	int		y;
+}				t_ivec;
 
 typedef struct s_image
 {
@@ -67,15 +79,12 @@ typedef struct s_data
 
 typedef struct s_player
 {
-    double pos_x;
-    double pos_y; // プレイヤー位置
-    double dir_x; // 視線方向
-    double dir_y;
-    double plane_x; // カメラ平面
-    double plane_y;
-    int     horizontal_flag;
-    int     vertical_flag;
-    int     counterclockwise_flag;
+    t_vector    dir;
+    t_vector    pos;
+    t_vector    plane;
+    int     side_flg;
+    int     approx_flg;
+    int     rotate_flg;
     // ryomori
     // (init_userdir_x, init_userdir_y)
     // North = (0, -1)
@@ -95,26 +104,15 @@ typedef struct s_player
 typedef struct s_ray
 {
     double	camera_x;
-    double	ray_dir_x;
-    double	ray_dir_y;
-    int		map_x;
-    int		map_y;
-    double	side_dist_x;
-    double 	side_dist_y;
-    double	delta_dist_x;
-    double	delta_dist_y;
+    t_vector	ray_dir;
+    t_vector	side_dist;
+    t_vector	delta_dist;
+    t_ivec		map;
+    t_ivec		step;
     double	perp_wall_dist;
-    int		step_x;
-    int		step_y;
     int		hit;
     int		side;
 }			t_ray;
-
-typedef struct s_vector {
-	double		x;
-	double		y;
-
-}				t_vector;
 
 typedef struct	s_params
 {
@@ -128,15 +126,17 @@ typedef struct	s_params
     // end ryomori
 }				t_params;
 
-int     key_hook(int keycode, void *arg);
-int		key_release_hook(int keycode, t_params *param);
-int     close_window(t_params *param);
-void	ft_mlx_pixel_put(t_data *data, int x, int y, int color);
-void	init_params(t_params* params, t_data *data, t_ray *ray, t_player *player, char (*world_map)[mapWidth + 1]);
-void	init_data(t_data *data);
-void	init_player(t_player *player, int x, int y);
+int     _key_hook(int keycode, void *arg);
+int		_key_release_hook(int keycode, t_params *param);
+int     _close_window(t_params *param);
+void	_ft_mlx_pixel_put(t_data *data, int x, int y, int color);
+void	_init_params(t_params* params, t_data *data, t_ray *ray, t_player *player, char (*world_map)[mapWidth + 1]);
+void	_init_data(t_data *data);
+void	_init_player(t_player *player, int x, int y);
+void	_update_player(t_params *param, t_player *player);
 double	convert_to_radian(int degree);
 int		convert_to_degree(double radian);
 void	set_event(t_data *data, t_params *params);
+void	_raycast(t_params *params);
 
 #endif
