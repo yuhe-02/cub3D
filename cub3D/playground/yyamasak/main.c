@@ -82,82 +82,82 @@ void	raycast(t_params *params)
 		 *  左端は、-1,右端は、1になるように計算されている。FOVは90度を前提にしている。
 		 */
 		ray->camera_x = 2 * x / (double)data->img.width - 1;
-		ray->ray_dir_x = player->dir.x + player->plane.x * ray->camera_x;
-		ray->ray_dir_y = player->dir.y + player->plane.y * ray->camera_x;
-		ray->map_x = (int)(player->pos.x);
-		ray->map_y = (int)(player->pos.y);
-		// if (ray->ray_dir_x == 0)
-		// 	ray->delta_dist_x = 1e30;
+		ray->ray_dir.x = player->dir.x + player->plane.x * ray->camera_x;
+		ray->ray_dir.y = player->dir.y + player->plane.y * ray->camera_x;
+		ray->map.x = (int)(player->pos.x);
+		ray->map.y = (int)(player->pos.y);
+		// if (ray->ray_dir.x == 0)
+		// 	ray->delta_dist.x = 1e30;
 		// else
 		// {
-		// 	ray->delta_dist_x = (1 / ray->ray_dir_x) < 0 ?
-		// 	-1 * (1 / ray->ray_dir_x) : (1 / ray->ray_dir_x);
+		// 	ray->delta_dist.x = (1 / ray->ray_dir.x) < 0 ?
+		// 	-1 * (1 / ray->ray_dir.x) : (1 / ray->ray_dir.x);
 		// }
-		// if (ray->ray_dir_y == 0)
-		// 	ray->delta_dist_y = 1e30;
+		// if (ray->ray_dir.y == 0)
+		// 	ray->delta_dist.y = 1e30;
 		// else
 		// {
-		// 	ray->delta_dist_y = (1 / ray->ray_dir_y) < 0 ?
-		// 	-1 * (1 / ray->ray_dir_y) : (1 / ray->ray_dir_y);
+		// 	ray->delta_dist.y = (1 / ray->ray_dir.y) < 0 ?
+		// 	-1 * (1 / ray->ray_dir.y) : (1 / ray->ray_dir.y);
 		// }
-		ray->delta_dist_x = fabs(1 / ray->ray_dir_x);
-		ray->delta_dist_y = fabs(1 / ray->ray_dir_y);
+		ray->delta_dist.x = fabs(1 / ray->ray_dir.x);
+		ray->delta_dist.y = fabs(1 / ray->ray_dir.y);
 		ray->hit = 0;
 
 		// detect next direction per index and distance
-		if (ray->ray_dir_x < 0)
+		if (ray->ray_dir.x < 0)
 		{
-			ray->step_x = -1;
-			ray->side_dist_x = (player->pos.x - ray->map_x) * ray->delta_dist_x;
+			ray->step.x = -1;
+			ray->side_dist.x = (player->pos.x - ray->map.x) * ray->delta_dist.x;
 		}
 		else
         {
-            ray->step_x = 1;
-            ray->side_dist_x = (ray->map_x + 1.0 - player->pos.x) * ray->delta_dist_x;
+            ray->step.x = 1;
+            ray->side_dist.x = (ray->map.x + 1.0 - player->pos.x) * ray->delta_dist.x;
         }
 
-		if (ray->ray_dir_y < 0)
+		if (ray->ray_dir.y < 0)
 		{
-			ray->step_y = -1;
-			ray->side_dist_y = (player->pos.y - ray->map_y) * ray->delta_dist_y;
+			ray->step.y = -1;
+			ray->side_dist.y = (player->pos.y - ray->map.y) * ray->delta_dist.y;
 		}
 		else
 		{
-			ray->step_y = 1;
-			ray->side_dist_y = (ray->map_y + 1.0 - player->pos.y) *ray->delta_dist_y;
+			ray->step.y = 1;
+			ray->side_dist.y = (ray->map.y + 1.0 - player->pos.y) *ray->delta_dist.y;
 		}
 
 		// DDA algorithm
 		// printf("loop second\n");
 		while (ray->hit == 0)
 		{
-			if (ray->side_dist_x < ray->side_dist_y)
+			if (ray->side_dist.x < ray->side_dist.y)
 			{
-				ray->side_dist_x += ray->delta_dist_x;
-				ray->map_x += ray->step_x;
+				ray->side_dist.x += ray->delta_dist.x;
+				ray->map.x += ray->step.x;
 				ray->side = 0;
 			}
 			else 
 			{
-				ray->side_dist_y += ray->delta_dist_y;
-				ray->map_y += ray->step_y;
+				ray->side_dist.y += ray->delta_dist.y;
+				ray->map.y += ray->step.y;
 				ray->side = 1;
 			}
-			// printf("ray map value: %d, %d\n", ray->map_x, ray->map_y);
-			if (params->map[ray->map_y][ray->map_x] == '1' || params->map[ray->map_y][ray->map_x] == '2')
+			// printf("ray map value: %d, %d\n", ray->map.x, ray->map.y);
+			if (params->map[ray->map.y][ray->map.x] == '1' || params->map[ray->map.y][ray->map.x] == '2')
 				ray->hit = 1;
 		}
 		// calculate distance of wall
 		// if (ray->side == 0)
-		// 	ray->perp_wall_dist = (ray->side_dist_x - ray->delta_dist_x);
+		// 	ray->perp_wall_dist = (ray->side_dist.x - ray->delta_dist.x);
 		// else
-		// 	ray->perp_wall_dist = (ray->side_dist_y - ray->delta_dist_y);
+		// 	ray->perp_wall_dist = (ray->side_dist.y - ray->delta_dist.y);
 		if (ray->side == 0)
-			ray->perp_wall_dist = (ray->map_x - player->pos.x +
-				(1 - ray->step_x) / 2) / ray->ray_dir_x;
+			ray->perp_wall_dist = (ray->map.x - player->pos.x +
+				(1 - ray->step.x) / 2) / ray->ray_dir.x;
 		else
-			ray->perp_wall_dist = (ray->map_y - player->pos.y +
-				(1 - ray->step_y) / 2) / ray->ray_dir_y;
+			ray->perp_wall_dist = (ray->map.y - player->pos.y +
+				(1 - ray->step.y) / 2) / ray->ray_dir.y;
 		line_height = (int)(data->img.height / ray->perp_wall_dist);
 
 		draw_start = -line_height / 2 + data->img.height / 2;
@@ -169,29 +169,29 @@ void	raycast(t_params *params)
 		
 		// set wall color
 		if (ray->side == 0)
-			color = (ray->step_x > 0) ? red_16 : green_16;
+			color = (ray->step.x > 0) ? red_16 : green_16;
 		else
-			color = (ray->step_y > 0) ? blue_16 : yellow_16;
+			color = (ray->step.y > 0) ? blue_16 : yellow_16;
 
 		// set wall texture
 		if (ray->side == 0)
-			image = (ray->step_x > 0) ? &(data->tex_west) : &(data->tex_east);
+			image = (ray->step.x > 0) ? &(data->tex_west) : &(data->tex_east);
 		else
-			image = (ray->step_y > 0) ? &(data->tex_north) : &(data->tex_south);
+			image = (ray->step.y > 0) ? &(data->tex_north) : &(data->tex_south);
 		// printf("wrinting\n");
 		// draw_vertical_line(data, x, draw_start, draw_end, color);
 				// calculate texture X coordinate
 		double wall_x;
 		if (ray->side == 0)
-			wall_x = player->pos.y + ray->perp_wall_dist * ray->ray_dir_y;
+			wall_x = player->pos.y + ray->perp_wall_dist * ray->ray_dir.y;
 		else
-			wall_x = player->pos.x + ray->perp_wall_dist * ray->ray_dir_x;
+			wall_x = player->pos.x + ray->perp_wall_dist * ray->ray_dir.x;
 		wall_x -= floor(wall_x);
 
 		int tex_x = (int)(wall_x * (double)image->width);
-		if (ray->side == 0 && ray->ray_dir_x > 0)
+		if (ray->side == 0 && ray->ray_dir.x > 0)
 			tex_x = image->width - tex_x - 1;
-		if (ray->side == 1 && ray->ray_dir_y < 0)
+		if (ray->side == 1 && ray->ray_dir.y < 0)
 			tex_x = image->width - tex_x - 1;
 
 		// draw the pixels of the stripe as a vertical line

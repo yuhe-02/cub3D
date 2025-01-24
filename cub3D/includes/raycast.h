@@ -44,8 +44,12 @@
 typedef struct s_vector {
 	double		x;
 	double		y;
-
 }				t_vector;
+
+typedef struct s_ivec {
+	int		x;
+	int		y;
+}				t_ivec;
 
 typedef struct s_image
 {
@@ -100,17 +104,12 @@ typedef struct s_player
 typedef struct s_ray
 {
     double	camera_x;
-    double	ray_dir_x;
-    double	ray_dir_y;
-    int		map_x;
-    int		map_y;
-    double	side_dist_x;
-    double 	side_dist_y;
-    double	delta_dist_x;
-    double	delta_dist_y;
+    t_vector	ray_dir;
+    t_vector	side_dist;
+    t_vector	delta_dist;
+    t_ivec		map;
+    t_ivec		step;
     double	perp_wall_dist;
-    int		step_x;
-    int		step_y;
     int		hit;
     int		side;
 }			t_ray;
