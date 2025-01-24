@@ -126,17 +126,17 @@ typedef struct	s_params
     // end ryomori
 }				t_params;
 
-int     key_hook(int keycode, void *arg);
-int		key_release_hook(int keycode, t_params *param);
-int     close_window(t_params *param);
-void	ft_mlx_pixel_put(t_data *data, int x, int y, int color);
-void	init_params(t_params* params, t_data *data, t_ray *ray, t_player *player, char (*world_map)[mapWidth + 1]);
-void	init_data(t_data *data);
-void	init_player(t_player *player, int x, int y);
-void	update_player(t_params *param, t_player *player);
+int     _key_hook(int keycode, void *arg);
+int		_key_release_hook(int keycode, t_params *param);
+int     _close_window(t_params *param);
+void	_ft_mlx_pixel_put(t_data *data, int x, int y, int color);
+void	_init_params(t_params* params, t_data *data, t_ray *ray, t_player *player, char (*world_map)[mapWidth + 1]);
+void	_init_data(t_data *data);
+void	_init_player(t_player *player, int x, int y);
+void	_update_player(t_params *param, t_player *player);
 double	convert_to_radian(int degree);
 int		convert_to_degree(double radian);
 void	set_event(t_data *data, t_params *params);
-void	raycast(t_params *params);
+void	_raycast(t_params *params);
 
 #endif

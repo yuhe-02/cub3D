@@ -48,18 +48,18 @@ void draw_vertical_line(t_data *data, int x, int start, int end, int color)
 	// draw ceiling
 	while (y < start)
 	{
-		ft_mlx_pixel_put(data, x, y, white_16);
+		_ft_mlx_pixel_put(data, x, y, white_16);
         y++;
 	}
     while (y <= end)
     {
-        ft_mlx_pixel_put(data, x, y, color);
+        _ft_mlx_pixel_put(data, x, y, color);
         y++;
     }
 	// draw floor
 	while (y <= data->img.height)
     {
-        ft_mlx_pixel_put(data, x, y, black_16);
+        _ft_mlx_pixel_put(data, x, y, black_16);
         y++;
     }
 }
@@ -258,9 +258,9 @@ int	main(void)
 	init_data(params.data);
 	init_player(&player, 2, 2);
 	init_params(&params, &data, &ray, &player, world_map);
-	mlx_hook(data.win, 17, 0, close_window, &params);
-	mlx_hook(data.win, KeyPress, KeyPressMask, key_hook, &params);
-	mlx_hook(data.win, KeyRelease, KeyReleaseMask, key_release_hook, &params);
+	mlx_hook(data.win, 17, 0, _close_window, &params);
+	mlx_hook(data.win, KeyPress, KeyPressMask, _key_hook, &params);
+	mlx_hook(data.win, KeyRelease, KeyReleaseMask, _key_release_hook, &params);
 	mlx_loop_hook(data.mlx, &main_loop, (void *)&params);
 	mlx_loop(data.mlx);
 	return (0);

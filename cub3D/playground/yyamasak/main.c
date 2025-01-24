@@ -46,8 +46,8 @@ int	main_loop(void *arg)
 	player = params->player;
 	if (data->mlx && data->win && data->img.img)
 		ft_bzero(data->img.addr, data->img.llen * data->img.height);
-	update_player(params, player);
-	raycast(params);
+	_update_player(params, player);
+	_raycast(params);
 	if (data->mlx && data->win && data->img.img)
 		mlx_put_image_to_window(data->mlx, data->win, data->img.img, 0, 0);
 	return (0);
@@ -60,9 +60,9 @@ int	main(void)
 	t_player	player;
 	t_ray		ray;
 
-	init_data(&data);
-	init_player(&player, 2, 2);
-	init_params(&params, &data, &ray, &player, world_map);
+	_init_data(&data);
+	_init_player(&player, 2, 2);
+	_init_params(&params, &data, &ray, &player, world_map);
 	set_event(&data, &params);
 	mlx_loop_hook(data.mlx, &main_loop, (void *)&params);
 	mlx_loop(data.mlx);

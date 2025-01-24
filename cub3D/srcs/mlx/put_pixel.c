@@ -6,13 +6,13 @@
 /*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 03:45:46 by yyamasak          #+#    #+#             */
-/*   Updated: 2025/01/01 07:18:03 by yyamasak         ###   ########.fr       */
+/*   Updated: 2025/01/24 15:57:13 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 
-void	ft_mlx_pixel_put(t_data *data, int x, int y, int color)
+void	_ft_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
 	char	*dst;
 

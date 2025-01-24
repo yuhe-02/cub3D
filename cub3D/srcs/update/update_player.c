@@ -1,6 +1,6 @@
 #include "utils.h"
 
-static void	update_player_dir(t_params *param, t_player *player)
+static void	_update_player_dir_(t_params *param, t_player *player)
 {
 	t_vector		old_dir;
 	t_vector		old_plane;
@@ -20,7 +20,7 @@ static void	update_player_dir(t_params *param, t_player *player)
 	player->plane.x = old_plane.x * tmp.x - old_plane.y * tmp.y;
 	player->plane.y = old_plane.x * tmp.y + old_plane.y * tmp.x;
 }
-static void	update_player_pos(t_params *param, t_player *player)
+static void	_update_player_pos_(t_params *param, t_player *player)
 {
 	t_vector		next;
 	t_vector		tmp;
@@ -43,10 +43,10 @@ static void	update_player_pos(t_params *param, t_player *player)
 		player->pos.y = next.y;
 }
 
-void	update_player(t_params *param, t_player *player)
+void	_update_player(t_params *param, t_player *player)
 {
 	if (player->rotate_flg != 0)
-		update_player_dir(param, player);
+		_update_player_dir_(param, player);
 	else if (player->side_flg != 0 || player->approx_flg != 0)
-		update_player_pos(param, player);
+		_update_player_pos_(param, player);
 }

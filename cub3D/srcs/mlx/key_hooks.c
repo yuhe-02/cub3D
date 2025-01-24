@@ -6,15 +6,13 @@
 /*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 13:02:04 by yyamasak          #+#    #+#             */
-/*   Updated: 2025/01/24 14:24:14 by yyamasak         ###   ########.fr       */
+/*   Updated: 2025/01/24 15:59:18 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 
-// TODO リファクタリング
-// TODO 回転幅の調整等
-static int	move_by_key(int keycode, t_params *param)
+static int	_move_by_key_(int keycode, t_params *param)
 {
 	t_player *player;
 	double move_speed = 0.5; // 移動速度（調整可能）
@@ -36,7 +34,7 @@ static int	move_by_key(int keycode, t_params *param)
 	return (0);
 }
 
-int	key_hook(int keycode, void *arg)
+int	_key_hook(int keycode, void *arg)
 {
 	t_data	*data;
 	t_params *params;
@@ -44,17 +42,17 @@ int	key_hook(int keycode, void *arg)
 	params = (t_params *)arg;
 	data = (t_data *)(params->data);
 	if (keycode == KEY_ESC)
-		close_window(params);
+		_close_window(params);
 	else if (keycode == KEY_W || keycode == KEY_S
 		|| keycode == KEY_A || keycode == KEY_D
 		|| keycode == KEY_R_DIR || keycode == KEY_L_DIR)
-		move_by_key(keycode, params);
+		_move_by_key_(keycode, params);
 	else
 		return (0);
 	return (0);
 }
 
-int		key_release_hook(int keycode, t_params *param)
+int		_key_release_hook(int keycode, t_params *param)
 {
 	t_player *player;
 

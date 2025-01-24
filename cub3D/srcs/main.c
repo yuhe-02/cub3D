@@ -8,15 +8,15 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
-int close_window(t_data *data) {
+int _close_window(t_data *data) {
     mlx_destroy_image(data->mlx, data->img);
     mlx_destroy_window(data->mlx, data->win);
     exit(0);
 }
 
-int key_hook(int keycode, t_data *data) {
+int _key_hook(int keycode, t_data *data) {
     if (keycode == 65307) // ESC key
-        close_window(data);
+        _close_window(data);
     return (0);
 }
 
@@ -76,8 +76,8 @@ int	main(void)
 
 	draw_julia_set(&img);
 
-    mlx_hook(img.win, 17, 0, close_window, &img);
-    mlx_key_hook(img.win, key_hook, &img);
+    mlx_hook(img.win, 17, 0, _close_window, &img);
+    mlx__key_hook(img.win, _key_hook, &img);
     mlx_mouse_hook(img.win, mouse_hook, &img);
     mlx_loop(img.mlx);
 

@@ -6,13 +6,13 @@
 /*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 03:52:00 by yyamasak          #+#    #+#             */
-/*   Updated: 2025/01/05 14:04:12 by yyamasak         ###   ########.fr       */
+/*   Updated: 2025/01/24 15:56:54 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 
-void	init_data(t_data *data)
+void	_init_data(t_data *data)
 {
 	data->img.width = WIDTH;
 	data->img.height = HEIGHT;
