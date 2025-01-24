@@ -89,10 +89,10 @@ void	raycast(t_params *params)
 		 *  左端は、-1,右端は、1になるように計算されている。FOVは90度を前提にしている。
 		 */
 		ray->camera_x = 2 * x / (double)data->img.width - 1;
-		ray->ray_dir_x = player->dir_x + player->plane_x * ray->camera_x;
-		ray->ray_dir_y = player->dir_y + player->plane_y * ray->camera_x;
-		ray->map_x = (int)(player->pos_x);
-		ray->map_y = (int)(player->pos_y);
+		ray->ray_dir_x = player->dir.x + player->plane.x * ray->camera_x;
+		ray->ray_dir_y = player->dir.y + player->plane.y * ray->camera_x;
+		ray->map_x = (int)(player->pos.x);
+		ray->map_y = (int)(player->pos.y);
 		if (ray->ray_dir_x == 0)
 			ray->delta_dist_x = 1e30;
 		else
@@ -115,23 +115,23 @@ void	raycast(t_params *params)
 		if (ray->ray_dir_x < 0)
 		{
 			ray->step_x = -1;
-			ray->side_dist_x = (player->pos_x - ray->map_x) * ray->delta_dist_x;
+			ray->side_dist_x = (player->pos.x - ray->map_x) * ray->delta_dist_x;
 		}
 		else
         {
             ray->step_x = 1;
-            ray->side_dist_x = (ray->map_x + 1.0 - player->pos_x) * ray->delta_dist_x;
+            ray->side_dist_x = (ray->map_x + 1.0 - player->pos.x) * ray->delta_dist_x;
         }
 
 		if (ray->ray_dir_y < 0)
 		{
 			ray->step_y = -1;
-			ray->side_dist_y = (player->pos_y - ray->map_y) * ray->delta_dist_y;
+			ray->side_dist_y = (player->pos.y - ray->map_y) * ray->delta_dist_y;
 		}
 		else
 		{
 			ray->step_y = 1;
-			ray->side_dist_y = (ray->map_y + 1.0 - player->pos_y) *ray->delta_dist_y;
+			ray->side_dist_y = (ray->map_y + 1.0 - player->pos.y) *ray->delta_dist_y;
 		}
 
 		// DDA algorithm
@@ -161,10 +161,10 @@ void	raycast(t_params *params)
 		// else
 		// 	ray->perp_wall_dist = (ray->side_dist_y - ray->delta_dist_y);
 		if (ray->side == 0)
-			ray->perp_wall_dist = (ray->map_x - player->pos_x +
+			ray->perp_wall_dist = (ray->map_x - player->pos.x +
 				(1 - ray->step_x) / 2) / ray->ray_dir_x;
 		else
-			ray->perp_wall_dist = (ray->map_y - player->pos_y +
+			ray->perp_wall_dist = (ray->map_y - player->pos.y +
 				(1 - ray->step_y) / 2) / ray->ray_dir_y;
 		line_height = (int)(data->img.height / ray->perp_wall_dist);
 
@@ -198,33 +198,33 @@ void	update_player(t_params *param, t_player *player)
 
 	if (player->rotate_flg != 0)
 	{
-		printf("kakudo: %f, %f\n",player->dir_x, player->dir_y);
+		printf("kakudo: %f, %f\n",player->dir.x, player->dir.y);
 		double rot_speed = PI / 200;
-		double old_dir_x = player->dir_x;
-		player->dir_x = player->dir_x * cos(player->rotate_flg * rot_speed) - player->dir_y * sin(player->rotate_flg * rot_speed);
-		player->dir_y = old_dir_x * sin(player->rotate_flg * rot_speed) + player->dir_y * cos(player->rotate_flg * rot_speed);
+		double old_dir_x = player->dir.x;
+		player->dir.x = player->dir.x * cos(player->rotate_flg * rot_speed) - player->dir.y * sin(player->rotate_flg * rot_speed);
+		player->dir.y = old_dir_x * sin(player->rotate_flg * rot_speed) + player->dir.y * cos(player->rotate_flg * rot_speed);
 
-		double old_plane_x = player->plane_x;
-		player->plane_x = player->plane_x * cos(player->rotate_flg * rot_speed) - player->plane_y * sin(player->rotate_flg * rot_speed);
-		player->plane_y = old_plane_x * sin(player->rotate_flg * rot_speed) + player->plane_y * cos(player->rotate_flg * rot_speed);
+		double old_plane_x = player->plane.x;
+		player->plane.x = player->plane.x * cos(player->rotate_flg * rot_speed) - player->plane.y * sin(player->rotate_flg * rot_speed);
+		player->plane.y = old_plane_x * sin(player->rotate_flg * rot_speed) + player->plane.y * cos(player->rotate_flg * rot_speed);
 	}
 	else if (player->side_flg != 0)
 	{
-		double next_x = player->pos_x + player->side_flg * player->plane_x * move_speed;
-		double next_y = player->pos_y + player->side_flg * player->plane_y * move_speed;
-		if (param->map[(int)player->pos_y][(int)next_x]== '0')
-			player->pos_x = next_x;
-		if (param->map[(int)next_y][(int)player->pos_x] == '0')
-			player->pos_y = next_y;
+		double next_x = player->pos.x + player->side_flg * player->plane.x * move_speed;
+		double next_y = player->pos.y + player->side_flg * player->plane_y * move_speed;
+		if (param->map[(int)player->pos.y][(int)next_x]== '0')
+			player->pos.x = next_x;
+		if (param->map[(int)next_y][(int)player->pos.x] == '0')
+			player->pos.y = next_y;
 	}
 	else if (player->approx_flg != 0)
 	{
-		double next_x = player->pos_x + player->approx_flg * player->dir_x * move_speed;
-		double next_y = player->pos_y + player->approx_flg * player->dir_y * move_speed;
-		if (param->map[(int)player->pos_y][(int)next_x] == '0')
-			player->pos_x = next_x;
-		if (param->map[(int)next_y][(int)player->pos_x] == '0')
-			player->pos_y = next_y;
+		double next_x = player->pos.x + player->approx_flg * player->dir.x * move_speed;
+		double next_y = player->pos.y + player->approx_flg * player->dir.y * move_speed;
+		if (param->map[(int)player->pos.y][(int)next_x] == '0')
+			player->pos.x = next_x;
+		if (param->map[(int)next_y][(int)player->pos.x] == '0')
+			player->pos.y = next_y;
 	}
 }
 int	main_loop(void *arg)

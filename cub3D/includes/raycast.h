@@ -41,6 +41,12 @@
 # define MOVE_SPEED 0.05
 # define ROT_SPEED PI / 200
 
+typedef struct s_vector {
+	double		x;
+	double		y;
+
+}				t_vector;
+
 typedef struct s_image
 {
     void *img;
@@ -69,12 +75,9 @@ typedef struct s_data
 
 typedef struct s_player
 {
-    double pos_x;
-    double pos_y; // プレイヤー位置
-    double dir_x; // 視線方向
-    double dir_y;
-    double plane_x; // カメラ平面
-    double plane_y;
+    t_vector    dir;
+    t_vector    pos;
+    t_vector    plane;
     int     side_flg;
     int     approx_flg;
     int     rotate_flg;
@@ -111,12 +114,6 @@ typedef struct s_ray
     int		hit;
     int		side;
 }			t_ray;
-
-typedef struct s_vector {
-	double		x;
-	double		y;
-
-}				t_vector;
 
 typedef struct	s_params
 {
