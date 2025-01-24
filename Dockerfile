@@ -16,5 +16,7 @@ COPY . /app
 WORKDIR /app
 RUN cd cub3D && make
 
+# TODO x11対応
+# https://qiita.com/nobrin/items/59b9b645e5595365c4ac
 # 最後にコマンドを実行するためにコンテナを開く（任意）
 CMD ["bash"]
