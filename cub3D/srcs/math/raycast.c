@@ -22,6 +22,16 @@ static void _calc_hit_pos_(t_params *params, t_ray *ray)
 	}
 }
 
+static double	calc_wall_distance_(t_ray *ray, t_player *player)
+{
+	double	dis;
+	if (ray->side == 0)
+		dis = (ray->map.x - player->pos.x + (1 - ray->step.x) / 2) / ray->ray_dir.x;
+	else
+		dis = (ray->map.y - player->pos.y + (1 - ray->step.y) / 2) / ray->ray_dir.y;
+	return (dis);
+}
+
 void	_raycast(t_params *params)
 {
 	t_data		*data;
@@ -40,42 +50,8 @@ void	_raycast(t_params *params)
 		// DDA algorithm
 		_calc_hit_pos_(params, ray);
 		// calculate distance of wall
-		if (ray->side == 0)
-			ray->perp_wall_dist = (ray->map.x - player->pos.x +
-				(1 - ray->step.x) / 2) / ray->ray_dir.x;
-		else
-			ray->perp_wall_dist = (ray->map.y - player->pos.y +
-				(1 - ray->step.y) / 2) / ray->ray_dir.y;
-		wall.line_height = (int)(data->img.height / ray->perp_wall_dist);
-
-		wall.draw_start = -wall.line_height / 2 + data->img.height / 2;
-		if (wall.draw_start < 0)
-			wall.draw_start = 0;
-		wall.draw_end = wall.line_height / 2 + data->img.height / 2;
-		if (wall.draw_end >= data->img.height)
-			wall.draw_end = data->img.height - 1;
-		
-		// set wall texture
-		if (ray->side == 0)
-			wall.target_img = (ray->step.x > 0) ? &(data->tex_west) : &(data->tex_east);
-		else
-			wall.target_img = (ray->step.y > 0) ? &(data->tex_north) : &(data->tex_south);
-		if (ray->side == 0)
-			wall.wall_x = player->pos.y + ray->perp_wall_dist * ray->ray_dir.y;
-		else
-			wall.wall_x = player->pos.x + ray->perp_wall_dist * ray->ray_dir.x;
-		wall.wall_x -= floor(wall.wall_x);
-
-		wall.tex.x = (int)(wall.wall_x * (double)wall.target_img->width);
-		if (ray->side == 0 && ray->ray_dir.x > 0)
-			wall.tex.x = wall.target_img->width - wall.tex.x - 1;
-		if (ray->side == 1 && ray->ray_dir.y < 0)
-			wall.tex.x = wall.target_img->width - wall.tex.x - 1;
-
-		// draw the pixels of the stripe as a vertical line
-		wall.step = 1.0 * wall.target_img->height / wall.line_height;
-		wall.tex_pos = (wall.draw_start - data->img.height / 2 + wall.line_height / 2) * wall.step;
-
+		ray->perp_wall_dist = calc_wall_distance_(ray, player);
+		_wall_assign(&wall, data, ray, player);
 		// contents drawer
 		_draw_vertical(data, &coord, &wall);
 		coord.x++;
