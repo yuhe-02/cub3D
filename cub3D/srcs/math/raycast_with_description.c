@@ -96,8 +96,14 @@ void	_raycast(t_params *params)
 		// 	ray->delta_dist.y = (1 / ray->ray_dir.y) < 0 ?
 		// 	-1 * (1 / ray->ray_dir.y) : (1 / ray->ray_dir.y);
 		// }
-		ray->delta_dist.x = fabs(1 / ray->ray_dir.x);
-		ray->delta_dist.y = fabs(1 / ray->ray_dir.y);
+		if (ray->ray_dir.x == 0)
+			ray->delta_dist.x = 1e30;
+		else
+			ray->delta_dist.x = fabs(1 / ray->ray_dir.x);
+		if (ray->ray_dir.y == 0)
+			ray->delta_dist.y = 1e30;
+		else
+			ray->delta_dist.y = fabs(1 / ray->ray_dir.y);
 		ray->hit = 0;
 
 		// detect next direction per index and distance

@@ -27,10 +27,25 @@ static void	_detect_ray_diretion_(t_ray *ray, t_vector *player_pos)
 
 void	_ray_assign(t_ray *ray, t_data *data, t_player *player, t_ivec *coord)
 {
+	double	ray_dir_x;
+	double	ray_dir_y;
+	double	delta_dir_x;
+	double	delta_dir_y;
+
 	ray->camera_x = 2.0 * coord->x / (double)data->img.width - 1.0;
-	_vector_assign(&(ray->ray_dir), player->dir.x + player->plane.x * ray->camera_x, player->dir.y + player->plane.y * ray->camera_x);
+	ray_dir_x = player->dir.x + player->plane.x * ray->camera_x;
+	ray_dir_y = player->dir.y + player->plane.y * ray->camera_x;
+	if (ray_dir_x == 0)
+		delta_dir_x = 1e30;
+	else
+		delta_dir_x = fabs(1 / ray->ray_dir.x);
+	if (ray_dir_y == 0)
+		delta_dir_y = 1e30;
+	else
+		delta_dir_y = fabs(1 / ray->ray_dir.y);
+	_vector_assign(&(ray->ray_dir), ray_dir_x, ray_dir_y);
 	_ivec_assign(&(ray->map), (int)(player->pos.x), (int)(player->pos.y));
-	_vector_assign(&(ray->delta_dist),fabs(1 / ray->ray_dir.x), fabs(1 / ray->ray_dir.y));
+	_vector_assign(&(ray->delta_dist), delta_dir_x, delta_dir_y);
 	ray->hit = 0;
 	_detect_ray_diretion_(ray, &(player->pos));
 }

@@ -32,6 +32,13 @@ static double	calc_wall_distance_(t_ray *ray, t_player *player)
 	return (dis);
 }
 
+/**
+ * while文は、表示されている画面の左側から右側までを表している。
+ * camera_xは、coord.xが、スクリーンのどの位置にあるのかを-1 , 1の範囲で正規化している。
+ * 左端は、-1,右端は、1になるように計算されている。FOVは90度を前提にしている。
+ * ray_dirは、rayの方向を表している。()
+ * delta_distは、rayが各成分方向に１単位増加させるにあたって何倍すればいいのかを求めている
+ */
 void	_raycast(t_params *params)
 {
 	t_data		*data;
