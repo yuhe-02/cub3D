@@ -20,6 +20,7 @@ SRCS += $(MLXS_DIR)/key_hooks.c
 SRCS += $(MLXS_DIR)/close_window.c
 SRCS += $(MLXS_DIR)/put_pixel.c
 SRCS += $(MLXS_DIR)/set_event.c
+SRCS += $(MLXS_DIR)/draw_vertical.c
 
 # ADD INIT
 INITS_DIR := ../../srcs/init
