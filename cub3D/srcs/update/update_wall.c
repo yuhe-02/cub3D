@@ -36,9 +36,7 @@ void	_wall_assign(t_wall *wall, t_data *data, t_ray *ray, t_player *player)
 		wall->wall_x = player->pos.x + ray->perp_wall_dist * ray->ray_dir.x;
 	wall->wall_x -= floor(wall->wall_x);
 	wall->tex.x = (int)(wall->wall_x * (double)wall->target_img->width);
-	if (ray->side == 0 && ray->ray_dir.x > 0)
-		wall->tex.x = wall->target_img->width - wall->tex.x - 1;
-	if (ray->side == 1 && ray->ray_dir.y < 0)
+	if ((ray->side == 0 && ray->ray_dir.x < 0) || (ray->side == 1 && ray->ray_dir.y > 0))
 		wall->tex.x = wall->target_img->width - wall->tex.x - 1;
 	// draw the pixels of the stripe as a vertical line
 	wall->step = 1.0 * wall->target_img->height / wall->line_height;
