@@ -1,21 +1,22 @@
 #include "utils.h"
 
 
-static void	_draw_vertical_(t_data *data, t_ivec *coord, t_wall *wall)
+static void	_draw_vertical_(t_data *data, t_image *image, t_ivec *coord,
+	t_ivec *tex, int draw_start, int draw_end, double step, double tex_pos)
 {
 	int	color;
 
 	coord->y = 0;
 	while (coord->y < data->img.height)
 	{
-		if (coord->y < wall->draw_start)
+		if (coord->y < draw_start)
 			color = white_16;
-		else if (coord->y < wall->draw_end)
+		else if (coord->y < draw_end)
 		{
-			wall->tex.y = (int)wall->tex_pos & (wall->target_img->height - 1);
-			wall->tex_pos += wall->step;
+			tex->y = (int)tex_pos & (image->height - 1);
+			tex_pos += step;
 			// Calculate pixel position in the texture
-			char *tex_pixel = wall->target_img->addr + (wall->tex.y * wall->target_img->llen + wall->tex.x * (wall->target_img->bpp / 8));
+			char *tex_pixel = image->addr + (tex->y * image->llen + tex->x * (image->bpp / 8));
 			// Convert texture pixel color (assuming 32-bit color depth)
 			color = *(int *)tex_pixel;
 		}
@@ -53,8 +54,16 @@ void	_raycast(t_params *params)
 	t_data		*data;
 	t_player	*player;
 	t_ray		*ray;
+	t_image		*image;
 	t_ivec		coord;
-	t_wall		wall;
+	t_ivec		tex;
+	int			color;
+	int			line_height;
+	int			draw_start;
+	int			draw_end;
+	double		wall_x;
+	double		step;
+	double		tex_pos;
 
 	data = params->data;
 	player = params->player;
@@ -73,6 +82,20 @@ void	_raycast(t_params *params)
 		ray->ray_dir.y = player->dir.y + player->plane.y * ray->camera_x;
 		ray->map.x = (int)(player->pos.x);
 		ray->map.y = (int)(player->pos.y);
+		// if (ray->ray_dir.x == 0)
+		// 	ray->delta_dist.x = 1e30;
+		// else
+		// {
+		// 	ray->delta_dist.x = (1 / ray->ray_dir.x) < 0 ?
+		// 	-1 * (1 / ray->ray_dir.x) : (1 / ray->ray_dir.x);
+		// }
+		// if (ray->ray_dir.y == 0)
+		// 	ray->delta_dist.y = 1e30;
+		// else
+		// {
+		// 	ray->delta_dist.y = (1 / ray->ray_dir.y) < 0 ?
+		// 	-1 * (1 / ray->ray_dir.y) : (1 / ray->ray_dir.y);
+		// }
 		ray->delta_dist.x = fabs(1 / ray->ray_dir.x);
 		ray->delta_dist.y = fabs(1 / ray->ray_dir.y);
 		ray->hit = 0;
@@ -102,44 +125,48 @@ void	_raycast(t_params *params)
 		// DDA algorithm
 		_calc_hit_pos_(params, ray);
 		// calculate distance of wall
+		// if (ray->side == 0)
+		// 	ray->perp_wall_dist = (ray->side_dist.x - ray->delta_dist.x);
+		// else
+		// 	ray->perp_wall_dist = (ray->side_dist.y - ray->delta_dist.y);
 		if (ray->side == 0)
 			ray->perp_wall_dist = (ray->map.x - player->pos.x +
 				(1 - ray->step.x) / 2) / ray->ray_dir.x;
 		else
 			ray->perp_wall_dist = (ray->map.y - player->pos.y +
 				(1 - ray->step.y) / 2) / ray->ray_dir.y;
-		wall.line_height = (int)(data->img.height / ray->perp_wall_dist);
+		line_height = (int)(data->img.height / ray->perp_wall_dist);
 
-		wall.draw_start = -wall.line_height / 2 + data->img.height / 2;
-		if (wall.draw_start < 0)
-			wall.draw_start = 0;
-		wall.draw_end = wall.line_height / 2 + data->img.height / 2;
-		if (wall.draw_end >= data->img.height)
-			wall.draw_end = data->img.height - 1;
+		draw_start = -line_height / 2 + data->img.height / 2;
+		if (draw_start < 0)
+			draw_start = 0;
+		draw_end = line_height / 2 + data->img.height / 2;
+		if (draw_end >= data->img.height)
+			draw_end = data->img.height - 1;
 		
 		// set wall texture
 		if (ray->side == 0)
-			wall.target_img = (ray->step.x > 0) ? &(data->tex_west) : &(data->tex_east);
+			image = (ray->step.x > 0) ? &(data->tex_west) : &(data->tex_east);
 		else
-			wall.target_img = (ray->step.y > 0) ? &(data->tex_north) : &(data->tex_south);
+			image = (ray->step.y > 0) ? &(data->tex_north) : &(data->tex_south);
 		if (ray->side == 0)
-			wall.wall_x = player->pos.y + ray->perp_wall_dist * ray->ray_dir.y;
+			wall_x = player->pos.y + ray->perp_wall_dist * ray->ray_dir.y;
 		else
-			wall.wall_x = player->pos.x + ray->perp_wall_dist * ray->ray_dir.x;
-		wall.wall_x -= floor(wall.wall_x);
+			wall_x = player->pos.x + ray->perp_wall_dist * ray->ray_dir.x;
+		wall_x -= floor(wall_x);
 
-		wall.tex.x = (int)(wall.wall_x * (double)wall.target_img->width);
+		tex.x = (int)(wall_x * (double)image->width);
 		if (ray->side == 0 && ray->ray_dir.x > 0)
-			wall.tex.x = wall.target_img->width - wall.tex.x - 1;
+			tex.x = image->width - tex.x - 1;
 		if (ray->side == 1 && ray->ray_dir.y < 0)
-			wall.tex.x = wall.target_img->width - wall.tex.x - 1;
+			tex.x = image->width - tex.x - 1;
 
 		// draw the pixels of the stripe as a vertical line
-		wall.step = 1.0 * wall.target_img->height / wall.line_height;
-		wall.tex_pos = (wall.draw_start - data->img.height / 2 + wall.line_height / 2) * wall.step;
+		step = 1.0 * image->height / line_height;
+		tex_pos = (draw_start - data->img.height / 2 + line_height / 2) * step;
 
 		// contents drawer
-		_draw_vertical_(data, &coord, &wall);
+		_draw_vertical_(data, image, &coord, &tex, draw_start, draw_end, step, tex_pos);
 		coord.x++;
 	}
 }

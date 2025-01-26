@@ -62,6 +62,17 @@ typedef struct s_image
     int	height;
 }               t_image;
 
+typedef struct s_wall {
+    t_image     *target_img;
+    int			line_height;
+    double		wall_x;
+    t_ivec      tex;
+    int         draw_start;
+    int         draw_end;
+    double      step;
+    double      tex_pos;
+}               t_wall;
+
 typedef struct s_data
 {
     void    *mlx;
