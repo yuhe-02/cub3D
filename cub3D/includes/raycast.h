@@ -152,6 +152,7 @@ void			_update_player(t_params *param, t_player *player);
 void            _vector_assign(t_vector *vector, double new_x, double new_y);
 void            _ivec_assign(t_ivec *ivec, int new_x, int new_y);
 void            _ray_assign(t_ray *ray, t_data *data, t_player *player, t_ivec *coord);
+void            _wall_assign(t_wall *wall, t_data *data, t_ray *ray, t_player *player);
 double			convert_to_radian(int degree);
 int				convert_to_degree(double radian);
 void			set_event(t_data *data, t_params *params);

@@ -33,6 +33,7 @@ SRCS += $(UPDATES_DIR)/update_player.c
 SRCS += $(UPDATES_DIR)/update_vector.c
 SRCS += $(UPDATES_DIR)/update_ivec.c
 SRCS += $(UPDATES_DIR)/update_ray.c
+SRCS += $(UPDATES_DIR)/update_wall.c
 
 # ADD MATH
 MATHS_DIL := ../../srcs/math
