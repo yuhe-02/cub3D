@@ -149,6 +149,9 @@ void			_init_params(t_params *params, t_data *data, t_ray *ray,
 void			_init_data(t_data *data);
 void			_init_player(t_player *player, int x, int y);
 void			_update_player(t_params *param, t_player *player);
+void            _vector_assign(t_vector *vector, double new_x, double new_y);
+void            _ivec_assign(t_ivec *ivec, int new_x, int new_y);
+void            _ray_assign(t_ray *ray, t_data *data, t_player *player, t_ivec *coord);
 double			convert_to_radian(int degree);
 int				convert_to_degree(double radian);
 void			set_event(t_data *data, t_params *params);

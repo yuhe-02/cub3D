@@ -1,6 +1,5 @@
 #include "utils.h"
 
-
 // DDA algo
 static void _calc_hit_pos_(t_params *params, t_ray *ray)
 {
@@ -37,43 +36,7 @@ void	_raycast(t_params *params)
 	coord.x = 0;
 	while (coord.x < data->img.width)
 	{
-		// printf("loop first\n");
-		/**
-		 * memo
-		 *  このカメラは、ピクセル(x)が、スクリーンのどの位置にあるのかを-1 , 1の範囲で正規化している。
-		 *  左端は、-1,右端は、1になるように計算されている。FOVは90度を前提にしている。
-		 */
-		ray->camera_x = 2 * coord.x / (double)data->img.width - 1;
-		ray->ray_dir.x = player->dir.x + player->plane.x * ray->camera_x;
-		ray->ray_dir.y = player->dir.y + player->plane.y * ray->camera_x;
-		ray->map.x = (int)(player->pos.x);
-		ray->map.y = (int)(player->pos.y);
-		ray->delta_dist.x = fabs(1 / ray->ray_dir.x);
-		ray->delta_dist.y = fabs(1 / ray->ray_dir.y);
-		ray->hit = 0;
-
-		// detect next direction per index and distance
-		if (ray->ray_dir.x < 0)
-		{
-			ray->step.x = -1;
-			ray->side_dist.x = (player->pos.x - ray->map.x) * ray->delta_dist.x;
-		}
-		else
-        {
-            ray->step.x = 1;
-            ray->side_dist.x = (ray->map.x + 1.0 - player->pos.x) * ray->delta_dist.x;
-        }
-
-		if (ray->ray_dir.y < 0)
-		{
-			ray->step.y = -1;
-			ray->side_dist.y = (player->pos.y - ray->map.y) * ray->delta_dist.y;
-		}
-		else
-		{
-			ray->step.y = 1;
-			ray->side_dist.y = (ray->map.y + 1.0 - player->pos.y) *ray->delta_dist.y;
-		}
+		_ray_assign(ray, data, player, &coord);
 		// DDA algorithm
 		_calc_hit_pos_(params, ray);
 		// calculate distance of wall
