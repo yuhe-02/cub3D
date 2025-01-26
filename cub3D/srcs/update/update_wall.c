@@ -21,7 +21,10 @@ static void _set_wall_tex_(t_image **target_img, t_ray *ray, t_data *data)
 
 void	_wall_assign(t_wall *wall, t_data *data, t_ray *ray, t_player *player)
 {
-	wall->line_height = (int)(data->img.height / ray->perp_wall_dist);
+	if (ray->perp_wall_dist == 0)
+		wall->line_height = (int)1e30;
+	else
+		wall->line_height = (int)(data->img.height / ray->perp_wall_dist);
 	wall->draw_start = -wall->line_height / 2 + data->img.height / 2;
 	if (wall->draw_start < 0)
 		wall->draw_start = 0;
@@ -30,6 +33,7 @@ void	_wall_assign(t_wall *wall, t_data *data, t_ray *ray, t_player *player)
 		wall->draw_end = data->img.height - 1;
 	// set wall texture
 	_set_wall_tex_(&(wall->target_img), ray, data);
+	// TODO start from
 	if (ray->side == 0)
 		wall->wall_x = player->pos.y + ray->perp_wall_dist * ray->ray_dir.y;
 	else

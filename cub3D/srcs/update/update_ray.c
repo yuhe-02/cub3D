@@ -20,9 +20,8 @@ static void	_detect_ray_diretion_(t_ray *ray, t_vector *player_pos)
 	else
 	{
 		ray->step.y = 1;
-		ray->side_dist.y = (ray->map.y + 1.0 - player_pos->y) *ray->delta_dist.y;
+		ray->side_dist.y = (ray->map.y + 1.0 - player_pos->y) * ray->delta_dist.y;
 	}
-
 }
 
 void	_ray_assign(t_ray *ray, t_data *data, t_player *player, t_ivec *coord)
