@@ -20,6 +20,7 @@ SRCS += $(MLXS_DIR)/key_hooks.c
 SRCS += $(MLXS_DIR)/close_window.c
 SRCS += $(MLXS_DIR)/put_pixel.c
 SRCS += $(MLXS_DIR)/set_event.c
+SRCS += $(MLXS_DIR)/draw_vertical.c
 
 # ADD INIT
 INITS_DIR := ../../srcs/init
@@ -29,6 +30,10 @@ SRCS += $(INITS_DIR)/init_player.c
 
 UPDATES_DIR := ../../srcs/update
 SRCS += $(UPDATES_DIR)/update_player.c
+SRCS += $(UPDATES_DIR)/update_vector.c
+SRCS += $(UPDATES_DIR)/update_ivec.c
+SRCS += $(UPDATES_DIR)/update_ray.c
+SRCS += $(UPDATES_DIR)/update_wall.c
 
 # ADD MATH
 MATHS_DIL := ../../srcs/math

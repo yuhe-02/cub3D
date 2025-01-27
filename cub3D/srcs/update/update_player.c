@@ -1,5 +1,6 @@
 #include "utils.h"
 
+// TODO なんでこの実装にしたのか（plane計算部分）を調査する
 static void	_update_player_dir_(t_params *param, t_player *player)
 {
 	t_vector		old_dir;
