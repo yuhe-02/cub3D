@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   close_window.c                                     :+:      :+:    :+:   */
+/*   _close_window.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 13:01:56 by yyamasak          #+#    #+#             */
-/*   Updated: 2025/01/05 13:53:34 by yyamasak         ###   ########.fr       */
+/*   Updated: 2025/01/24 15:55:28 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	free_maps(t_params *params)
 }
 
 // TODO 時間あったらなおす
-int	close_window(t_params *param)
+int	_close_window(t_params *param)
 {
 	t_data	*data;
 

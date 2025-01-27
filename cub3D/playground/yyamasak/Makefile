@@ -20,6 +20,7 @@ SRCS += $(MLXS_DIR)/key_hooks.c
 SRCS += $(MLXS_DIR)/close_window.c
 SRCS += $(MLXS_DIR)/put_pixel.c
 SRCS += $(MLXS_DIR)/set_event.c
+SRCS += $(MLXS_DIR)/draw_vertical.c
 
 # ADD INIT
 INITS_DIR := ../../srcs/init
@@ -27,15 +28,23 @@ SRCS += $(INITS_DIR)/init_params.c
 SRCS += $(INITS_DIR)/init_data.c
 SRCS += $(INITS_DIR)/init_player.c
 
+UPDATES_DIR := ../../srcs/update
+SRCS += $(UPDATES_DIR)/update_player.c
+SRCS += $(UPDATES_DIR)/update_vector.c
+SRCS += $(UPDATES_DIR)/update_ivec.c
+SRCS += $(UPDATES_DIR)/update_ray.c
+SRCS += $(UPDATES_DIR)/update_wall.c
+
 # ADD MATH
 MATHS_DIL := ../../srcs/math
 SRCS += $(MATHS_DIL)/convert_angle.c
+SRCS += $(MATHS_DIL)/raycast.c
 
 # OBJS
 OBJDIR := objs
 OBJS = $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%$(SUFFIX).o)
 
-# コンパイルオプション
+# complie option
 INCDIR := ../../includes
 INCLUDES := -I$(INCDIR) -I$(LIBFT_DIR)
 
@@ -43,13 +52,13 @@ INCLUDES := -I$(INCDIR) -I$(LIBFT_DIR)
 MINILIBX_DIR := ../../minilibx-linux
 MINILIBX := $(MINILIBX_DIR)/libmlx_Linux.a
 
-# プロジェクト名
+# project name
 PJT := cub3D
 
-# SUFFIX一覧
+# SUFFIX oveview
 SUFFIXES := _both _ryomori _yyamasak
 
-# デバッグの場合分け
+# debug condition
 ifdef BOTH_DEBUG
 	DEFINES := -D RYOMORI_DEBUG -D YYAMASAK_DEBUG
 	SUFFIX := $(word 1, $(SUFFIXES))
@@ -64,7 +73,7 @@ else
 	SUFFIX :=
 endif
 
-# 出力名
+# output name
 NAME = $(PJT)$(SUFFIX)
 
 all: $(NAME)
