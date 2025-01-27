@@ -8,7 +8,7 @@ void	_draw_vertical(t_data *data, t_ivec *coord, t_wall *wall)
 	while (coord->y < data->img.height)
 	{
 		if (coord->y < wall->draw_start)
-			color = white_16;
+			color = data->ceilling_color;
 		else if (coord->y < wall->draw_end)
 		{
 			wall->tex.y = (int)wall->tex_pos & (wall->target_img->height - 1);
@@ -19,7 +19,7 @@ void	_draw_vertical(t_data *data, t_ivec *coord, t_wall *wall)
 			color = *(int *)tex_pixel;
 		}
 		else
-			color = black_16;
+			color = data->floor_color;
 		_ft_mlx_pixel_put(data, coord->x, coord->y, color);
 		coord->y++;
 	}

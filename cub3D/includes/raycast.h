@@ -23,8 +23,8 @@
 # include <string.h> //add
 # include <unistd.h>
 
-# define WIDTH 800
-# define HEIGHT 800
+# define WIDTH 400
+# define HEIGHT 400
 # define WINDOW_NAME "test"
 # define KEY_ESC 65307
 # define KEY_W 119
@@ -63,6 +63,7 @@ typedef struct s_image
 {
 	void		*img;
 	char		*addr;
+	char		*path;
 	int			bpp;
 	int			llen;
 	int			eda;
@@ -140,7 +141,7 @@ typedef struct s_params
 	t_player	*player;
 	t_ray		*ray;
 	// ryomori
-	// char (*map)[mapWidth + 1];
+	char (*map2)[mapWidth + 1];
     char        **map;
 	int			map_width;
 	int			map_height;

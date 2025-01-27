@@ -38,9 +38,9 @@ static void	_update_player_pos_(t_params *param, t_player *player)
 	}
 	next.x = player->pos.x + tmp.x;
 	next.y = player->pos.y + tmp.y;
-	if (param->map[(int)player->pos.y][(int)next.x] == '0')
+	if (param->map[(int)player->pos.y][(int)next.x] != '1')
 		player->pos.x = next.x;
-	if (param->map[(int)next.y][(int)player->pos.x] == '0')
+	if (param->map[(int)next.y][(int)player->pos.x] != '1')
 		player->pos.y = next.y;
 }
 

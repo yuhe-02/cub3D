@@ -6,7 +6,7 @@
 /*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 03:48:15 by yyamasak          #+#    #+#             */
-/*   Updated: 2025/01/24 15:57:00 by yyamasak         ###   ########.fr       */
+/*   Updated: 2025/01/27 13:26:22 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	_init_params(t_params* params, t_data *data, t_ray *ray, t_player *player, 
 	params->data = data;
 	params->player = player;
 	params->ray = ray;
-	params->map = world_map;
-	params->map_width = mapWidth;
-	params->map_height = mapHeight;
+	params->map2 = world_map;
+	params->map_width = 0;
+	params->map_height = 0;
 }
