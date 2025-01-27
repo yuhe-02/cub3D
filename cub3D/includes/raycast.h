@@ -1,8 +1,14 @@
 #ifndef RAYCAST_H
 # define RAYCAST_H
 
+#ifndef MAX_LINES
+#define MAX_LINES 1000//読み取る行数
+#endif
+
 # include "../gnl/get_next_line.h"
 # include "../minilibx-linux/mlx.h"
+# include <stdio.h>
+# include <stdlib.h>
 # include <X11/X.h>
 # include <X11/Xlib.h>
 # include <X11/keysym.h>
@@ -17,8 +23,8 @@
 # include <string.h> //add
 # include <unistd.h>
 
-# define WIDTH 800
-# define HEIGHT 800
+# define WIDTH 400
+# define HEIGHT 400
 # define WINDOW_NAME "test"
 # define KEY_ESC 65307
 # define KEY_W 119
@@ -57,6 +63,7 @@ typedef struct s_image
 {
 	void		*img;
 	char		*addr;
+	char		*path;
 	int			bpp;
 	int			llen;
 	int			eda;
@@ -134,7 +141,8 @@ typedef struct s_params
 	t_player	*player;
 	t_ray		*ray;
 	// ryomori
-	char (*map)[mapWidth + 1];
+	char (*map2)[mapWidth + 1];
+    char        **map;
 	int			map_width;
 	int			map_height;
 	// end ryomori
@@ -158,5 +166,12 @@ int				convert_to_degree(double radian);
 void			set_event(t_data *data, t_params *params);
 void			_raycast(t_params *params);
 void            _draw_vertical(t_data *data, t_ivec *coord, t_wall *wall);
+
+// ryomori
+int		parse_color(char *line, int *color);
+char	*is_spase(char *str);
+void	remove_newline(char *str);
+int		parse_map_settings(char **line, int line_count, t_params *params);
+int parse_map_data(char **line, int start_index, int line_count, t_params *params);
 
 #endif

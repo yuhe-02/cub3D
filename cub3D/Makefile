@@ -20,6 +20,7 @@ SRCS += $(MLXS_DIR)/key_hooks.c
 SRCS += $(MLXS_DIR)/close_window.c
 SRCS += $(MLXS_DIR)/put_pixel.c
 SRCS += $(MLXS_DIR)/set_event.c
+SRCS += $(MLXS_DIR)/draw_vertical.c
 
 # ADD INIT
 INITS_DIR := ${SRCDIR}/init
@@ -30,11 +31,21 @@ SRCS += $(INITS_DIR)/init_player.c
 # ADD UPDATES
 UPDATES_DIR := ${SRCDIR}/update
 SRCS += $(UPDATES_DIR)/update_player.c
+SRCS += $(UPDATES_DIR)/update_vector.c
+SRCS += $(UPDATES_DIR)/update_ivec.c
+SRCS += $(UPDATES_DIR)/update_ray.c
+SRCS += $(UPDATES_DIR)/update_wall.c
 
 # ADD MATH
 MATHS_DIR := ${SRCDIR}/math
 SRCS += $(MATHS_DIR)/convert_angle.c
 SRCS += $(MATHS_DIR)/raycast.c
+
+# ADD PARSER
+PARSERS_DIR := ${SRCDIR}/parser
+SRCS += $(PARSERS_DIR)/map_tex_settings.c
+SRCS += $(PARSERS_DIR)/parse_color.c
+SRCS += $(PARSERS_DIR)/parse_map_data.c
 
 # OBJS
 OBJDIR := objs
@@ -70,6 +81,7 @@ $(OBJDIR):
 	@mkdir -p $(OBJDIR)/update
 	@mkdir -p $(OBJDIR)/math
 	@mkdir -p $(OBJDIR)/gnl
+	@mkdir -p $(OBJDIR)/parser
 
 # ソースファイルをオブジェクトファイルに変換
 $(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
