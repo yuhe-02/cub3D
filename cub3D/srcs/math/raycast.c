@@ -55,9 +55,9 @@ void	_raycast(t_params *params)
 	t_ivec		coord;
 	t_wall		wall;
 
-	data = params->data;
-	player = params->player;
-	ray = params->ray;
+	data = &(params->data);
+	player = &(params->player);
+	ray = &(params->ray);
 	coord.x = 0;
 	while (coord.x < data->img.width)
 	{

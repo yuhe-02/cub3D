@@ -46,6 +46,7 @@ PARSERS_DIR := ${SRCDIR}/parser
 SRCS += $(PARSERS_DIR)/map_tex_settings.c
 SRCS += $(PARSERS_DIR)/parse_color.c
 SRCS += $(PARSERS_DIR)/parse_map_data.c
+SRCS += $(PARSERS_DIR)/read_map.c
 
 # OBJS
 OBJDIR := objs

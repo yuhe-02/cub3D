@@ -8,10 +8,13 @@
 
 static void set_player_pos(t_ivec *pos, t_params *params, int dir_x, int dir_y)
 {
-	params->player->init_userdir_x = dir_x;
-	params->player->init_userdir_y = dir_y;
-	params->player->init_userpos_x = pos->x;
-	params->player->init_userpos_y = pos->y;
+	t_player *player;
+
+	player = &(params->player);
+	player->init_userdir_x = dir_x;
+	player->init_userdir_y = dir_y;
+	player->init_userpos_x = pos->x;
+	player->init_userpos_y = pos->y;
 	printf("%d %d\n", pos->x, pos->y);
 }
 
@@ -29,7 +32,6 @@ int process_map_line_content(char *map_line, int j, int line_len, t_params *para
 	// TODO if direction not found
 	while (pos.x < line_len)
 	{
-		remove_newline(map_line);
 		if (map_line[pos.x] == ' ' || map_line[pos.x] == '\t')
 			params->map[pos.y][pos.x] = ' ';
 		else

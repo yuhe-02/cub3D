@@ -137,9 +137,9 @@ typedef struct s_ray
 
 typedef struct s_params
 {
-	t_data		*data;
-	t_player	*player;
-	t_ray		*ray;
+	t_data		data;
+	t_player	player;
+	t_ray		ray;
 	// ryomori
 	char (*map2)[mapWidth + 1];
     char        **map;
@@ -152,8 +152,7 @@ int				_key_hook(int keycode, void *arg);
 int				_key_release_hook(int keycode, t_params *param);
 int				_close_window(t_params *param);
 void			_ft_mlx_pixel_put(t_data *data, int x, int y, int color);
-void			_init_params(t_params *params, t_data *data, t_ray *ray,
-					t_player *player, char (*world_map)[mapWidth + 1]);
+t_params		*_init_params(char (*world_map)[mapWidth + 1]);
 void			_init_data(t_data *data);
 void			_init_player(t_player *player, int x, int y);
 void			_update_player(t_params *param, t_player *player);
@@ -170,8 +169,8 @@ void            _draw_vertical(t_data *data, t_ivec *coord, t_wall *wall);
 // ryomori
 int		parse_color(char *line, int *color);
 char	*is_spase(char *str);
-void	remove_newline(char *str);
 int		parse_map_settings(char **line, int line_count, t_params *params);
 int parse_map_data(char **line, int start_index, int line_count, t_params *params);
+char **read_map(const char *map_file, int *line_count);
 
 #endif

@@ -30,7 +30,7 @@ int	_close_window(t_params *param)
 {
 	t_data	*data;
 
-	data = param->data;
+	data = &(param->data);
 	if (!data)
 		exit(0);
 	if (data->img.img)

@@ -42,8 +42,8 @@ int	main_loop(void *arg)
 	t_player	*player;
 
 	params = (t_params *)arg;
-	data = params->data;
-	player = params->player;
+	data = &(params->data);
+	player = &(params->player);
 	if (data->mlx && data->win && data->img.img)
 		ft_bzero(data->img.addr, data->img.llen * data->img.height);
 	_update_player(params, player);
@@ -52,7 +52,6 @@ int	main_loop(void *arg)
 		mlx_put_image_to_window(data->mlx, data->win, data->img.img, 0, 0);
 	return (0);
 }
-
 int parse_map(char **line, int line_count, t_params *params)
 {
 	int start_index;
@@ -64,59 +63,17 @@ int parse_map(char **line, int line_count, t_params *params)
 	return (0);
 }
 
-char **read_map(const char *map_file, int *line_count)
-{
-
-	char		**line;
-	int			fd;
-	char		*cur_line;
-
-	line = malloc(MAX_LINES * sizeof(char *));
-	if (!line)
-	{
-		perror("malloc");
-		return (NULL);
-	}
-	fd = open(map_file, O_RDONLY);
-	if (fd == -1)
-	{
-		perror("Faild to open file");
-		free (line);
-		return (NULL);
-	}
-
-	while (1)
-	{
-		cur_line = get_next_line(fd);
-		if (!cur_line)
-			break ;
-		if (*line_count > MAX_LINES)
-			break ;
-		line[*line_count] = cur_line;
-		(*line_count)++;
-	}
-
-	if (*line_count >= MAX_LINES)
-		write (2, "Max line reached\n", 17);
-
-	close(fd);
-	return (line);
-}
-
 int	main(void)
 {
-	t_params	params;
-	t_data		data;
-	t_player	player;
-	t_ray		ray;
+	t_params	*params;
 	int			line_count;
 	const char	*map_file = "test.txt";
 	char		**line;
 
-	_init_params(&params, &data, &ray, &player, world_map);
+	params = _init_params(world_map);
 	line_count = 0;
 	line = read_map(map_file, &line_count);
-	if (parse_map(line, line_count, &params) != 0)
+	if (parse_map(line, line_count, params) != 0)
 	{
 		write(2, "Error\nInvalid map\n", 18);
 		// free_all_structs(line, line_count, &params);
@@ -126,11 +83,12 @@ int	main(void)
 	// for (int k = 0; k < params.map_height; k++) {
 	// 	printf("%s\n", params.map[k]);
 	// }
-	_init_data(&data);
-	_init_player(&player, 2, 2);
-	printf("user pos: %f, %f\n", player.pos.x, player.pos.y);
-	set_event(&data, &params);
-	mlx_loop_hook(data.mlx, &main_loop, (void *)&params);
-	mlx_loop(data.mlx);
+	write(1, "OK\n", 3);
+	_init_data(&(params->data));
+	_init_player(&(params->player), 2, 2);
+	printf("user pos: %f, %f\n", params->player.pos.x, params->player.pos.y);
+	set_event(&(params->data), params);
+	mlx_loop_hook(params->data.mlx, &main_loop, (void *)params);
+	mlx_loop(params->data.mlx);
 	return (0);
 }
