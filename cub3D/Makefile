@@ -43,10 +43,11 @@ SRCS += $(MATHS_DIR)/raycast.c
 
 # ADD PARSER
 PARSERS_DIR := ${SRCDIR}/parser
-SRCS += $(PARSERS_DIR)/map_tex_settings.c
+SRCS += $(PARSERS_DIR)/parse_map_settings.c
 SRCS += $(PARSERS_DIR)/parse_color.c
 SRCS += $(PARSERS_DIR)/parse_map_data.c
-SRCS += $(PARSERS_DIR)/read_map.c
+SRCS += $(PARSERS_DIR)/parse_map.c
+SRCS += $(PARSERS_DIR)/parse.c
 
 # OBJS
 OBJDIR := objs

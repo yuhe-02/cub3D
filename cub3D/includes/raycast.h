@@ -168,9 +168,9 @@ void            _draw_vertical(t_data *data, t_ivec *coord, t_wall *wall);
 
 // ryomori
 int		parse_color(char *line, int *color);
-char	*is_spase(char *str);
-int		parse_map_settings(char **line, int line_count, t_params *params);
-int parse_map_data(char **line, int start_index, int line_count, t_params *params);
-char **read_map(const char *map_file, int *line_count);
+int		_parse_map_settings(char **line, int line_count, t_params *params);
+int		_parse_map_data(char **line, int start_index, int line_count, t_params *params);
+void	_parse(const char *map_file, t_params *params);
+int		_parse_map(char **line, int line_count, t_params *params);
 
 #endif

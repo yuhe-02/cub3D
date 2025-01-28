@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   read_map.c                                         :+:      :+:    :+:   */
+/*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/28 12:42:30 by yyamasak          #+#    #+#             */
-/*   Updated: 2025/01/28 13:39:27 by yyamasak         ###   ########.fr       */
+/*   Created: 2025/01/28 14:53:47 by yyamasak          #+#    #+#             */
+/*   Updated: 2025/01/28 15:06:30 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 
-static int	count_lines(const char *map_file)
+static int	count_lines_(const char *map_file)
 {
 	char	*tmp;
 	int		fd;
@@ -37,7 +37,7 @@ static int	count_lines(const char *map_file)
 	return (map_size);
 }
 
-char **read_map(const char *map_file, int *line_count)
+static	char **_read_map_(const char *map_file, int *line_count)
 {
 
 	char		**line;
@@ -46,7 +46,7 @@ char **read_map(const char *map_file, int *line_count)
 	int			i;
 	char		*tmp;
 
-	*line_count = count_lines(map_file);
+	*line_count = count_lines_(map_file);
 	line = malloc((*line_count + 1) * sizeof(char *));
 	if (!line)
 	{
@@ -73,4 +73,18 @@ char **read_map(const char *map_file, int *line_count)
 	close(fd);
 	line[i] = NULL;
 	return (line);
+}
+
+void	_parse(const char *map_file, t_params *params)
+{
+	int		line_count;
+	char	**line;
+
+	line_count = 0;
+	line = _read_map_(map_file, &line_count);
+	if (_parse_map(line, line_count, params) != 0)
+	{
+		write(2, "Error\nInvalid map\n", 18);
+		exit(1);
+	}
 }
