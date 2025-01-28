@@ -48,11 +48,12 @@ static int	_handle_floor_ceiling_color_(char **line, int i, t_params *params)
 	else 
 		return (0);
 	tmp_line = ft_strtrim(line[i] + 2, "\n \t");
-	if (parse_color(tmp_line, tmp) != 0)
-	{
-		write(2, "Error\nInvalid color\n", 20);
-		exit(1);
-	}
+	*tmp = parse_color(tmp_line);
+	// if (parse_color(tmp_line, tmp) != 0)
+	// {
+	// 	write(2, "Error\nInvalid color\n", 20);
+	// 	exit(1);
+	// }
 	free(tmp_line);
 	return (1);
 }

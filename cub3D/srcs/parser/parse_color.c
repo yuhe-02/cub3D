@@ -52,7 +52,7 @@ static void free_char_rgb(char **rgb)
 	free(rgb);
 }
 
-int		parse_color(char *line, int *color)
+int		parse_color(char *line)
 {
 	char	**rgb;
 	int		rgb_color[3];
@@ -64,5 +64,6 @@ int		parse_color(char *line, int *color)
 		exit(1);
 	}
 	free_char_rgb(rgb);
+	printf("color: %d %d %d\n", rgb_color[0], rgb_color[1], rgb_color[2]);
 	return (convert_rgb_hex(rgb_color));
 }

@@ -61,7 +61,7 @@ int	main(void)
 	params = _init_params(world_map);
 	_parse(map_file, params);
 	_init_data(&(params->data));
-	_init_player(&(params->player), 2, 2);
+	_init_player(&(params->player));
 	set_event(&(params->data), params);
 	mlx_loop_hook(params->data.mlx, &main_loop, (void *)params);
 	mlx_loop(params->data.mlx);
