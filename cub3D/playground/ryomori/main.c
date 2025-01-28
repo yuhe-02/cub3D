@@ -3,6 +3,8 @@
 #include "libft.h"
 #include "raycast.h"
 
+void	free_char_array(char **line, int line_count);
+
 //==============================================================
 // utils_fanctions
 //==============================================================
@@ -24,18 +26,200 @@ void	remove_newline(char *str)
 		*newline = '\0';
 }
 
+//==============================================================
+// parse_functions
+//==============================================================
 
-
-
-int parse_map(char **line, int line_count, t_params *params)
+int		parse_color(char *line, int *color)
 {
-	int start_index = parse_map_settings(line, line_count, params);
-	if (start_index < 0)
+	int		i;
+	char	**rgb;
+	int		hex_color;
+	int		rgb_color[3];
+
+	if (!line)
 		return (-1);
-	parse_map_data(line, start_index, line_count, params);
+	rgb = ft_split(line, ',');
+	if (!rgb)
+	{
+		write(2, "Error : split\n", 14);
+		return (-1);
+	}
+	
+	rgb_color[0] = ft_atoi(rgb[0]);
+	rgb_color[1] = ft_atoi(rgb[1]);
+	rgb_color[2] = ft_atoi(rgb[2]);
+
+	i = 0;
+	while(i < 3)
+	{
+		if (rgb_color[i] < 0 || rgb_color[i] > 255)
+		{
+			write(2, "Error : color range\n", 20);
+			free_char_array(rgb, 3);
+			return (-1);
+		}
+		i++;
+	}
+	i = 0;
+	hex_color = 0;
+	while (i < 3)
+	{
+		hex_color = hex_color * 256;
+		hex_color += rgb_color[i];
+		i++;
+	}
+	*color = hex_color;
+
+	i = 0;
+	while (rgb[i])
+	{
+		free(rgb[i]);
+		i++;
+	}
+	free(rgb);
 	return (0);
 }
 
+
+//==============================================================
+// parse_map
+//==============================================================
+
+int	parse_map(char **line, int line_count, t_params *params)
+{
+	int i;
+
+	i = 0;
+	while (i < line_count)
+	{
+		if(strncmp(line[i], "NO ", 3) == 0)
+		{
+			line[i] = is_spase(line[i]);
+			params->data->tex_north.addr = ft_strdup(line[i] + 3);
+			remove_newline(params->data->tex_north.addr);
+			fprintf(stderr, "tex_north.img = %s\n", params->data->tex_north.addr);
+		}
+		else if(strncmp(line[i], "SO ", 3) == 0)
+		{
+			line[i] = is_spase(line[i]);
+			params->data->tex_south.addr = ft_strdup(line[i] + 3);
+			remove_newline(params->data->tex_south.addr);
+			fprintf(stderr, "tex_south.img = %s\n", params->data->tex_south.addr);
+		}
+		else if (strncmp(line[i], "WE ", 3) == 0)
+		{
+			line[i] = is_spase(line[i]);
+			params->data->tex_west.addr = ft_strdup(line[i] + 3);
+			remove_newline(params->data->tex_west.addr);
+			fprintf(stderr, "params->data->tex_west = %s\n", params->data->tex_west.addr);
+		}
+		else if (strncmp(line[i], "EA ", 3) == 0)
+		{
+			line[i] = is_spase(line[i]);
+			params->data->tex_east.addr = ft_strdup(line[i] + 3);
+			remove_newline(params->data->tex_east.addr);
+			fprintf(stderr, "params->data->tex_east.img = %s\n",params->data->tex_east.addr);
+		}
+		else if(strncmp(line[i], "F ", 2) == 0)
+		{
+			line[i] = is_spase(line[i]);
+			if (parse_color(line[i] + 2, &params->data->floor_color ) != 0)
+			{
+				write(2, "Error : floor_color\n", 21);
+				return (-1);
+			}
+			fprintf(stderr, "floor_color = %d\n", params->data->floor_color);
+		}
+		else if (strncmp(line[i], "C ", 2) == 0)
+		{
+			line[i] = is_spase(line[i]);
+			if(parse_color(line[i] + 2, &params->data->ceilling_color) != 0)
+			{
+				write(2, "Error : ceiling_color\n", 23);
+				return (-1);
+			}
+			fprintf(stderr, "ceilling_color = %d\n", params->data->ceilling_color);
+		}
+		else if(line[i][0] == '\n' && line[i][1] == '\0')//空欄の行のとき
+		{
+			fprintf(stderr, "spase line\n");
+			i++;
+			continue;
+		}
+		else
+		{
+			break;
+		}
+		i++;
+	}
+
+	params->map_height = line_count - i;//mapの開始位置を格納 すべての行数―現在の行数
+	params->map = malloc(params->map_height * sizeof(char *));
+	if (!params->map)
+	{
+		write(2, "malloc failed for map\n", 23);
+		return (-1);
+	}
+	int j = 0;
+	while(j < params->map_height)
+	{
+		if (!line[i + j])
+		{
+			write(2, "Error : Map line is NULL\n", 25);
+			return (-1);
+		}
+		int line_len = ft_strlen(line[i + j]);
+		params->map[j] = malloc(line_len + 1);
+		if (!params->map[j])
+		{
+			write(2, "Error : malloc\n", 15);
+			return (-1);
+		}
+		int k = 0;
+		while (k < line_len)
+		{
+			// element->map_inf[j][k] = line[i + j][k];
+			params->map[j][k] = line[i + j][k];
+			if (params->map[j][k] == 'N')
+			{
+				params->player->init_userdir_x = 0;
+				params->player->init_userdir_y = -1;
+				params->player->init_userpos_x = k;
+				params->player->init_userpos_y = j;
+			}
+			else if (params->map[j][k] == 'S')
+			{
+				params->player->init_userdir_x = 0;
+				params->player->init_userdir_y = 1;
+				params->player->init_userpos_x = k;
+				params->player->init_userpos_y = j;
+			}
+			else if (params->map[j][k] == 'W')
+			{
+				params->player->init_userdir_x = -1;
+				params->player->init_userdir_y = 0;
+				params->player->init_userpos_x = k;
+				params->player->init_userpos_y = j;
+			}
+			else if (params->map[j][k] == 'E')
+			{
+				params->player->init_userdir_x = 1;
+				params->player->init_userdir_y = 0;
+				params->player->init_userpos_x = k;
+				params->player->init_userpos_y = j;
+			}
+			fprintf(stderr, "params->player->init_userdir_x = %d\n", params->player->init_userdir_x);
+			fprintf(stderr, "params->player->init_userdir_y = %d\n", params->player->init_userdir_y);
+			fprintf(stderr, "params->player->init_userpos_x = %d\n", params->player->init_userpos_x);
+			fprintf(stderr, "params->player->init_userpos_y = %d\n", params->player->init_userpos_y);
+			k++;
+		}
+		params->map[j][k] = '\0';
+		j++;
+	}
+	return (0);
+}
 
 //==============================================================
 // read_functions
@@ -120,9 +304,9 @@ void	free_char_array(char **line, int line_count)
 
 void print_map_content(t_params *params)
 {
-	int i;
+    int i;
 
-	// テクスチャパスの出力
+    // テクスチャパスの出力
 	printf("NO : %s\n", params->data->tex_north.addr);
 	printf("SO : %s\n", params->data->tex_south.addr);
 	printf("WE : %s\n", params->data->tex_west.addr);
@@ -140,133 +324,35 @@ void print_map_content(t_params *params)
 //==============================================================
 // main
 //==============================================================
-void init_structs(t_data **data, t_player **player, t_params *params)
-{
-	// データ構造体のメモリ確保
-	*data = malloc(sizeof(t_data));
-	if (!*data)
-	{
-		perror("malloc failed for data");
-		exit(1);
-	}
-	
-	*player = malloc(sizeof(t_player));
-	if (!*player)
-	{
-		free(*data);
-		perror("malloc failed for player");
-		exit(1);
-	}
-		// メモリ初期化
-	memset(*data, 0, sizeof(t_data));
-	memset(*player, 0, sizeof(t_player));
-	memset(params, 0, sizeof(t_params));
-		// params 構造体にポインタを設定
-	params->data = *data;
-	params->player = *player;
-}
-
-void free_all_structs(char **line, int line_count, t_params *params)
-{
-	free_char_array(line, line_count);
-	free_params(params);
-	free(params->data);
-	free(params->player);
-}
-
 int main(void)
-
 {
-	char	**line;
-	int		line_count;
-	const char	*map_file = "test.txt";
-	t_data		*data;
-	t_player	*player;
-	t_params	params;
+	char		**line;
+	int			line_count;
+	const char *map_file = "test.txt";
+    t_data data;
+	t_player player;
+	t_params params;
 
-	// 構造体の初期化を関数に抽出
-	init_structs(&data, &player, &params);
+
+    // 初期化
+	memset(&data, 0, sizeof(t_data));
+	memset(&player, 0, sizeof(t_player));
+	memset(&params, 0, sizeof(t_params));
+
 	// マップデータの読み込み
+
 	line_count = 0;
 	line = read_map(map_file, &line_count);
 	if (!line)
-	{
-		free_all_structs(NULL, 0, &params);
 		return (1);
-	}
-
 	if (parse_map(line, line_count, &params) != 0)
 	{
-		write(2, "Error\nInvalid map\n", 18);
-		free_all_structs(line, line_count, &params);
+		write (2, "Error\nInvalid map\n", 18);
+		free_char_array(line, line_count);
 		return (1);
 	}
-	// マップ内容の表示
 	print_map_content(&params);
-	// メモリ解放を関数に抽出
-	free_all_structs(line, line_count, &params);
+
+	free_char_array(line, line_count);
 	return (0);
 }
-// int main(void)
-// {
-//     char        **line;
-//     int         line_count;
-//     const char  *map_file = "test.txt";
-//     t_data      *data;
-//     t_player    *player;
-//     t_params    params;
-
-//     // t_data と t_player のメモリを確保
-//     data = malloc(sizeof(t_data));
-//     if (!data)
-//     {
-//         perror("malloc failed for data");
-//         return (1);
-//     }
-//     player = malloc(sizeof(t_player));
-//     if (!player)
-//     {
-//         free(data);
-//         perror("malloc failed for player");
-//         return (1);
-//     }
-
-//     // メモリ確保後、初期化
-//     memset(data, 0, sizeof(t_data));
-//     memset(player, 0, sizeof(t_player));
-//     memset(&params, 0, sizeof(t_params));
-
-//     // params 構造体にポインタを設定
-//     params.data = data;
-//     params.player = player;
-
-//     // マップデータの読み込み
-//     line_count = 0;
-//     line = read_map(map_file, &line_count);
-//     if (!line)
-//     {
-//         free(data);
-//         free(player);
-//         return (1);
-//     }
-
-//     if (parse_map(line, line_count, &params) != 0)
-//     {
-//         write(2, "Error\nInvalid map\n", 18);
-//         free_char_array(line, line_count);
-//         free(data);
-//         free(player);
-//         return (1);
-//     }
-
-//     // マップ内容の表示
-//     print_map_content(&params);
-
-//     // 使用したメモリを解放
-//     free_char_array(line, line_count);
-//     free_params(&params);
-//     free(data);
-//     free(player);
-
-//     return (0);
-// }

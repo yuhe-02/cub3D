@@ -1,24 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_params.c                                      :+:      :+:    :+:   */
+/*   parse_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/01 03:48:15 by yyamasak          #+#    #+#             */
-/*   Updated: 2025/01/28 13:27:06 by yyamasak         ###   ########.fr       */
+/*   Created: 2025/01/28 14:51:44 by yyamasak          #+#    #+#             */
+/*   Updated: 2025/01/28 15:02:59 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 
-// TODO change map, map_width, map_height paramter into char **
-t_params *_init_params(char (*world_map)[mapWidth + 1])
+int	_parse_map(char **line, int line_count, t_params *params)
 {
-	t_params *params;
-
-	params = (t_params *)malloc(sizeof(t_params));
-	params->map2 = world_map;
-	params->map_width = 0;
-	params->map_height = 0;
+	int start_index;
+	
+	start_index = _parse_map_settings(line, line_count, params);
+	if (start_index < 0)
+		return (-1);
+	_parse_map_data(line, start_index, line_count, params);
+	return (0);
 }
