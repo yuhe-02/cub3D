@@ -52,12 +52,52 @@ static void free_char_rgb(char **rgb)
 	free(rgb);
 }
 
+int		check_parsed_value_(char **tmp)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (tmp[i])
+		i++;
+	if (i != 3)
+	{
+		write(1, "Invalid format\n", ft_strlen("Invalid format\n"));
+		exit(1);
+	}
+	while (i--)
+	{
+		if (!*tmp[i])
+		{
+			write(1, "Invalid format\n", ft_strlen("Invalid format\n"));
+			exit(1);
+		}
+		j = 0;
+		while (tmp[i][j])
+		{
+			if (!ft_isdigit(tmp[i][j]))
+			{
+				write(1, "Invalid format\n", ft_strlen("Invalid format\n"));
+				exit(1);
+			}
+			j++;
+		}
+	}
+	return (1);
+}
+
 int		parse_color(char *line)
 {
 	char	**rgb;
 	int		rgb_color[3];
 
 	rgb = ft_split(line, ',');
+	if (!rgb)
+	{
+		write(1, "malloc failed\n", ft_strlen("malloc failed\n"));
+		exit(1);
+	}
+	check_parsed_value_(rgb);
 	if (parse_rgb_values(rgb, rgb_color) != 0)
 	{
 		free_char_rgb(rgb);

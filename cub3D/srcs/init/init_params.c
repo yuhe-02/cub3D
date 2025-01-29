@@ -6,7 +6,7 @@
 /*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 03:48:15 by yyamasak          #+#    #+#             */
-/*   Updated: 2025/01/29 13:44:59 by yyamasak         ###   ########.fr       */
+/*   Updated: 2025/01/29 14:21:33 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,5 +22,7 @@ t_params *_init_params()
 		write(1, "malloc error\n", 13);
 		exit(1);
 	}
-	memset(params, 0, sizeof(t_params ));
+	memset(params, 0, sizeof(t_params));
+	params->data.ceilling_color = -1;
+	params->data.floor_color = -1;
 }
