@@ -35,8 +35,6 @@
 # define KEY_L_DIR 65361
 # define WINDOW_CLOSE 17
 # define ACRAC 1000
-# define mapWidth 24
-# define mapHeight 24
 # define red_16 0xFF0000
 # define blue_16 0x0000FF
 # define yellow_16 0xFFFF00
@@ -88,14 +86,12 @@ typedef struct s_data
 	void		*mlx;
 	void		*win;
 	t_image		img;
-	// ryomori
 	t_image		tex_north;
 	t_image		tex_south;
 	t_image		tex_west;
 	t_image		tex_east;
 	int			ceilling_color;
 	int			floor_color;
-	// end ryomori
 }				t_data;
 
 typedef struct s_player
@@ -114,12 +110,8 @@ typedef struct s_player
 	// East = (1, 0)
 	int			init_userdir_x;
 	int			init_userdir_y;
-	// end ryomori
-	// ryomori
-	// マップの左上が、(1, 1)として設定する
 	int			init_userpos_x;
 	int			init_userpos_y;
-	// end ryomori
 }				t_player;
 
 typedef struct s_ray
@@ -140,21 +132,18 @@ typedef struct s_params
 	t_data		data;
 	t_player	player;
 	t_ray		ray;
-	// ryomori
-	char (*map2)[mapWidth + 1];
     char        **map;
 	int			map_width;
 	int			map_height;
-	// end ryomori
 }				t_params;
 
 int				_key_hook(int keycode, void *arg);
 int				_key_release_hook(int keycode, t_params *param);
 int				_close_window(t_params *param);
 void			_ft_mlx_pixel_put(t_data *data, int x, int y, int color);
-t_params		*_init_params(char (*world_map)[mapWidth + 1]);
+t_params		*_init_params();
 void			_init_data(t_data *data);
-void			_init_player(t_player *player, int x, int y);
+void			_init_player(t_player *player);
 void			_update_player(t_params *param, t_player *player);
 void            _vector_assign(t_vector *vector, double new_x, double new_y);
 void            _ivec_assign(t_ivec *ivec, int new_x, int new_y);
@@ -165,9 +154,10 @@ int				convert_to_degree(double radian);
 void			set_event(t_data *data, t_params *params);
 void			_raycast(t_params *params);
 void            _draw_vertical(t_data *data, t_ivec *coord, t_wall *wall);
+void	error_exit(const char *str, int error_num);
 
 // ryomori
-int		parse_color(char *line, int *color);
+int		parse_color(char *line);
 int		_parse_map_settings(char **line, int line_count, t_params *params);
 int		_parse_map_data(char **line, int start_index, int line_count, t_params *params);
 void	_parse(const char *map_file, t_params *params);

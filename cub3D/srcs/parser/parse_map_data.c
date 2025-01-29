@@ -7,9 +7,13 @@ static void set_player_pos(t_ivec *pos, t_params *params, int dir_x, int dir_y)
 	player = &(params->player);
 	player->init_userdir_x = dir_x;
 	player->init_userdir_y = dir_y;
+	if (player->init_userpos_x != -1)
+	{
+		write(1, "multi set\n", ft_strlen("multi set\n"));
+		exit(1);
+	}
 	player->init_userpos_x = pos->x;
 	player->init_userpos_y = pos->y;
-	printf("%d %d\n", pos->x, pos->y);
 }
 
 static int process_map_line_content(char *map_line, int j, int line_len, t_params *params)

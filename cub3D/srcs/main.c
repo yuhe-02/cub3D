@@ -1,40 +1,5 @@
 #include "utils.h"
 
-char world_map[mapHeight][mapWidth + 1] = 
-{
-  "111111111111111111111111",
-  "102000000000000000000001",
-  "100000000000000000000001",
-  "100000000000000000000001",
-  "100000222220000202020001",
-  "100000200020000000000001",
-  "100000200020000200020001",
-  "100000200020000000000001",
-  "100000220220000202020001",
-  "100000000000000000000001",
-  "100000000000000000000001",
-  "100000000000000000000001",
-  "100000000000000000000001",
-  "100000000000000000000001",
-  "100000000000000000000001",
-  "100000000000000000000001",
-  "122222222000000000000001",
-  "120200002000000000000001",
-  "120000202000000000000001",
-  "120200002000000000000001",
-  "120222222000000000000001",
-  "120000000000000000000001",
-  "122222222000000000000001",
-  "111111111111111111111111"
-};
-
-// char world_map[mapWidth][mapHeight + 1] = 
-// {
-//   "111",
-//   "101",
-//   "111",
-// };
-
 int	main_loop(void *arg)
 {
 	t_params	*params;
@@ -52,16 +17,42 @@ int	main_loop(void *arg)
 		mlx_put_image_to_window(data->mlx, data->win, data->img.img, 0, 0);
 	return (0);
 }
-
-int	main(void)
+static  void check_all_set_(t_params *params)
+{
+  if (!params->data.tex_north.path)
+    error_exit("north path not set\n", 1);
+  if (!params->data.tex_south.path)
+    error_exit("south path not set\n", 1);
+  if (!params->data.tex_west.path)
+    error_exit("west path not set\n", 1);
+  if (!params->data.tex_east.path)
+    error_exit("east path not set\n", 1);
+  if (params->data.ceilling_color == -1)
+    error_exit("ceiling color not set\n", 1);
+  if (params->data.floor_color == -1)
+    error_exit("floor color not set\n", 1);
+  if (params->player.init_userpos_x == -1)
+    error_exit("player position not set\n", 1);
+}
+int	main(int argc, char **argv)
 {
 	t_params	*params;
-	const char	*map_file = "test.txt";
 
-	params = _init_params(world_map);
-	_parse(map_file, params);
+  if (argc == 1)
+  {
+    write(1, "need arguments\n", 15);
+    return (1);
+  }
+  if (argc != 2)
+  {
+    write(1, "too many arguments\n", ft_strlen("too many arguments\n"));
+    return (1);
+  }
+	params = _init_params();
+	_parse(argv[1], params);
+  check_all_set_(params);
 	_init_data(&(params->data));
-	_init_player(&(params->player), 2, 2);
+	_init_player(&(params->player));
 	set_event(&(params->data), params);
 	mlx_loop_hook(params->data.mlx, &main_loop, (void *)params);
 	mlx_loop(params->data.mlx);

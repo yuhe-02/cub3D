@@ -7,24 +7,19 @@ static int	_handle_texture_(char **line, int i, t_params *params)
 
 	data = &(params->data);
 	if (ft_strncmp(line[i], "NO ", 3) == 0)
-	{
 		tmp = &(data->tex_north.path);
-		// update flag
-	} else if (ft_strncmp(line[i], "SO ", 3) == 0)
-	{
+	else if (ft_strncmp(line[i], "SO ", 3) == 0)
 		tmp = &(data->tex_south.path);
-		// update flag
-	} else if (ft_strncmp(line[i], "EA ", 3) == 0)
-	{
+	else if (ft_strncmp(line[i], "EA ", 3) == 0)
 		tmp = &(data->tex_east.path);
-		// update flag
-	} else if (ft_strncmp(line[i], "WE ", 3) == 0)
-	{
+	else if (ft_strncmp(line[i], "WE ", 3) == 0)
 		tmp = &(data->tex_west.path);
-		// update flag
-	} else 
-	{
+	else 
 		return (0);
+	if (*tmp)
+	{
+		write(1, "multi position set\n", ft_strlen("multi position set\n"));
+		exit(1);
 	}
 	*tmp = ft_strtrim(line[i] + 3, "\n");
 	return (1);
@@ -38,21 +33,18 @@ static int	_handle_floor_ceiling_color_(char **line, int i, t_params *params)
 
 	data = &(params->data);
 	if (ft_strncmp(line[i], "F ", 2) == 0)
-	{
 		tmp = &(data->floor_color);
-	}
 	else if (ft_strncmp(line[i], "C ", 2) == 0)
-	{
 		tmp = &(data->ceilling_color);
-	} 
 	else 
 		return (0);
-	tmp_line = ft_strtrim(line[i] + 2, "\n \t");
-	if (parse_color(tmp_line, tmp) != 0)
+	if (*tmp != -1)
 	{
-		write(2, "Error\nInvalid color\n", 20);
+		write(1, "multi position set\n", ft_strlen("multi position set\n"));
 		exit(1);
 	}
+	tmp_line = ft_strtrim(line[i] + 2, "\n \t");
+	*tmp = parse_color(tmp_line);
 	free(tmp_line);
 	return (1);
 }
@@ -78,7 +70,6 @@ int	_parse_map_settings(char **line, int line_count, t_params *params)
 	i = 0;
 	while (i < line_count)
 	{
-		// printf("line: %d: %s\n", i, line[i]);
 		result = _handle_map_elements_(line, i, params);
 		if (result == 1)
 			i++;

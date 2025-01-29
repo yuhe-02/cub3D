@@ -8,6 +8,7 @@ LIBFT := $(LIBFT_DIR)/libft.a
 # SRCS
 SRCDIR := ./srcs
 SRCS += $(SRCDIR)/main.c
+SRCS += $(SRCDIR)/error.c
 
 # ADD GNL
 GNL_DIR := ${SRCDIR}/gnl
