@@ -152,7 +152,7 @@ int				_key_hook(int keycode, void *arg);
 int				_key_release_hook(int keycode, t_params *param);
 int				_close_window(t_params *param);
 void			_ft_mlx_pixel_put(t_data *data, int x, int y, int color);
-t_params		*_init_params(char (*world_map)[mapWidth + 1]);
+t_params		*_init_params();
 void			_init_data(t_data *data);
 void			_init_player(t_player *player);
 void			_update_player(t_params *param, t_player *player);

@@ -6,13 +6,12 @@
 /*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 04:14:10 by yyamasak          #+#    #+#             */
-/*   Updated: 2025/01/28 15:50:05 by yyamasak         ###   ########.fr       */
+/*   Updated: 2025/01/29 13:52:53 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 
-// TODO change position, direction, plane parameter based on arguments
 void	_init_player(t_player *player)
 {
 	player->pos.x = (double)player->init_userpos_x + 0.5;

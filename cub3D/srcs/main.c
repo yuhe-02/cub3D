@@ -58,7 +58,7 @@ int	main(void)
 	t_params	*params;
 	const char	*map_file = "test.txt";
 
-	params = _init_params(world_map);
+	params = _init_params();
 	_parse(map_file, params);
 	_init_data(&(params->data));
 	_init_player(&(params->player));
