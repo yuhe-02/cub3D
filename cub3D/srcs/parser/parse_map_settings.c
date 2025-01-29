@@ -17,10 +17,7 @@ static int	_handle_texture_(char **line, int i, t_params *params)
 	else 
 		return (0);
 	if (*tmp)
-	{
-		write(1, "multi position set\n", ft_strlen("multi position set\n"));
-		exit(1);
-	}
+		error_exit("multi position set\n", 1);
 	*tmp = ft_strtrim(line[i] + 3, "\n");
 	return (1);
 }
@@ -39,10 +36,7 @@ static int	_handle_floor_ceiling_color_(char **line, int i, t_params *params)
 	else 
 		return (0);
 	if (*tmp != -1)
-	{
-		write(1, "multi position set\n", ft_strlen("multi position set\n"));
-		exit(1);
-	}
+		error_exit("multi position set\n", 1);
 	tmp_line = ft_strtrim(line[i] + 2, "\n \t");
 	*tmp = parse_color(tmp_line);
 	free(tmp_line);

@@ -29,10 +29,7 @@ static int	parse_rgb_values(char **rgb, int *rgb_colors)
 	{
 		rgb_colors[i] = ft_atoi(rgb[i]);
 		if (!is_valid_rgb(rgb_colors[i]))
-		{
-			write(2, "Error : color range\n", 20);
-			exit(1);
-		}
+			error_exit("Error : color range\n", 1);
 		i++;
 	}
 	return (0);
@@ -59,25 +56,16 @@ int		check_parsed_value_(char **tmp)
 	while (tmp[i])
 		i++;
 	if (i != 3)
-	{
-		write(1, "Invalid format\n", ft_strlen("Invalid format\n"));
-		exit(1);
-	}
+		error_exit("Invalid format\n", 1);
 	while (i--)
 	{
 		if (!*tmp[i])
-		{
-			write(1, "Invalid format\n", ft_strlen("Invalid format\n"));
-			exit(1);
-		}
+			error_exit("Invalid format\n", 1);
 		j = 0;
 		while (tmp[i][j])
 		{
 			if (!ft_isdigit(tmp[i][j]))
-			{
-				write(1, "Invalid format\n", ft_strlen("Invalid format\n"));
-				exit(1);
-			}
+				error_exit("Invalid format\n", 1);
 			j++;
 		}
 	}
@@ -91,10 +79,7 @@ int		parse_color(char *line)
 
 	rgb = ft_split(line, ',');
 	if (!rgb)
-	{
-		write(1, "malloc failed\n", ft_strlen("malloc failed\n"));
-		exit(1);
-	}
+		error_exit("malloc failed\n", 1);
 	check_parsed_value_(rgb);
 	parse_rgb_values(rgb, rgb_color);
 	free_char_rgb(rgb);
