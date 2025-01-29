@@ -2,8 +2,6 @@
 #include "libft.h"
 #include "raycast.h"
 
-// TODO 入力に不備があった場合のバリデーションしてない
-
 static int	is_valid_rgb(int value)
 {
 	return (value >= 0 && value <= 255);
@@ -33,7 +31,7 @@ static int	parse_rgb_values(char **rgb, int *rgb_colors)
 		if (!is_valid_rgb(rgb_colors[i]))
 		{
 			write(2, "Error : color range\n", 20);
-			return (-1);
+			exit(1);
 		}
 		i++;
 	}
@@ -98,11 +96,7 @@ int		parse_color(char *line)
 		exit(1);
 	}
 	check_parsed_value_(rgb);
-	if (parse_rgb_values(rgb, rgb_color) != 0)
-	{
-		free_char_rgb(rgb);
-		exit(1);
-	}
+	parse_rgb_values(rgb, rgb_color);
 	free_char_rgb(rgb);
 	printf("color: %d %d %d\n", rgb_color[0], rgb_color[1], rgb_color[2]);
 	return (convert_rgb_hex(rgb_color));

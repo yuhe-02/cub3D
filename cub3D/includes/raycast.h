@@ -154,6 +154,7 @@ int				convert_to_degree(double radian);
 void			set_event(t_data *data, t_params *params);
 void			_raycast(t_params *params);
 void            _draw_vertical(t_data *data, t_ivec *coord, t_wall *wall);
+void	error_exit(const char *str, int error_num);
 
 // ryomori
 int		parse_color(char *line);

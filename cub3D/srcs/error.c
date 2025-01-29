@@ -1,30 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_params.c                                      :+:      :+:    :+:   */
+/*   eror.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/01 03:48:15 by yyamasak          #+#    #+#             */
-/*   Updated: 2025/01/29 14:36:25 by yyamasak         ###   ########.fr       */
+/*   Created: 2025/01/29 14:40:41 by yyamasak          #+#    #+#             */
+/*   Updated: 2025/01/29 14:41:56 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 
-// TODO change map, map_width, map_height paramter into char **
-t_params *_init_params()
+void	error_exit(const char *str, int error_num)
 {
-	t_params *params;
-
-	params = (t_params *)malloc(sizeof(t_params));
-	if (!params) {
-		write(1, "malloc error\n", 13);
-		exit(1);
-	}
-	memset(params, 0, sizeof(t_params));
-	params->data.ceilling_color = -1;
-	params->data.floor_color = -1;
-	params->player.init_userpos_x = -1;
-	params->player.init_userpos_y = -1;
+	write(2, str, ft_strlen(str));
+	exit(error_num);
 }
