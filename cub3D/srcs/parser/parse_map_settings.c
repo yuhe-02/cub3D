@@ -70,7 +70,6 @@ int	_parse_map_settings(char **line, int line_count, t_params *params)
 	i = 0;
 	while (i < line_count)
 	{
-		// printf("line: %d: %s\n", i, line[i]);
 		result = _handle_map_elements_(line, i, params);
 		if (result == 1)
 			i++;

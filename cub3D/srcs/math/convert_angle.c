@@ -6,7 +6,7 @@
 /*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 07:01:51 by yyamasak          #+#    #+#             */
-/*   Updated: 2025/01/01 07:03:49 by yyamasak         ###   ########.fr       */
+/*   Updated: 2025/01/29 15:18:40 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ double	convert_to_radian(int degree)
 {	
 	double	res;
 
-	res = (double)((double)degree * 180 / PI);
+	res = (double)((double)degree / 180 * PI);
 	return (res);
 }
 
