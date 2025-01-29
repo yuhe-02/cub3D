@@ -39,15 +39,9 @@ int	main(int argc, char **argv)
 	t_params	*params;
 
   if (argc == 1)
-  {
-    write(1, "need arguments\n", 15);
-    return (1);
-  }
+    error_exit("need arguments\n", 1);
   if (argc != 2)
-  {
-    write(1, "too many arguments\n", ft_strlen("too many arguments\n"));
-    return (1);
-  }
+    error_exit("too many arguments\n", 1);
 	params = _init_params();
 	_parse(argv[1], params);
   check_all_set_(params);

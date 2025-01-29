@@ -6,7 +6,7 @@
 /*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 03:52:00 by yyamasak          #+#    #+#             */
-/*   Updated: 2025/01/29 13:52:00 by yyamasak         ###   ########.fr       */
+/*   Updated: 2025/01/29 15:30:18 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,7 @@ static void	_set_xpm_file_(t_image *image, t_data *data)
 	image->img = mlx_xpm_file_to_image(data->mlx, image->path,
 		&(image->width), &(image->height));
 	if (!image->img)
-	{
-		write(1, "not found\n", 10);
-		exit(1);
-	}
+		error_exit("image not found\n", 1);
 	image->addr = mlx_get_data_addr(image->img, &(image->bpp),
 		&(image->llen), &(image->eda));
 }

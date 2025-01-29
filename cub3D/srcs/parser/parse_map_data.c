@@ -8,10 +8,7 @@ static void set_player_pos(t_ivec *pos, t_params *params, int dir_x, int dir_y)
 	player->init_userdir_x = dir_x;
 	player->init_userdir_y = dir_y;
 	if (player->init_userpos_x != -1)
-	{
-		write(1, "multi set\n", ft_strlen("multi set\n"));
-		exit(1);
-	}
+		error_exit("multi set\n", 1);
 	player->init_userpos_x = pos->x;
 	player->init_userpos_y = pos->y;
 }
@@ -55,10 +52,7 @@ static int process_map_line(char *map_line, int j, t_params *params)
 	line_len = ft_strlen(map_line);
 	params->map[j] = malloc(params->map_width + 1);
 	if (!params->map[j])
-	{
-		write(2, "malloc failed for map[j]\n", 26);
-		return (-1);
-	}
+		error_exit("malloc failed for map[j]\n", 1);
 	k = process_map_line_content(map_line, j, line_len, params);
 	return (0);
 }
@@ -110,15 +104,9 @@ int _parse_map_data(char **line, int start_index, int line_count, t_params *para
 	params->map_height = line_count - start_index;
 	params->map = malloc(params->map_height * sizeof(char *));
 	if (!params->map)
-	{
-		write(2, "malloc failed for map\n", 23);
-		exit(1);
-	}
+		error_exit("malloc failed for map\n", 1);
 	if (check_valid_map_(params->map_height, start_index, line))
-	{
-		write(1, "Invalid map\n", 12);
-		exit(1);
-	}
+		error_exit("Invalid map\n", 1);
 	params->map_width = calc_maxwidth(params, start_index, line);
 	i = 0;
 	while (i < params->map_height)
