@@ -8,7 +8,6 @@ static void	_update_player_dir_(t_params *param, t_player *player)
 	t_vector		tmp;
 	double			rotate_radian;
 
-	printf("kakudo: %f, %f\n",player->dir.x, player->dir.y);
 	old_dir.x = player->dir.x;
 	old_dir.y = player->dir.y;
 	old_plane.x = player->plane.x;
