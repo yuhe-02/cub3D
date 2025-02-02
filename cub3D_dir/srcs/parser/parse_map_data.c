@@ -13,18 +13,17 @@ static void set_player_pos(t_ivec *pos, t_params *params, int dir_x, int dir_y)
 	player->init_userpos_y = pos->y;
 }
 
-static int process_map_line_content(char *map_line, int j, int line_len, t_params *params)
+static int process_map_line(char *map_line, int j, t_params *params)
 {
 	t_ivec	pos;
 
+	params->map[j] = ft_strdup(map_line);
+	if (!params->map[j])
+		error_exit("malloc failed for map[j]\n", 1);
 	pos.x = 0;
 	pos.y = j;
-	while (pos.x < line_len)
-	{
-		if (map_line[pos.x] == ' ' || map_line[pos.x] == '\t')
-			params->map[pos.y][pos.x] = ' ';
-		else
-			params->map[pos.y][pos.x] = map_line[pos.x];
+	while (pos.x < params->map_width)
+	{		
 		if (map_line[pos.x] == 'N')
 			set_player_pos(&pos, params, 0, -1);
 		else if (map_line[pos.x] == 'S')
@@ -35,25 +34,6 @@ static int process_map_line_content(char *map_line, int j, int line_len, t_param
 			set_player_pos(&pos, params, -1, 0);
 		(pos.x)++;
 	}
-	while (pos.x < params->map_width) 
-	{
-		params->map[pos.y][pos.x] = ' ';
-		(pos.x)++;
-	}
-	params->map[pos.y][pos.x] = '\0';
-	return (0);
-}
-
-static int process_map_line(char *map_line, int j, t_params *params)
-{
-	int line_len;
-	int	k;
-
-	line_len = ft_strlen(map_line);
-	params->map[j] = malloc(params->map_width + 1);
-	if (!params->map[j])
-		error_exit("malloc failed for map[j]\n", 1);
-	k = process_map_line_content(map_line, j, line_len, params);
 	return (0);
 }
 
