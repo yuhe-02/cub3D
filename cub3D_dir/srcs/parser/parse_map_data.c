@@ -81,9 +81,13 @@ int _parse_map_data(char **line, int start_index, int line_count, t_params *para
 	params->map = malloc(params->map_height * sizeof(char *));
 	if (!params->map)
 		error_exit("malloc failed for map\n", 1);
+	params->map_width = calc_maxwidth(params, start_index, line);
+	_fill_space(params->map_height, params->map_width, start_index, line);
+	// for (int j = 0; line[start_index + j]; j++) {
+	// 	printf("line: '%s'\n", line[start_index + j]);
+	// }
 	if (_check_valid_map(params->map_height, start_index, line))
 		error_exit("Invalid map\n", 1);
-	params->map_width = calc_maxwidth(params, start_index, line);
 	i = 0;
 	while (i < params->map_height)
 	{
