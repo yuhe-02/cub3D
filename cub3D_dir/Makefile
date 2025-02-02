@@ -49,6 +49,7 @@ SRCS += $(PARSERS_DIR)/parse_color.c
 SRCS += $(PARSERS_DIR)/parse_map_data.c
 SRCS += $(PARSERS_DIR)/parse_map.c
 SRCS += $(PARSERS_DIR)/parse.c
+SRCS += $(PARSERS_DIR)/check_valid_map.c
 
 # OBJS
 OBJDIR := objs

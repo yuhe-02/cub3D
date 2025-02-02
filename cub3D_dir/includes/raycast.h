@@ -5,7 +5,7 @@
 #define MAX_LINES 1000//読み取る行数
 #endif
 
-# include "../gnl/get_next_line.h"
+# include "../srcs/gnl/get_next_line.h"
 # include "../minilibx-linux/mlx.h"
 # include <stdio.h>
 # include <stdlib.h>
@@ -155,6 +155,7 @@ void			set_event(t_data *data, t_params *params);
 void			_raycast(t_params *params);
 void            _draw_vertical(t_data *data, t_ivec *coord, t_wall *wall);
 void	error_exit(const char *str, int error_num);
+int _check_valid_map(int len, int start_index, char **line);
 
 // ryomori
 int		parse_color(char *line);

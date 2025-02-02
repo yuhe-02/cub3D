@@ -13,7 +13,7 @@
 # include "../libft/libft.h"
 # include "raycast.h"
 # include "../minilibx-linux/mlx.h"
-# include "../gnl/get_next_line.h"
+# include "../srcs/gnl/get_next_line.h"
 
 // # define WIDTH 800
 // # define HEIGHT 800

@@ -73,30 +73,6 @@ static int calc_maxwidth(t_params *params, int start_index, char **line)
 	return (len);
 }
 
-static int check_valid_map_(int len, int start_index, char **line)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	// TODO if 入力予期していないアスキーの場合の処理
-	// TODO if ユーザーの位置が存在しない、または複数候補があるとき
-	// TODO if 壁で囲まれていない場合
-	while (i < len)
-	{
-		j = 0;
-		while (line[start_index + i][j])
-		{
-			if (!ft_strchr("SWEN \t01", line[start_index + i][j]))
-				return (1);
-			j++;
-		}
-		i++;
-	}
-	return (0);
-
-}
-
 int _parse_map_data(char **line, int start_index, int line_count, t_params *params)
 {
 	int i;
@@ -105,7 +81,7 @@ int _parse_map_data(char **line, int start_index, int line_count, t_params *para
 	params->map = malloc(params->map_height * sizeof(char *));
 	if (!params->map)
 		error_exit("malloc failed for map\n", 1);
-	if (check_valid_map_(params->map_height, start_index, line))
+	if (_check_valid_map(params->map_height, start_index, line))
 		error_exit("Invalid map\n", 1);
 	params->map_width = calc_maxwidth(params, start_index, line);
 	i = 0;
