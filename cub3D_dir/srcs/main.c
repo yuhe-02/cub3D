@@ -54,8 +54,8 @@ int	main(int argc, char **argv)
     error_exit("too many arguments\n", 1);
 	params = _init_params();
 	_parse(argv[1], params);
-	call_struct(params);
-	// check_all_set_(params);
+	// call_struct(params);
+	check_all_set_(params);
 	_init_data(&(params->data));
 	_init_player(&(params->player));
 	set_event(&(params->data), params);
