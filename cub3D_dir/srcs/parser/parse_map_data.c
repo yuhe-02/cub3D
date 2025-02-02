@@ -1,6 +1,36 @@
 #include "utils.h"
 
-static void set_player_pos(t_ivec *pos, t_params *params, int dir_x, int dir_y)
+static void	_fill_space_(int height, int width, int start_index, char **line)
+{
+	int		i;
+	int		j;
+	int		end;
+	char	*tmp;
+
+	i = 0;
+	while (i < height)
+	{
+		tmp = (char *)malloc(sizeof(char) * (width + 1));
+		if (!tmp)
+			error_exit("malloc failed", 1);
+		j = 0;
+		while (line[start_index + i][j])
+		{
+			tmp[j] = line[start_index + i][j];
+			j++;
+		}
+		while (j < width)
+		{
+			tmp[j++] = ' ';
+		}
+		tmp[j] = '\0';
+		free(line[start_index + i]);
+		line[start_index + i] = tmp;
+		i++;
+	}
+}
+
+static void _set_player_pos_(t_ivec *pos, t_params *params, int dir_x, int dir_y)
 {
 	t_player *player;
 
@@ -13,7 +43,7 @@ static void set_player_pos(t_ivec *pos, t_params *params, int dir_x, int dir_y)
 	player->init_userpos_y = pos->y;
 }
 
-static int process_map_line(char *map_line, int j, t_params *params)
+static int _process_map_line_(char *map_line, int j, t_params *params)
 {
 	t_ivec	pos;
 
@@ -25,19 +55,19 @@ static int process_map_line(char *map_line, int j, t_params *params)
 	while (pos.x < params->map_width)
 	{		
 		if (map_line[pos.x] == 'N')
-			set_player_pos(&pos, params, 0, -1);
+			_set_player_pos_(&pos, params, 0, -1);
 		else if (map_line[pos.x] == 'S')
-			set_player_pos(&pos, params, 0, 1);
+			_set_player_pos_(&pos, params, 0, 1);
 		else if (map_line[pos.x] == 'E')
-			set_player_pos(&pos, params, 1, 0);
+			_set_player_pos_(&pos, params, 1, 0);
 		else if (map_line[pos.x] == 'W')
-			set_player_pos(&pos, params, -1, 0);
+			_set_player_pos_(&pos, params, -1, 0);
 		(pos.x)++;
 	}
 	return (0);
 }
 
-static int calc_maxwidth(t_params *params, int start_index, char **line)
+static int calc_max_width_(t_params *params, int start_index, char **line)
 {
 	int j;
 	int len;
@@ -53,16 +83,26 @@ static int calc_maxwidth(t_params *params, int start_index, char **line)
 	return (len);
 }
 
-int _parse_map_data(char **line, int start_index, int line_count, t_params *params)
+static int	count_map_height_(int start_index, char **line)
+{
+	int	i;
+	
+	i = 0;
+	while (line[start_index + i])
+		i++;
+	return (i);
+}
+
+int _parse_map_data(char **line, int start_index, t_params *params)
 {
 	int i;
 
-	params->map_height = line_count - start_index;
+	params->map_height = count_map_height_(start_index, line);
 	params->map = malloc(params->map_height * sizeof(char *));
 	if (!params->map)
 		error_exit("malloc failed for map\n", 1);
-	params->map_width = calc_maxwidth(params, start_index, line);
-	_fill_space(params->map_height, params->map_width, start_index, line);
+	params->map_width = calc_max_width_(params, start_index, line);
+	_fill_space_(params->map_height, params->map_width, start_index, line);
 	// for (int j = 0; line[start_index + j]; j++) {
 	// 	printf("line: '%s'\n", line[start_index + j]);
 	// }
@@ -71,7 +111,7 @@ int _parse_map_data(char **line, int start_index, int line_count, t_params *para
 	i = 0;
 	while (i < params->map_height)
 	{
-		process_map_line(line[start_index + i], i, params);
+		_process_map_line_(line[start_index + i], i, params);
 		i++;
 	}
 	return (0);

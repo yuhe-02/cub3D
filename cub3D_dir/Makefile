@@ -50,7 +50,6 @@ SRCS += $(PARSERS_DIR)/parse_map_data.c
 SRCS += $(PARSERS_DIR)/parse_map_interface.c
 SRCS += $(PARSERS_DIR)/parse.c
 SRCS += $(PARSERS_DIR)/check_valid_map.c
-SRCS += $(PARSERS_DIR)/fill_space.c
 
 # OBJS
 OBJDIR := objs

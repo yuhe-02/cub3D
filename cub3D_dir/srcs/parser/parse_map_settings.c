@@ -64,13 +64,13 @@ static int	_handle_map_elements_(char **line, int i, t_params *params)
 	return (0);
 }
 
-int	_parse_map_settings(char **line, int line_count, t_params *params)
+int	_parse_map_settings(char **line, t_params *params)
 {
 	int i;
 	int	result;
 
 	i = 0;
-	while (i < line_count)
+	while (line[i])
 	{
 		result = _handle_map_elements_(line, i, params);
 		if (result == 1)
