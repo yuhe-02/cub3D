@@ -34,6 +34,16 @@ static  void check_all_set_(t_params *params)
   if (params->player.init_userpos_x == -1)
     error_exit("player position not set\n", 1);
 }
+static void call_struct(t_params *params)
+{
+	printf("mapwidth, mapheight = (%d, %d)\n", params->map_width, params->map_height);
+	printf("path north: %s\n", params->data.tex_north.path);
+	printf("path south: %s\n", params->data.tex_south.path);
+	printf("path west: %s\n", params->data.tex_west.path);
+	printf("path east: %s\n", params->data.tex_east.path);
+	printf("ceiling, floor=(%x, %x)\n", params->data.ceilling_color, params->data.floor_color);
+	// printf("player pos=(%d, %d)\n", params->player.init_userpos_x, params->player.init_userpos_y);
+}
 int	main(int argc, char **argv)
 {
 	t_params	*params;
@@ -44,7 +54,8 @@ int	main(int argc, char **argv)
     error_exit("too many arguments\n", 1);
 	params = _init_params();
 	_parse(argv[1], params);
-  check_all_set_(params);
+	// call_struct(params);
+	check_all_set_(params);
 	_init_data(&(params->data));
 	_init_player(&(params->player));
 	set_event(&(params->data), params);

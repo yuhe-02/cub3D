@@ -5,52 +5,75 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/01 05:52:17 by yyamasak          #+#    #+#             */
-/*   Updated: 2025/01/01 05:52:23 by yyamasak         ###   ########.fr       */
+/*   Created: 2024/04/20 15:52:33 by yyamasak          #+#    #+#             */
+/*   Updated: 2025/02/02 16:48:55 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	ft_atoi_helper(const char *start)
+void	minus_skip(const char *str, int *i, int *minus)
 {
-	size_t	digit_len;
+	if (str[*i] == '+' || str[*i] == '-')
+	{
+		if (str[*i] == '-')
+			*minus = -1;
+		(*i)++;
+	}
+}
 
-	digit_len = 0;
-	while (ft_isdigit(start[digit_len]))
-		digit_len++;
-	if (digit_len > 19)
-		return (1);
-	if (digit_len == 19 && ft_strncmp(start, "9223372036854775807", 19) > 0)
-		return (1);
-	return (0);
+int	trim_space(const char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
+		i++;
+	return (i);
+}
+
+int	is_limit_value(long *digits, int value, int *minus)
+{
+	int	flg;
+
+	flg = 0;
+	if (*minus == -1)
+	{
+		if (-*digits < (LONG_MIN + value) / 10)
+		{
+			*digits = LONG_MIN;
+			flg = 1;
+			*minus = 1;
+		}
+	}
+	else
+	{
+		if (*digits > (LONG_MAX - value) / 10)
+		{
+			flg = 1;
+			*digits = LONG_MAX;
+		}
+	}
+	return (flg);
 }
 
 int	ft_atoi(const char *str)
 {
-	int	sign;
-	int	result;
+	long	digits;
+	int		i;
+	int		minus;
 
-	sign = 1;
-	result = 0;
-	while (*str == ' ' || (9 <= *str && *str <= 13))
-		str++;
-	if (*str == '+' || *str == '-')
+	minus = 1;
+	digits = 0;
+	i = trim_space(str);
+	minus_skip(str, &i, &minus);
+	while (str[i] >= '0' && str[i] <= '9')
 	{
-		if (*str == '-')
-			sign = -1;
-		str++;
+		if (is_limit_value(&digits, str[i] - '0', &minus))
+			break ;
+		digits = digits * 10 + (str[i] - '0');
+		i++;
 	}
-	while (*str == '0')
-		str++;
-	if (ft_atoi_helper(str))
-	{
-		return (-1 * (sign == 1));
-	}
-	while (*str && ft_isdigit(*str))
-	{
-		result = result * 10 + (*str - '0');
-		str++;
-	}
-	return (result * sign);
+	digits *= minus;
+	return ((int)digits);
 }

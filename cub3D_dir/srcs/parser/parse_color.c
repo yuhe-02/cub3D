@@ -12,6 +12,7 @@ static int	convert_rgb_hex(int *rgb_colors)
 	int	i;
 
 	i = 0;
+	hex_color = 0;
 	while(i < 3)
 	{
 		hex_color = hex_color * 256 + rgb_colors[i];
@@ -83,6 +84,6 @@ int		parse_color(char *line)
 	check_parsed_value_(rgb);
 	parse_rgb_values(rgb, rgb_color);
 	free_char_rgb(rgb);
-	// printf("color: %d %d %d\n", rgb_color[0], rgb_color[1], rgb_color[2]);
+	printf("color: %d %d %d\n", rgb_color[0], rgb_color[1], rgb_color[2]);
 	return (convert_rgb_hex(rgb_color));
 }
