@@ -163,5 +163,6 @@ int		_parse_map_settings(char **line, int line_count, t_params *params);
 int		_parse_map_data(char **line, int start_index, int line_count, t_params *params);
 void	_parse(const char *map_file, t_params *params);
 int		_parse_map(char **line, int line_count, t_params *params);
+void	_fill_space(int height, int width, int start_index, char **line);
 
 #endif

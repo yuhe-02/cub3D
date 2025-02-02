@@ -83,6 +83,6 @@ int		parse_color(char *line)
 	check_parsed_value_(rgb);
 	parse_rgb_values(rgb, rgb_color);
 	free_char_rgb(rgb);
-	printf("color: %d %d %d\n", rgb_color[0], rgb_color[1], rgb_color[2]);
+	// printf("color: %d %d %d\n", rgb_color[0], rgb_color[1], rgb_color[2]);
 	return (convert_rgb_hex(rgb_color));
 }

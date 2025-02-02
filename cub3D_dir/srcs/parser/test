@@ -1,0 +1,29 @@
+			if (j == 0 && (is_user_dir(current_char)))
+			{
+				error_exit("Invalid map: player not locate field in left top\n", 1);
+			}
+			if (is_user_dir(current_char)&& (is_space_(next_char) || !next_char))
+			{
+				error_exit("Invalid map: found space or null next to player\n", 1);
+			}
+			if (is_space_(current_char) && is_user_dir(current_char))
+			{
+				error_exit("Invalid map: found space before player\n", 1);
+			}
+			// check 0 is not near space (vertical check)
+			if (i == 0 && is_user_dir(current_char))
+			{
+				error_exit("Invalid map: player not locate in top\n", 1);
+			}
+			if (i == len - 1 && is_user_dir(current_char))
+			{
+				error_exit("Invalid map: player not locate in bottom\n", 1);
+			}
+			if (is_user_dir(current_char) && is_space_(above_char))
+			{
+				error_exit("Invalid map: found space above player \n", 1);
+			}
+			if (is_user_dir(current_char) && is_space_(bottom_char))
+			{
+				error_exit("Invalid map: found space bottom player \n", 1);
+			}

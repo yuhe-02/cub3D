@@ -6,7 +6,7 @@
 /*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 14:53:47 by yyamasak          #+#    #+#             */
-/*   Updated: 2025/01/29 15:26:13 by yyamasak         ###   ########.fr       */
+/*   Updated: 2025/02/02 14:58:49 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ void	_parse(const char *map_file, t_params *params)
 			free(line[line_count++]);
 		}
 		free(line);
-		error_exit("Error\nInvalid map\n", 1);
+		error_exit("Error\nInvalid map settings\n", 1);
 	}
 	line_count = 0;
 	while (line[line_count])
