@@ -17,7 +17,7 @@ static int	_handle_texture_(char **line, int i, t_params *params)
 	else 
 		return (0);
 	if (*tmp)
-		error_exit("multi position set\n", 1);
+		return (-1);
 	*tmp = ft_strtrim(line[i] + 3, "\n");
 	return (1);
 }
@@ -36,10 +36,12 @@ static int	_handle_floor_ceiling_color_(char **line, int i, t_params *params)
 	else 
 		return (0);
 	if (*tmp != -1)
-		error_exit("multi position set\n", 1);
+		return (-1);
 	tmp_line = ft_strtrim(line[i] + 2, "\n \t");
 	*tmp = parse_color(tmp_line);
 	free(tmp_line);
+	if (*tmp != -1)
+		return (-2);
 	return (1);
 }
 
@@ -50,9 +52,15 @@ static int	_handle_map_elements_(char **line, int i, t_params *params)
 	result = _handle_texture_(line, i, params);
 	if (result == 1)
 		return (1);
+	else if (result == -1)
+		error_exit("same texture already set\n", 1);
 	result = _handle_floor_ceiling_color_(line, i, params);
 	if (result == 1)
 		return (1);
+	else if (result == -1)
+		error_exit("same parameter already set\n", 1);
+	else if (result == -2)
+		error_exit("invalid parameter already set\n", 1);
 	return (0);
 }
 
