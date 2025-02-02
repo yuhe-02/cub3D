@@ -6,20 +6,21 @@
 /*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 03:52:00 by yyamasak          #+#    #+#             */
-/*   Updated: 2025/01/29 15:30:18 by yyamasak         ###   ########.fr       */
+/*   Updated: 2025/02/02 16:40:32 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 
-static void	_set_xpm_file_(t_image *image, t_data *data)
+static int	_set_xpm_file_(t_image *image, t_data *data)
 {
 	image->img = mlx_xpm_file_to_image(data->mlx, image->path,
 		&(image->width), &(image->height));
 	if (!image->img)
-		error_exit("image not found\n", 1);
+		return (0);
 	image->addr = mlx_get_data_addr(image->img, &(image->bpp),
 		&(image->llen), &(image->eda));
+	return (1);
 }
 
 void	_init_data(t_data *data)
@@ -31,8 +32,12 @@ void	_init_data(t_data *data)
 	data->img.img = mlx_new_image(data->mlx, data->img.width, data->img.height);
 	data->img.addr = mlx_get_data_addr(data->img.img, &(data->img.bpp), &(data->img.llen),
 			&(data->img.eda));
-	_set_xpm_file_(&(data->tex_north), data);
-	_set_xpm_file_(&(data->tex_south), data);
-	_set_xpm_file_(&(data->tex_west), data);
-	_set_xpm_file_(&(data->tex_east), data);
+	if (!_set_xpm_file_(&(data->tex_north), data))
+		error_exit("image not found\n", 1);
+	if (!_set_xpm_file_(&(data->tex_south), data))
+		error_exit("image not found\n", 1);
+	if (!_set_xpm_file_(&(data->tex_west), data))
+		error_exit("image not found\n", 1);
+	if (!_set_xpm_file_(&(data->tex_east), data))
+		error_exit("image not found\n", 1);
 }

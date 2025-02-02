@@ -33,7 +33,7 @@ static int	parse_rgb_values(char **rgb, int *rgb_colors)
 			return (0);
 		i++;
 	}
-	return (0);
+	return (1);
 }
 static void free_char_rgb(char **rgb)
 {

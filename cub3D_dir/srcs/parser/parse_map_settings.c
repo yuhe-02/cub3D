@@ -40,7 +40,7 @@ static int	_handle_floor_ceiling_color_(char **line, int i, t_params *params)
 	tmp_line = ft_strtrim(line[i] + 2, "\n \t");
 	*tmp = parse_color(tmp_line);
 	free(tmp_line);
-	if (*tmp != -1)
+	if (*tmp == -1)
 		return (-2);
 	return (1);
 }
