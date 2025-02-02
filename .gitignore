@@ -2,3 +2,8 @@
 objs
 .vscode
 .venv
+Cub3D
+cub3D_dir/libft/libft.a
+cub3D_dir/libft/Cub3D
+
+
