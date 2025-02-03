@@ -1,6 +1,6 @@
 #include "utils.h"
 
-static void	_fill_space_(int width, int start_index, char **line)
+static int	_fill_space_(int width, int start_index, char **line)
 {
 	int		i;
 	int		j;
@@ -12,7 +12,7 @@ static void	_fill_space_(int width, int start_index, char **line)
 	{
 		tmp = (char *)malloc(sizeof(char) * (width + 1));
 		if (!tmp)
-			error_exit("malloc failed", 1);
+			return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "malloc failed"));
 		j = 0;
 		while (line[start_index + i][j])
 		{
@@ -26,9 +26,10 @@ static void	_fill_space_(int width, int start_index, char **line)
 		line[start_index + i] = tmp;
 		i++;
 	}
+	return (0);
 }
 
-static void _set_player_pos_(t_ivec *pos, t_params *params, int dir_x, int dir_y)
+static int _set_player_pos_(t_ivec *pos, t_params *params, int dir_x, int dir_y)
 {
 	t_player *player;
 
@@ -36,30 +37,35 @@ static void _set_player_pos_(t_ivec *pos, t_params *params, int dir_x, int dir_y
 	player->init_userdir_x = dir_x;
 	player->init_userdir_y = dir_y;
 	if (player->init_userpos_x != -1)
-		error_exit("multi set\n", 1);
+		return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "player position more than 2"));
 	player->init_userpos_x = pos->x;
 	player->init_userpos_y = pos->y;
+	return (0);
 }
 
 static int _process_map_line_(char *map_line, int j, t_params *params)
 {
 	t_ivec	pos;
+	int		err;
 
 	params->map[j] = ft_strdup(map_line);
 	if (!params->map[j])
-		error_exit("malloc failed for map[j]\n", 1);
+		return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "malloc failed for map[j]"));
 	pos.x = 0;
 	pos.y = j;
+	err = 0;
 	while (pos.x < params->map_width)
 	{		
 		if (map_line[pos.x] == 'N')
-			_set_player_pos_(&pos, params, 0, -1);
+			err = _set_player_pos_(&pos, params, 0, -1);
 		else if (map_line[pos.x] == 'S')
-			_set_player_pos_(&pos, params, 0, 1);
+			err = _set_player_pos_(&pos, params, 0, 1);
 		else if (map_line[pos.x] == 'E')
-			_set_player_pos_(&pos, params, 1, 0);
+			err = _set_player_pos_(&pos, params, 1, 0);
 		else if (map_line[pos.x] == 'W')
-			_set_player_pos_(&pos, params, -1, 0);
+			err = _set_player_pos_(&pos, params, -1, 0);
+		if (err)
+			return (1);
 		(pos.x)++;
 	}
 	return (0);
@@ -98,18 +104,20 @@ int _parse_map_data(char **line, int start_index, t_params *params)
 	params->map_height = count_map_height_(start_index, line);
 	params->map = malloc(params->map_height * sizeof(char *));
 	if (!params->map)
-		error_exit("malloc failed for map\n", 1);
+		return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "malloc failed for map"));
 	params->map_width = calc_max_width_(params, start_index, line);
-	_fill_space_(params->map_width, start_index, line);
+	if (_fill_space_(params->map_width, start_index, line))
+		return (1);
 	// for (int j = 0; line[start_index + j]; j++) {
 	// 	printf("line: '%s'\n", line[start_index + j]);
 	// }
 	if (_check_valid_map(params->map_height, start_index, line))
-		error_exit("Invalid map\n", 1);
+		return (1);
 	i = 0;
 	while (i < params->map_height)
 	{
-		_process_map_line_(line[start_index + i], i, params);
+		if (_process_map_line_(line[start_index + i], i, params))
+			return (1);
 		i++;
 	}
 	return (0);

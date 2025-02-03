@@ -6,7 +6,7 @@
 /*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 14:13:22 by yyamasak          #+#    #+#             */
-/*   Updated: 2025/02/02 17:25:36 by yyamasak         ###   ########.fr       */
+/*   Updated: 2025/02/03 12:50:27 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,66 +72,68 @@ int _check_valid_map(int len, int start_index, char **line)
 			// check 0 is not near space (horizontal check)
 			if (j == 0 && (current_char  == '0'))
 			{
-				error_exit("Invalid map: not locate field in left top\n", 1);
+				return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "Invalid map: not locate field in left top"));
 			}
 			if (current_char  == '0' && (is_space_(next_char) || !next_char))
 			{
-				error_exit("Invalid map: found space or null next to field\n", 1);
+				return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "Invalid map: found space or null next to field"));
 			}
 			if (is_space_(current_char) && next_char == '0')
 			{
-				error_exit("Invalid map: found space before field\n", 1);
+				return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "Invalid map: found space before field"));
 			}
 			// check 0 is not near space (vertical check)
 			if (i == 0 && current_char  == '0')
 			{
-				error_exit("Invalid map: not locate field in top\n", 1);
+				return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "Invalid map: not locate field in top"));
 			}
 			if (i == len - 1 && current_char  == '0')
 			{
-				error_exit("Invalid map: not locate field in bottom\n", 1);
+				return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "Invalid map: not locate field in bottom"));
 			}
 			if (current_char == '0' && is_space_(above_char))
 			{
-				error_exit("Invalid map: found space above\n", 1);
+				return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "Invalid map: found space above"));
 			}
 			if (current_char == '0' && is_space_(bottom_char))
 			{
-				error_exit("Invalid map: found space bottom\n", 1);
+				return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "Invalid map: found space bottom"));
 			}
 			// check player is not near space (horizontal check)
 			if (j == 0 && (is_user_dir_(current_char)))
 			{
-				error_exit("Invalid map: player not locate field in left top\n", 1);
+				return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "Invalid map: player not locate field in left top"));
 			}
 			if (is_user_dir_(current_char)&& (is_space_(next_char) || !next_char))
 			{
-				error_exit("Invalid map: found space or null next to player\n", 1);
+				return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "Invalid map: found space or null next to player"));
 			}
 			if (is_space_(current_char) && is_user_dir_(current_char))
 			{
-				error_exit("Invalid map: found space before player\n", 1);
+				return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "Invalid map: found space before player"));
 			}
 			// check player is not near space (vertical check)
 			if (i == 0 && is_user_dir_(current_char))
 			{
-				error_exit("Invalid map: player not locate in top\n", 1);
+				return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "Invalid map: player not locate in top"));
 			}
 			if (i == len - 1 && is_user_dir_(current_char))
 			{
-				error_exit("Invalid map: player not locate in bottom\n", 1);
+				return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "Invalid map: player not locate in bottom"));
 			}
 			if (is_user_dir_(current_char) && is_space_(above_char))
 			{
-				error_exit("Invalid map: found space above player \n", 1);
+				return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "Invalid map: found space above player"));
 			}
 			if (is_user_dir_(current_char) && is_space_(bottom_char))
 			{
-				error_exit("Invalid map: found space bottom player \n", 1);
+				return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "Invalid map: found space bottom player"));
 			}
 			// check if valid ascii
 			if (!is_valid_ascii_(current_char))
-				error_exit("Invalid map: found invalid ascii\n", 1);
+			{
+				return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "Invalid map: found invalid ascii"));
+			}
 			j++;
 		}
 		i++;

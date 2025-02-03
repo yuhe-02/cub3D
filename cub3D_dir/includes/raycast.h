@@ -7,6 +7,7 @@
 
 # include "../srcs/gnl/get_next_line.h"
 # include "../minilibx-linux/mlx.h"
+# include "../ft_printf/ft_printf.h"
 # include <stdio.h>
 # include <stdlib.h>
 # include <X11/X.h>
@@ -44,6 +45,7 @@
 # define PI 3.141582653589793
 # define MOVE_SPEED 0.05
 # define ROT_SPEED PI / 200
+# define ERR_FD 2
 
 typedef struct s_vector
 {

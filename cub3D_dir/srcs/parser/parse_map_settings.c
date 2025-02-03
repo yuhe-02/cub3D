@@ -17,9 +17,9 @@ static int	_handle_texture_(char **line, int i, t_params *params)
 	else 
 		return (0);
 	if (*tmp)
-		return (-1);
+		return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "same texture already set"));
 	*tmp = ft_strtrim(line[i] + 3, "\n");
-	return (1);
+	return (-1);
 }
 
 static int	_handle_floor_ceiling_color_(char **line, int i, t_params *params)
@@ -36,47 +36,47 @@ static int	_handle_floor_ceiling_color_(char **line, int i, t_params *params)
 	else 
 		return (0);
 	if (*tmp != -1)
-		return (-1);
+		return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "same parameter already set"));
 	tmp_line = ft_strtrim(line[i] + 2, "\n \t");
 	*tmp = parse_color(tmp_line);
 	free(tmp_line);
 	if (*tmp == -1)
-		return (-2);
-	return (1);
+		return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "invalid parameter already set"));
+	return (-1);
 }
 
 static int	_handle_map_elements_(char **line, int i, t_params *params)
 {
-	int result;
+	int err;
 
-	result = _handle_texture_(line, i, params);
-	if (result == 1)
+	err = _handle_texture_(line, i, params);
+	if (err == -1)
 		return (1);
-	else if (result == -1)
-		error_exit("same texture already set\n", 1);
-	result = _handle_floor_ceiling_color_(line, i, params);
-	if (result == 1)
+	else if (err)
+		return (-1);
+	err = _handle_floor_ceiling_color_(line, i, params);
+	if (err == -1)
 		return (1);
-	else if (result == -1)
-		error_exit("same parameter already set\n", 1);
-	else if (result == -2)
-		error_exit("invalid parameter already set\n", 1);
+	else if (err)
+		return (-1);
 	return (0);
 }
 
 int	_parse_map_settings(char **line, t_params *params)
 {
 	int i;
-	int	result;
+	int	err;
 
 	i = 0;
 	while (line[i])
 	{
-		result = _handle_map_elements_(line, i, params);
-		if (result == 1)
+		err = _handle_map_elements_(line, i, params);
+		if (err == 1)
 			i++;
-		else if (result == 0 && line[i][0] == '\0')
+		else if (err == 0 && line[i][0] == '\0')
 			i++;
+		else if (err == -1)
+			return (-1);
 		else
 			break ;
 	}
