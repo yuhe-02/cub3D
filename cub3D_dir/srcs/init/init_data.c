@@ -6,11 +6,37 @@
 /*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 03:52:00 by yyamasak          #+#    #+#             */
-/*   Updated: 2025/02/03 13:33:42 by yyamasak         ###   ########.fr       */
+/*   Updated: 2025/02/03 14:04:30 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
+
+static int _check_open_file_(char *path)
+{
+	int	fd;
+
+	if (!path)
+		return (1);
+	fd = open(path, O_RDONLY);
+	if (fd == -1)
+		return (1);
+	close(fd);
+	return (0);
+}
+
+static int	_check_path_is_valid_(t_data *data)
+{
+	if (_check_open_file_(data->tex_north.path))
+		return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "north texture not found"));
+	if (_check_open_file_(data->tex_south.path))
+		return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "south texture not found"));
+	if (_check_open_file_(data->tex_west.path))
+		return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "west texture not found"));
+	if (_check_open_file_(data->tex_east.path))
+		return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "east texture not found"));
+	return (0);
+}
 
 static int	_set_xpm_file_(t_image *image, t_data *data)
 {
@@ -25,9 +51,13 @@ static int	_set_xpm_file_(t_image *image, t_data *data)
 
 int	_init_data(t_data *data)
 {
+	if (_check_path_is_valid_(data))
+		return (1);
 	data->img.width = WIDTH;
 	data->img.height = HEIGHT;
 	data->mlx = mlx_init();
+	if (!data->mlx)
+		return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "mlx init failed"));
 	data->win = mlx_new_window(data->mlx, data->img.width, data->img.height, "cub3D");
 	data->img.img = mlx_new_image(data->mlx, data->img.width, data->img.height);
 	data->img.addr = mlx_get_data_addr(data->img.img, &(data->img.bpp), &(data->img.llen),

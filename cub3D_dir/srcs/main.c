@@ -60,7 +60,8 @@ int	main(int argc, char **argv)
 	// call_struct(params);
 	if (check_all_set_(params))
 		exit(1);
-	_init_data(&(params->data));
+	if (_init_data(&(params->data)))
+		exit(1);
 	_init_player(&(params->player));
 	set_event(&(params->data), params);
 	mlx_loop_hook(params->data.mlx, &main_loop, (void *)params);

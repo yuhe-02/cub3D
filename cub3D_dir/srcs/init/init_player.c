@@ -6,7 +6,7 @@
 /*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 04:14:10 by yyamasak          #+#    #+#             */
-/*   Updated: 2025/01/30 14:07:47 by yyamasak         ###   ########.fr       */
+/*   Updated: 2025/02/03 13:45:45 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ void	_init_player(t_player *player)
 	player->pos.x = (double)player->init_userpos_x + 0.5;
 	player->pos.y = (double)player->init_userpos_y + 0.5;
 	_init_player_dir_(player);
-	printf("%d %d\n", player->init_userdir_x, player->init_userdir_y);
 	player->side_flg = 0;
 	player->approx_flg = 0;
 	player->rotate_flg = 0;
