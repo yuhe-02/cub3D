@@ -5,5 +5,9 @@ objs
 Cub3D
 ./cub3D_dir/libft/libft.a
 ./cub3D_dir/Cub3D
+cub3d-tester
+cub3D_tester
+res
+libft.a
 
 

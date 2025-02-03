@@ -6,7 +6,7 @@
 /*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 14:13:22 by yyamasak          #+#    #+#             */
-/*   Updated: 2025/02/02 16:47:54 by yyamasak         ###   ########.fr       */
+/*   Updated: 2025/02/02 17:25:36 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,8 +129,6 @@ int _check_valid_map(int len, int start_index, char **line)
 			{
 				error_exit("Invalid map: found space bottom player \n", 1);
 			}
-
-
 			// check if valid ascii
 			if (!is_valid_ascii_(current_char))
 				error_exit("Invalid map: found invalid ascii\n", 1);

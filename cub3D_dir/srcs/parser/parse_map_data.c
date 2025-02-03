@@ -1,6 +1,6 @@
 #include "utils.h"
 
-static void	_fill_space_(int height, int width, int start_index, char **line)
+static void	_fill_space_(int width, int start_index, char **line)
 {
 	int		i;
 	int		j;
@@ -8,7 +8,7 @@ static void	_fill_space_(int height, int width, int start_index, char **line)
 	char	*tmp;
 
 	i = 0;
-	while (i < height)
+	while (line[start_index + i])
 	{
 		tmp = (char *)malloc(sizeof(char) * (width + 1));
 		if (!tmp)
@@ -20,9 +20,7 @@ static void	_fill_space_(int height, int width, int start_index, char **line)
 			j++;
 		}
 		while (j < width)
-		{
 			tmp[j++] = ' ';
-		}
 		tmp[j] = '\0';
 		free(line[start_index + i]);
 		line[start_index + i] = tmp;
@@ -102,7 +100,7 @@ int _parse_map_data(char **line, int start_index, t_params *params)
 	if (!params->map)
 		error_exit("malloc failed for map\n", 1);
 	params->map_width = calc_max_width_(params, start_index, line);
-	_fill_space_(params->map_height, params->map_width, start_index, line);
+	_fill_space_(params->map_width, start_index, line);
 	// for (int j = 0; line[start_index + j]; j++) {
 	// 	printf("line: '%s'\n", line[start_index + j]);
 	// }
