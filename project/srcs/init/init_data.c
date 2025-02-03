@@ -6,7 +6,7 @@
 /*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 03:52:00 by yyamasak          #+#    #+#             */
-/*   Updated: 2025/02/03 14:22:09 by yyamasak         ###   ########.fr       */
+/*   Updated: 2025/02/03 14:46:57 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ int	_init_data(t_data *data)
 {
 	if (_check_path_is_valid_(data))
 		return (1);
+	printf("%s\n", data->tex_north.path);
 	data->img.width = WIDTH;
 	data->img.height = HEIGHT;
 	data->mlx = mlx_init();

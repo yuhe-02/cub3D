@@ -6,7 +6,7 @@
 /*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 14:53:47 by yyamasak          #+#    #+#             */
-/*   Updated: 2025/02/03 14:22:14 by yyamasak         ###   ########.fr       */
+/*   Updated: 2025/02/03 14:36:34 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,6 @@ int	_parse(const char *map_file, t_params *params)
 	err = _parse_map(line, params);
 	free_all_line(line);
 	if (err)
-		return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "Invalid map settings"));
+		return (1);
 	return (0);
 }
