@@ -30,10 +30,10 @@ static int	parse_rgb_values(char **rgb, int *rgb_colors)
 	{
 		rgb_colors[i] = ft_atoi(rgb[i]);
 		if (!is_valid_rgb(rgb_colors[i]))
-			return (0);
+			return (1);
 		i++;
 	}
-	return (1);
+	return (0);
 }
 static void free_char_rgb(char **rgb)
 {
@@ -57,36 +57,37 @@ int		check_parsed_value_(char **tmp)
 	while (tmp[i])
 		i++;
 	if (i != 3)
-		return (0);
+		return (1);
 	while (i--)
 	{
 		if (!*tmp[i])
-			return (0);
+			return (1);
 		j = 0;
 		while (tmp[i][j])
 		{
 			if (!ft_isdigit(tmp[i][j]))
-				return (0);
+				return (1);
 			j++;
 		}
 	}
-	return (1);
+	return (0);
 }
 
-int		parse_color(char *line)
+int		parse_color(char *line, int *color)
 {
 	char	**rgb;
 	int		rgb_color[3];
 
 	rgb = ft_split(line, ',');
 	if (!rgb)
-		error_exit("malloc failed\n", 1);
-	if (!check_parsed_value_(rgb) || !parse_rgb_values(rgb, rgb_color))
+		return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "malloc failed"));
+	if (check_parsed_value_(rgb) || parse_rgb_values(rgb, rgb_color))
 	{
 		free_char_rgb(rgb);
-		return (-1);
+		return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "Invalid color format"));
 	}
 	free_char_rgb(rgb);
 	// printf("color: %d %d %d\n", rgb_color[0], rgb_color[1], rgb_color[2]);
-	return (convert_rgb_hex(rgb_color));
+	*color = convert_rgb_hex(rgb_color);
+	return (0);
 }

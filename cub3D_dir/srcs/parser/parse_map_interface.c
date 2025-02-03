@@ -6,7 +6,7 @@
 /*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 14:51:44 by yyamasak          #+#    #+#             */
-/*   Updated: 2025/02/03 13:02:54 by yyamasak         ###   ########.fr       */
+/*   Updated: 2025/02/03 13:08:08 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ int	_parse_map(char **line, t_params *params)
 	
 	start_index = _parse_map_settings(line, params);
 	if (start_index < 0)
-		exit(1);
+		return (1);
 	if (_parse_map_data(line, start_index, params))
-		exit(1);
+		return (1);
 	return (0);
 }

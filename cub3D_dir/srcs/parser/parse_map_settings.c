@@ -27,6 +27,7 @@ static int	_handle_floor_ceiling_color_(char **line, int i, t_params *params)
 	int		*tmp;
 	t_data	*data;
 	char	*tmp_line;
+	int		err;
 
 	data = &(params->data);
 	if (ft_strncmp(line[i], "F ", 2) == 0)
@@ -38,9 +39,9 @@ static int	_handle_floor_ceiling_color_(char **line, int i, t_params *params)
 	if (*tmp != -1)
 		return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "same parameter already set"));
 	tmp_line = ft_strtrim(line[i] + 2, "\n \t");
-	*tmp = parse_color(tmp_line);
+	err = parse_color(tmp_line, tmp);
 	free(tmp_line);
-	if (*tmp == -1)
+	if (err)
 		return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "invalid parameter already set"));
 	return (-1);
 }

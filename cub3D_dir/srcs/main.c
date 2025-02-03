@@ -17,22 +17,23 @@ int	main_loop(void *arg)
 		mlx_put_image_to_window(data->mlx, data->win, data->img.img, 0, 0);
 	return (0);
 }
-static  void check_all_set_(t_params *params)
+static  int check_all_set_(t_params *params)
 {
-  if (!params->data.tex_north.path)
-    error_exit("north path not set\n", 1);
-  if (!params->data.tex_south.path)
-    error_exit("south path not set\n", 1);
-  if (!params->data.tex_west.path)
-    error_exit("west path not set\n", 1);
-  if (!params->data.tex_east.path)
-    error_exit("east path not set\n", 1);
-  if (params->data.ceilling_color == -1)
-    error_exit("ceiling color not set\n", 1);
-  if (params->data.floor_color == -1)
-    error_exit("floor color not set\n", 1);
-  if (params->player.init_userpos_x == -1)
-    error_exit("player position not set\n", 1);
+	if (!params->data.tex_north.path)
+		return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "north path not set"));
+	if (!params->data.tex_south.path)
+		return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "south path not set"));
+	if (!params->data.tex_west.path)
+		return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "west path not set"));
+	if (!params->data.tex_east.path)
+		return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "east path not set"));
+	if (params->data.ceilling_color == -1)
+		return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "ceiling color not set"));
+	if (params->data.floor_color == -1)
+		return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "floor color not set"));
+	if (params->player.init_userpos_x == -1)
+		return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "player position not set"));
+	return (0);
 }
 static void call_struct(t_params *params)
 {
@@ -52,10 +53,13 @@ int	main(int argc, char **argv)
     error_exit("need arguments\n", 1);
   if (argc != 2)
     error_exit("too many arguments\n", 1);
-	params = _init_params();
-	_parse(argv[1], params);
+	if (_init_params(&params))
+		exit(1);
+	if (_parse(argv[1], params))
+		exit(1);
 	// call_struct(params);
-	check_all_set_(params);
+	if (check_all_set_(params))
+		exit(1);
 	_init_data(&(params->data));
 	_init_player(&(params->player));
 	set_event(&(params->data), params);
