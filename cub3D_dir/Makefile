@@ -5,6 +5,9 @@ CC := cc
 LIBFT_DIR := ./libft
 LIBFT := $(LIBFT_DIR)/libft.a
 
+FTPRINTF_DIR := ./ft_printf
+FTPRINTF := $(FTPRINTF_DIR)/libftprintf.a
+
 # SRCS
 SRCDIR := ./srcs
 SRCS += $(SRCDIR)/main.c
@@ -57,7 +60,7 @@ OBJS := $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 
 # complie option
 INCDIR := ./includes
-INCLUDES := -I$(INCDIR) -I$(LIBFT_DIR)
+INCLUDES := -I$(INCDIR) -I$(LIBFT_DIR) -I$(FTPRINTF_DIR)
 
 # Minilibx
 MINILIBX_DIR := ./minilibx-linux
@@ -68,11 +71,14 @@ NAME = $(PJT)
 
 all: $(NAME)
 
-$(NAME): $(OBJS) $(LIBFT) $(MINILIBX)
-	$(CC) $(CFLAGS) $(INCLUDES) -o $@ $^ $(LIBFT) $(MINILIBX) -lXext -lX11 -lm
+$(NAME): $(OBJS) $(LIBFT) $(FTPRINTF) $(MINILIBX)
+	$(CC) $(CFLAGS) $(INCLUDES) -o $@ $^ $(LIBFT) $(FTPRINTF) $(MINILIBX) -lXext -lX11 -lm
 
 $(LIBFT):
 	make -C $(LIBFT_DIR) all
+
+$(FTPRINTF):
+	make -C $(FTPRINTF_DIR) all
 
 $(MINILIBX):
 	make -sC $(MINILIBX_DIR)
@@ -94,12 +100,14 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
 # クリーン
 clean:
 	make -C $(LIBFT_DIR) clean
+	make -C $(FTPRINTF_DIR) clean
 	rm -rf $(OBJDIR)
 	make -C $(MINILIBX_DIR) clean
 
 fclean: clean
 	rm -f $(PJT)
 	make -C $(LIBFT_DIR) fclean
+	make -C $(FTPRINTF_DIR) fclean
 
 re: fclean all
 
