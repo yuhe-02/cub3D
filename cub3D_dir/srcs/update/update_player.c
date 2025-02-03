@@ -1,7 +1,7 @@
 #include "utils.h"
 
 // TODO なんでこの実装にしたのか（plane計算部分）を調査する
-static void	_update_player_dir_(t_params *param, t_player *player)
+static void	_update_player_dir_(t_player *player)
 {
 	t_vector		old_dir;
 	t_vector		old_plane;
@@ -46,7 +46,7 @@ static void	_update_player_pos_(t_params *param, t_player *player)
 void	_update_player(t_params *param, t_player *player)
 {
 	if (player->rotate_flg != 0)
-		_update_player_dir_(param, player);
+		_update_player_dir_(player);
 	else if (player->side_flg != 0 || player->approx_flg != 0)
 		_update_player_pos_(param, player);
 }

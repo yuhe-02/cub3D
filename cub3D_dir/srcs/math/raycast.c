@@ -22,7 +22,7 @@ static void _calc_hit_pos_(t_params *params, t_ray *ray)
 	}
 }
 // TODO なんでこの計算で行けるんだっけ、内側に行っている部分がよくわからないから上の関数と照らし合わせて理解する
-static double	calc_wall_distance_(t_ray *ray, t_player *player)
+static double	calc_wall_distance_(t_ray *ray)
 {
 	double	dis;
 
@@ -65,7 +65,7 @@ void	_raycast(t_params *params)
 		// DDA algorithm
 		_calc_hit_pos_(params, ray);
 		// calculate distance of wall
-		ray->perp_wall_dist = calc_wall_distance_(ray, player);
+		ray->perp_wall_dist = calc_wall_distance_(ray);
 		_wall_assign(&wall, data, ray, player);
 		// contents drawer
 		_draw_vertical(data, &coord, &wall);

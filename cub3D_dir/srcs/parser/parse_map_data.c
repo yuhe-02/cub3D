@@ -4,7 +4,6 @@ static int	_fill_space_(int width, int start_index, char **line)
 {
 	int		i;
 	int		j;
-	int		end;
 	char	*tmp;
 
 	i = 0;
@@ -80,7 +79,7 @@ static int calc_max_width_(t_params *params, int start_index, char **line)
 	len = 0;
 	while (j < params->map_height)
 	{
-		if (ft_strlen(line[j+start_index]) > len)
+		if ((int)(ft_strlen(line[j+start_index])) > len)
 			len = ft_strlen(line[j+start_index]);
 		j++;
 	}

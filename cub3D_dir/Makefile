@@ -1,5 +1,5 @@
 CC := cc
-# CFLAGS := -Wall -Werror -Wextra
+CFLAGS := -Wall -Werror -Wextra
 # CFLAGS := -fsanitize=address
 
 LIBFT_DIR := ./libft
@@ -66,7 +66,7 @@ INCLUDES := -I$(INCDIR) -I$(LIBFT_DIR) -I$(FTPRINTF_DIR)
 MINILIBX_DIR := ./minilibx-linux
 MINILIBX := $(MINILIBX_DIR)/libmlx_Linux.a
 
-PJT := Cub3D
+PJT := cub3D
 NAME = $(PJT)
 
 all: $(NAME)

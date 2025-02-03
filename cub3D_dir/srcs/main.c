@@ -35,16 +35,16 @@ static  int check_all_set_(t_params *params)
 		return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "player position not set"));
 	return (0);
 }
-static void call_struct(t_params *params)
-{
-	printf("mapwidth, mapheight = (%d, %d)\n", params->map_width, params->map_height);
-	printf("path north: %s\n", params->data.tex_north.path);
-	printf("path south: %s\n", params->data.tex_south.path);
-	printf("path west: %s\n", params->data.tex_west.path);
-	printf("path east: %s\n", params->data.tex_east.path);
-	printf("ceiling, floor=(%x, %x)\n", params->data.ceilling_color, params->data.floor_color);
-	printf("player pos=(%d, %d)\n", params->player.init_userpos_x, params->player.init_userpos_y);
-}
+// static void call_struct(t_params *params)
+// {
+// 	printf("mapwidth, mapheight = (%d, %d)\n", params->map_width, params->map_height);
+// 	printf("path north: %s\n", params->data.tex_north.path);
+// 	printf("path south: %s\n", params->data.tex_south.path);
+// 	printf("path west: %s\n", params->data.tex_west.path);
+// 	printf("path east: %s\n", params->data.tex_east.path);
+// 	printf("ceiling, floor=(%x, %x)\n", params->data.ceilling_color, params->data.floor_color);
+// 	printf("player pos=(%d, %d)\n", params->player.init_userpos_x, params->player.init_userpos_y);
+// }
 int	main(int argc, char **argv)
 {
 	t_params	*params;
