@@ -6,11 +6,11 @@
 /*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 14:53:47 by yyamasak          #+#    #+#             */
-/*   Updated: 2025/02/03 13:19:50 by yyamasak         ###   ########.fr       */
+/*   Updated: 2025/02/03 14:22:14 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utils.h"
+#include "raycast.h"
 
 static void	free_all_line(char **line)
 {

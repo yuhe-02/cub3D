@@ -1,4 +1,4 @@
-#include "utils.h"
+#include "raycast.h"
 
 int	main_loop(void *arg)
 {

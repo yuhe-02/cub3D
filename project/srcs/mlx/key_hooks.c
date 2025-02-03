@@ -6,11 +6,11 @@
 /*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 13:02:04 by yyamasak          #+#    #+#             */
-/*   Updated: 2025/02/03 14:08:54 by yyamasak         ###   ########.fr       */
+/*   Updated: 2025/02/03 14:22:12 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utils.h"
+#include "raycast.h"
 
 static int	_move_by_key_(int keycode, t_params *param)
 {

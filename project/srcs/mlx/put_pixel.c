@@ -6,11 +6,11 @@
 /*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 03:45:46 by yyamasak          #+#    #+#             */
-/*   Updated: 2025/01/24 15:57:13 by yyamasak         ###   ########.fr       */
+/*   Updated: 2025/02/03 14:22:12 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utils.h"
+#include "raycast.h"
 
 void	_ft_mlx_pixel_put(t_data *data, int x, int y, int color)
 {

@@ -1,4 +1,4 @@
-#include "utils.h"
+#include "raycast.h"
 
 void	_draw_vertical(t_data *data, t_ivec *coord, t_wall *wall)
 {

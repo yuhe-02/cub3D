@@ -1,9 +1,9 @@
 #!/bin/bash
 
-target_dir=".."
+target_dir="project"
 cd $target_dir && make re
 
-directory="./maps/cub/ng"
+directory="./project/maps/cub/ng"
 error_log="error.txt"
 > "$error_log"
 

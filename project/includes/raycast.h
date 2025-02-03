@@ -1,32 +1,26 @@
 #ifndef RAYCAST_H
 # define RAYCAST_H
 
-#ifndef MAX_LINES
-#define MAX_LINES 1000//読み取る行数
-#endif
-
-# include "../srcs/gnl/get_next_line.h"
-# include "../minilibx-linux/mlx.h"
-# include "../ft_printf/ft_printf.h"
-# include <stdio.h>
-# include <stdlib.h>
 # include <X11/X.h>
 # include <X11/Xlib.h>
 # include <X11/keysym.h>
-# include <ctype.h> //add
-# include <errno.h> //add
-# include <fcntl.h> //add
+# include <ctype.h>
+# include <errno.h>
+# include <fcntl.h>
 # include <math.h>
 # include <stddef.h>
 # include <stdint.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <string.h> //add
+# include <string.h>
 # include <unistd.h>
+# include "../libft/libft.h"
+# include "../minilibx-linux/mlx.h"
+# include "../srcs/gnl/get_next_line.h"
+# include "../ft_printf/ft_printf.h"
 
 # define WIDTH 400
 # define HEIGHT 400
-# define WINDOW_NAME "test"
 # define KEY_ESC 65307
 # define KEY_W 119
 # define KEY_A 97
@@ -35,13 +29,6 @@
 # define KEY_R_DIR 65363
 # define KEY_L_DIR 65361
 # define WINDOW_CLOSE 17
-# define ACRAC 1000
-# define red_16 0xFF0000
-# define blue_16 0x0000FF
-# define yellow_16 0xFFFF00
-# define green_16 0x00FF00
-# define black_16 0x000000
-# define white_16 0xFFFFFF
 # define PI 3.141582653589793
 # define MOVE_SPEED 0.05
 # define ROT_SPEED PI / 200
@@ -104,12 +91,6 @@ typedef struct s_player
 	int			side_flg;
 	int			approx_flg;
 	int			rotate_flg;
-	// ryomori
-	// (init_userdir_x, init_userdir_y)
-	// North = (0, -1)
-	// South = (0, 1)
-	// West = (-1, 0)
-	// East = (1, 0)
 	int			init_userdir_x;
 	int			init_userdir_y;
 	int			init_userpos_x;

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utils.h"
+#include "raycast.h"
 
 void	free_maps(t_params *params)
 {

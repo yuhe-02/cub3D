@@ -10,49 +10,31 @@ FTPRINTF := $(FTPRINTF_DIR)/libftprintf.a
 
 # SRCS
 SRCDIR := ./srcs
-SRCS += $(SRCDIR)/main.c
-SRCS += $(SRCDIR)/error.c
+SRCS := $(wildcard $(SRCDIR)/*.c)
 
 # ADD GNL
-GNL_DIR := ${SRCDIR}/gnl
-SRCS += $(GNL_DIR)/get_next_line.c
-SRCS += $(GNL_DIR)/get_next_line_utils.c
+GNL_DIR := $(SRCDIR)/gnl
+SRCS += $(wildcard $(GNL_DIR)/*.c)
 
 # ADD MLX
-MLXS_DIR := ${SRCDIR}/mlx
-SRCS += $(MLXS_DIR)/key_hooks.c
-SRCS += $(MLXS_DIR)/close_window.c
-SRCS += $(MLXS_DIR)/put_pixel.c
-SRCS += $(MLXS_DIR)/set_event.c
-SRCS += $(MLXS_DIR)/draw_vertical.c
+MLXS_DIR := $(SRCDIR)/mlx
+SRCS += $(wildcard $(MLXS_DIR)/*.c)
 
 # ADD INIT
-INITS_DIR := ${SRCDIR}/init
-SRCS += $(INITS_DIR)/init_params.c
-SRCS += $(INITS_DIR)/init_data.c
-SRCS += $(INITS_DIR)/init_player.c
+INITS_DIR := $(SRCDIR)/init
+SRCS += $(wildcard $(INITS_DIR)/*.c)
 
 # ADD UPDATES
-UPDATES_DIR := ${SRCDIR}/update
-SRCS += $(UPDATES_DIR)/update_player.c
-SRCS += $(UPDATES_DIR)/update_vector.c
-SRCS += $(UPDATES_DIR)/update_ivec.c
-SRCS += $(UPDATES_DIR)/update_ray.c
-SRCS += $(UPDATES_DIR)/update_wall.c
+UPDATES_DIR := $(SRCDIR)/update
+SRCS += $(wildcard $(UPDATES_DIR)/*.c)
 
 # ADD MATH
-MATHS_DIR := ${SRCDIR}/math
-SRCS += $(MATHS_DIR)/convert_angle.c
-SRCS += $(MATHS_DIR)/raycast.c
+MATHS_DIR := $(SRCDIR)/math
+SRCS += $(wildcard $(MATHS_DIR)/*.c)
 
 # ADD PARSER
-PARSERS_DIR := ${SRCDIR}/parser
-SRCS += $(PARSERS_DIR)/parse_map_settings.c
-SRCS += $(PARSERS_DIR)/parse_color.c
-SRCS += $(PARSERS_DIR)/parse_map_data.c
-SRCS += $(PARSERS_DIR)/parse_map_interface.c
-SRCS += $(PARSERS_DIR)/parse.c
-SRCS += $(PARSERS_DIR)/check_valid_map.c
+PARSERS_DIR := $(SRCDIR)/parser
+SRCS += $(wildcard $(PARSERS_DIR)/*.c)
 
 # OBJS
 OBJDIR := objs
@@ -83,7 +65,7 @@ $(FTPRINTF):
 $(MINILIBX):
 	make -sC $(MINILIBX_DIR)
 
-# OBJDIR 作成 (サブディレクトリ含む)
+# OBJDIR (including sub directory)
 $(OBJDIR):
 	@mkdir -p $(OBJDIR)
 	@mkdir -p $(OBJDIR)/mlx
@@ -93,7 +75,7 @@ $(OBJDIR):
 	@mkdir -p $(OBJDIR)/gnl
 	@mkdir -p $(OBJDIR)/parser
 
-# ソースファイルをオブジェクトファイルに変換
+# convert source file into object file
 $(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
 	$(CC) $(CFLAGS) $(INCLUDES) -o $@ -c $<
 

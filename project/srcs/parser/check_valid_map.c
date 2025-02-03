@@ -6,11 +6,11 @@
 /*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 14:13:22 by yyamasak          #+#    #+#             */
-/*   Updated: 2025/02/03 14:11:34 by yyamasak         ###   ########.fr       */
+/*   Updated: 2025/02/03 14:22:13 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utils.h"
+#include "raycast.h"
 
 static int	is_valid_ascii_(char c)
 {

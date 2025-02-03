@@ -6,11 +6,11 @@
 /*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 04:14:10 by yyamasak          #+#    #+#             */
-/*   Updated: 2025/02/03 13:45:45 by yyamasak         ###   ########.fr       */
+/*   Updated: 2025/02/03 14:22:09 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utils.h"
+#include "raycast.h"
 
 static void		_init_player_dir_(t_player *player)
 {

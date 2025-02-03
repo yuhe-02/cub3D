@@ -1,4 +1,4 @@
-#include "utils.h"
+#include "raycast.h"
 
 char	world_map[mapHeight][mapWidth + 1] = {"111111111111111111111111",
 		"102000000000000000000001", "100000000000000000000001",

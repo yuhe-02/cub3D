@@ -6,11 +6,11 @@
 /*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 03:52:00 by yyamasak          #+#    #+#             */
-/*   Updated: 2025/02/03 14:04:30 by yyamasak         ###   ########.fr       */
+/*   Updated: 2025/02/03 14:22:09 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utils.h"
+#include "raycast.h"
 
 static int _check_open_file_(char *path)
 {

@@ -1,4 +1,4 @@
-#include "utils.h"
+#include "raycast.h"
 
 static int	_fill_space_(int width, int start_index, char **line)
 {

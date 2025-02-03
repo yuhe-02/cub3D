@@ -1,4 +1,4 @@
-#include "utils.h"
+#include "raycast.h"
 
 static void	_detect_ray_diretion_(t_ray *ray, t_vector *player_pos)
 {

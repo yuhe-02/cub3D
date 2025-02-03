@@ -1,4 +1,4 @@
-#include "utils.h"
+#include "raycast.h"
 
 static int	_handle_texture_(char **line, int i, t_params *params)
 {

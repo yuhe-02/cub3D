@@ -6,11 +6,11 @@
 /*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 07:01:51 by yyamasak          #+#    #+#             */
-/*   Updated: 2025/01/29 15:18:40 by yyamasak         ###   ########.fr       */
+/*   Updated: 2025/02/03 14:22:09 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utils.h"
+#include "raycast.h"
 
 double	convert_to_radian(int degree)
 {	
