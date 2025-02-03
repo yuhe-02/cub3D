@@ -143,8 +143,8 @@ int				_key_hook(int keycode, void *arg);
 int				_key_release_hook(int keycode, t_params *param);
 int				_close_window(t_params *param);
 void			_ft_mlx_pixel_put(t_data *data, int x, int y, int color);
-t_params		*_init_params();
-void			_init_data(t_data *data);
+int				_init_params(t_params **params);
+int				_init_data(t_data *data);
 void			_init_player(t_player *player);
 void			_update_player(t_params *param, t_player *player);
 void            _vector_assign(t_vector *vector, double new_x, double new_y);
@@ -160,10 +160,10 @@ void	error_exit(const char *str, int error_num);
 int _check_valid_map(int len, int start_index, char **line);
 
 // ryomori
-int		parse_color(char *line);
+int		parse_color(char *line, int *color);
 int		_parse_map_settings(char **line, t_params *params);
 int		_parse_map_data(char **line, int start_index, t_params *params);
-void	_parse(const char *map_file, t_params *params);
+int	_parse(const char *map_file, t_params *params);
 int		_parse_map(char **line, t_params *params);
 
 #endif
