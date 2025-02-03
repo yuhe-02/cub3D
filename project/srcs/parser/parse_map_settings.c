@@ -1,4 +1,4 @@
-#include "utils.h"
+#include "raycast.h"
 
 static int	_handle_texture_(char **line, int i, t_params *params)
 {
@@ -42,7 +42,7 @@ static int	_handle_floor_ceiling_color_(char **line, int i, t_params *params)
 	err = parse_color(tmp_line, tmp);
 	free(tmp_line);
 	if (err)
-		return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "invalid parameter already set"));
+		return (1);
 	return (-1);
 }
 
@@ -72,9 +72,7 @@ int	_parse_map_settings(char **line, t_params *params)
 	while (line[i])
 	{
 		err = _handle_map_elements_(line, i, params);
-		if (err == 1)
-			i++;
-		else if (err == 0 && line[i][0] == '\0')
+		if (err == 1 || (err == 0 && line[i][0] == '\0'))
 			i++;
 		else if (err == -1)
 			return (-1);

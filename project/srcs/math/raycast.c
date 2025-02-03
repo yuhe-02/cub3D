@@ -1,4 +1,4 @@
-#include "utils.h"
+#include "raycast.h"
 
 // DDA algo
 static void _calc_hit_pos_(t_params *params, t_ray *ray)

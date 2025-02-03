@@ -6,11 +6,11 @@
 /*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 03:48:15 by yyamasak          #+#    #+#             */
-/*   Updated: 2025/02/03 13:32:16 by yyamasak         ###   ########.fr       */
+/*   Updated: 2025/02/03 14:22:09 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utils.h"
+#include "raycast.h"
 
 int	_init_params(t_params **params)
 {

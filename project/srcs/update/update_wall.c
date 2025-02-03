@@ -1,4 +1,4 @@
-#include "utils.h"
+#include "raycast.h"
 
 
 static void _set_wall_tex_(t_image **target_img, t_ray *ray, t_data *data)

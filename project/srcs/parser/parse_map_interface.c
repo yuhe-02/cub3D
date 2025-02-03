@@ -6,11 +6,11 @@
 /*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 14:51:44 by yyamasak          #+#    #+#             */
-/*   Updated: 2025/02/03 13:08:08 by yyamasak         ###   ########.fr       */
+/*   Updated: 2025/02/03 14:22:13 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utils.h"
+#include "raycast.h"
 
 int	_parse_map(char **line, t_params *params)
 {

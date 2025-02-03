@@ -6,11 +6,11 @@
 /*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 14:40:41 by yyamasak          #+#    #+#             */
-/*   Updated: 2025/01/29 15:56:31 by yyamasak         ###   ########.fr       */
+/*   Updated: 2025/02/03 14:22:10 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utils.h"
+#include "raycast.h"
 
 void	error_exit(const char *str, int error_num)
 {
