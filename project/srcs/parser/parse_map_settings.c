@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_map_settings.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/05 00:36:58 by yyamasak          #+#    #+#             */
+/*   Updated: 2025/02/05 00:36:58 by yyamasak         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "raycast.h"
 
 static int	_handle_texture_(char **line, int i, t_params *params)
@@ -14,7 +26,7 @@ static int	_handle_texture_(char **line, int i, t_params *params)
 		tmp = &(data->tex_east.path);
 	else if (ft_strncmp(line[i], "WE ", 3) == 0)
 		tmp = &(data->tex_west.path);
-	else 
+	else
 		return (0);
 	if (*tmp)
 		return (ft_printf_fd(ERR_FD, "Error\n%s%s\n", ERR2, ERR_DUBTEX));
@@ -34,7 +46,7 @@ static int	_handle_floor_ceiling_color_(char **line, int i, t_params *params)
 		tmp = &(data->floor_color);
 	else if (ft_strncmp(line[i], "C ", 2) == 0)
 		tmp = &(data->ceilling_color);
-	else 
+	else
 		return (0);
 	if (*tmp != -1)
 		return (ft_printf_fd(ERR_FD, "Error\n%s%s\n", ERR2, ERR_DUBPAR));
@@ -48,7 +60,7 @@ static int	_handle_floor_ceiling_color_(char **line, int i, t_params *params)
 
 static int	_handle_map_elements_(char **line, int i, t_params *params)
 {
-	int err;
+	int	err;
 
 	err = _handle_texture_(line, i, params);
 	if (err == -1)
@@ -65,7 +77,7 @@ static int	_handle_map_elements_(char **line, int i, t_params *params)
 
 int	_parse_map_settings(char **line, t_params *params)
 {
-	int i;
+	int	i;
 	int	err;
 
 	i = 0;

@@ -1,11 +1,17 @@
-#include "raycast.h"
-#include "libft.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_color.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/05 00:43:43 by yyamasak          #+#    #+#             */
+/*   Updated: 2025/02/05 00:45:59 by yyamasak         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "raycast.h"
 
-static int	is_valid_rgb(int value)
-{
-	return (value >= 0 && value <= 255);
-}
 static int	convert_rgb_hex(int *rgb_colors)
 {
 	int	hex_color;
@@ -13,7 +19,7 @@ static int	convert_rgb_hex(int *rgb_colors)
 
 	i = 0;
 	hex_color = 0;
-	while(i < 3)
+	while (i < 3)
 	{
 		hex_color = hex_color * 256 + rgb_colors[i];
 		i++;
@@ -26,16 +32,17 @@ static int	parse_rgb_values(char **rgb, int *rgb_colors)
 	int	i;
 
 	i = 0;
-	while(i < 3)
+	while (i < 3)
 	{
 		rgb_colors[i] = ft_atoi(rgb[i]);
-		if (!is_valid_rgb(rgb_colors[i]))
+		if (!(rgb_colors[i] >= 0 && rgb_colors[i] <= 255))
 			return (1);
 		i++;
 	}
 	return (0);
 }
-static void free_char_rgb(char **rgb)
+
+static void	free_char_rgb(char **rgb)
 {
 	int	i;
 
@@ -48,7 +55,7 @@ static void free_char_rgb(char **rgb)
 	free(rgb);
 }
 
-int		check_parsed_value_(char **tmp)
+int	check_parsed_value_(char **tmp)
 {
 	int	i;
 	int	j;
@@ -73,7 +80,7 @@ int		check_parsed_value_(char **tmp)
 	return (0);
 }
 
-int		parse_color(char *line, int *color)
+int	parse_color(char *line, int *color)
 {
 	char	**rgb;
 	int		rgb_color[3];
@@ -87,7 +94,6 @@ int		parse_color(char *line, int *color)
 		return (ft_printf_fd(ERR_FD, "Error\n%s%s\n", ERR2, ERR_NOCOLORFORM));
 	}
 	free_char_rgb(rgb);
-	// printf("color: %d %d %d\n", rgb_color[0], rgb_color[1], rgb_color[2]);
 	*color = convert_rgb_hex(rgb_color);
 	return (0);
 }

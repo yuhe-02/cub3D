@@ -179,5 +179,7 @@ int	is_valid_ascii(char c);
 int is_space(int c);
 int is_user_dir(char c);
 int is_field(char c);
+int	calc_max_width(t_params *params, int start_index, char **line);
+int	count_map_height(int start_index, char **line);
 
 #endif

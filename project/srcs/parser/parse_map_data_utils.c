@@ -1,34 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_valid_map_utils.c                            :+:      :+:    :+:   */
+/*   parse_map_data_utils.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/30 14:13:22 by yyamasak          #+#    #+#             */
-/*   Updated: 2025/02/05 00:33:31 by yyamasak         ###   ########.fr       */
+/*   Created: 2025/02/05 00:34:56 by yyamasak          #+#    #+#             */
+/*   Updated: 2025/02/05 00:36:49 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "raycast.h"
 
-int	is_valid_ascii(char c)
+int	calc_max_width(t_params *params, int start_index, char **line)
 {
-	return (c == 'S' || c == 'W' || c == 'E' || c == 'N' || c == '\t'
-		|| c == ' ' || c == '0' || c == '1');
+	int	j;
+	int	len;
+
+	j = 0;
+	len = 0;
+	while (j < params->map_height)
+	{
+		if ((int)(ft_strlen(line[j + start_index])) > len)
+			len = ft_strlen(line[j + start_index]);
+		j++;
+	}
+	return (len);
 }
 
-int	is_space(int c)
+int	count_map_height(int start_index, char **line)
 {
-	return (c == ' ' || c == '\t');
-}
+	int	i;
 
-int	is_user_dir(char c)
-{
-	return (c == 'S' || c == 'W' || c == 'E' || c == 'N');
-}
-
-int	is_field(char c)
-{
-	return (c == '0' || c == '1');
+	i = 0;
+	while (line[start_index + i])
+		i++;
+	return (i);
 }
