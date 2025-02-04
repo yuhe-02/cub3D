@@ -6,7 +6,7 @@
 /*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 14:53:47 by yyamasak          #+#    #+#             */
-/*   Updated: 2025/02/05 00:43:08 by yyamasak         ###   ########.fr       */
+/*   Updated: 2025/02/04 16:04:18 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static int	count_lines_(const char *map_file)
 	return (map_size);
 }
 
-static char	*gnl_without_nl(int fd, )
+static char	*gnl_without_nl(int fd)
 {
 	char	*line;
 	char	*tmp;
