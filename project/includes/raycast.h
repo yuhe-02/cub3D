@@ -1,6 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   raycast.h                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/05 00:56:28 by yyamasak          #+#    #+#             */
+/*   Updated: 2025/02/05 01:01:08 by yyamasak         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef RAYCAST_H
 # define RAYCAST_H
 
+# include "../ft_printf/ft_printf.h"
+# include "../libft/libft.h"
+# include "../minilibx-linux/mlx.h"
+# include "../srcs/gnl/get_next_line.h"
 # include <X11/X.h>
 # include <X11/Xlib.h>
 # include <X11/keysym.h>
@@ -14,10 +30,6 @@
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
-# include "../libft/libft.h"
-# include "../minilibx-linux/mlx.h"
-# include "../srcs/gnl/get_next_line.h"
-# include "../ft_printf/ft_printf.h"
 
 # define WIDTH 400
 # define HEIGHT 400
@@ -31,7 +43,7 @@
 # define WINDOW_CLOSE 17
 # define PI 3.141582653589793
 # define MOVE_SPEED 0.05
-# define ROT_SPEED PI / 200
+# define ROT_SPEED 0.0157079133
 # define ERR_FD 2
 
 # define ERR1 "Invalid map: "
@@ -42,7 +54,7 @@
 # define ERR2 "Invalid settings: "
 # define ERR_NOPATH "some texture not set"
 # define ERR_NOCOLOR "floor or ceiling color not set"
-# define ERR_NOCOLORFORM "floor or ceiling color have to be set as number split by ,"
+# define ERR_NOCOLORFORM "color have to be set as number split by ,"
 # define ERR_NOPLAYER "player position not set"
 # define ERR_NOTEX "some texture failed to open"
 # define ERR_DUBTEX "same texture settings cannot be applied more than once"
@@ -131,12 +143,12 @@ typedef struct s_ray
 
 typedef struct s_map_info
 {
-	char	current;
-	char	next;
-	char	above;
-	char	bottom;
-	int		y;
-	int		x;
+	char		current;
+	char		next;
+	char		above;
+	char		bottom;
+	int			y;
+	int			x;
 }				t_map_info;
 
 typedef struct s_params
@@ -144,7 +156,7 @@ typedef struct s_params
 	t_data		data;
 	t_player	player;
 	t_ray		ray;
-    char        **map;
+	char		**map;
 	int			map_width;
 	int			map_height;
 }				t_params;
@@ -157,29 +169,31 @@ int				_init_params(t_params **params);
 int				_init_data(t_data *data);
 void			_init_player(t_player *player);
 void			_update_player(t_params *param, t_player *player);
-void            _vector_assign(t_vector *vector, double new_x, double new_y);
-void            _ivec_assign(t_ivec *ivec, int new_x, int new_y);
-void            _ray_assign(t_ray *ray, t_data *data, t_player *player, t_ivec *coord);
-void            _wall_assign(t_wall *wall, t_data *data, t_ray *ray, t_player *player);
+void			_vector_assign(t_vector *vector, double new_x, double new_y);
+void			_ivec_assign(t_ivec *ivec, int new_x, int new_y);
+void			_ray_assign(t_ray *ray, t_data *data, t_player *player,
+					t_ivec *coord);
+void			_wall_assign(t_wall *wall, t_data *data, t_ray *ray,
+					t_player *player);
 double			convert_to_radian(int degree);
 int				convert_to_degree(double radian);
 void			set_event(t_data *data, t_params *params);
 void			_raycast(t_params *params);
-void            _draw_vertical(t_data *data, t_ivec *coord, t_wall *wall);
-void	error_exit(const char *str, int error_num);
-int _check_valid_map(int len, int start_index, char **line);
+void			_draw_vertical(t_data *data, t_ivec *coord, t_wall *wall);
+void			error_exit(const char *str, int error_num);
+int				_check_valid_map(int len, int start_index, char **line);
 
 // ryomori
-int		parse_color(char *line, int *color);
-int		_parse_map_settings(char **line, t_params *params);
-int		_parse_map_data(char **line, int start_index, t_params *params);
-int	_parse(const char *map_file, t_params *params);
-int		_parse_map(char **line, t_params *params);
-int	is_valid_ascii(char c);
-int is_space(int c);
-int is_user_dir(char c);
-int is_field(char c);
-int	calc_max_width(t_params *params, int start_index, char **line);
-int	count_map_height(int start_index, char **line);
+int				parse_color(char *line, int *color);
+int				_parse_map_settings(char **line, t_params *params);
+int				_parse_map_data(char **line, int start_index, t_params *params);
+int				_parse(const char *map_file, t_params *params);
+int				_parse_map(char **line, t_params *params);
+int				is_valid_ascii(char c);
+int				is_space(int c);
+int				is_user_dir(char c);
+int				is_field(char c);
+int				calc_max_width(t_params *params, int start_index, char **line);
+int				count_map_height(int start_index, char **line);
 
 #endif
