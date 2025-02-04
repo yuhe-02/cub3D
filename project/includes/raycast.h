@@ -34,6 +34,12 @@
 # define ROT_SPEED PI / 200
 # define ERR_FD 2
 
+# define ERR1 "Invalid map: "
+# define ERR_EDGE "player or field not locate map edge"
+# define ERR_EMPTY "player or field not locate near space"
+# define ERR_ASCII "found not valid ascii"
+# define ERR_EMPTY_LINE "empty line found in map"
+
 typedef struct s_vector
 {
 	double		x;
@@ -109,6 +115,16 @@ typedef struct s_ray
 	int			hit;
 	int			side;
 }				t_ray;
+
+typedef struct s_map_info
+{
+	char	current;
+	char	next;
+	char	above;
+	char	bottom;
+	int		y;
+	int		x;
+}				t_map_info;
 
 typedef struct s_params
 {
