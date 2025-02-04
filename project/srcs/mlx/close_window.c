@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   _close_window.c                                     :+:      :+:    :+:   */
+/*   close_window.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/24 13:01:56 by yyamasak          #+#    #+#             */
-/*   Updated: 2025/01/24 15:55:28 by yyamasak         ###   ########.fr       */
+/*   Created: 2025/02/05 00:48:11 by yyamasak          #+#    #+#             */
+/*   Updated: 2025/02/05 00:48:49 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	free_maps(t_params *params)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (0 < params->map_height)
@@ -43,14 +43,6 @@ int	_close_window(t_params *param)
 		mlx_destroy_window(data->mlx, data->win);
 		data->win = NULL;
 	}
-	// if (param)
-	// 	free_maps(param);
-	// if (data->mlx)
-	// {
-	// 	// mlx_destroy_display((void *)(data->mlx));
-	// 	// free(data->mlx);
-	// 	// data->mlx = NULL;
-	// }
 	exit(0);
 	return (0);
 }
