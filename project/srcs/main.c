@@ -20,19 +20,19 @@ int	main_loop(void *arg)
 static  int check_all_set_(t_params *params)
 {
 	if (!params->data.tex_north.path)
-		return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "north path not set"));
+		return (ft_printf_fd(ERR_FD, "Error\n%s%s\n", ERR2, ERR_NOPATH));
 	if (!params->data.tex_south.path)
-		return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "south path not set"));
+		return (ft_printf_fd(ERR_FD, "Error\n%s%s\n", ERR2, ERR_NOPATH));
 	if (!params->data.tex_west.path)
-		return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "west path not set"));
+		return (ft_printf_fd(ERR_FD, "Error\n%s%s\n", ERR2, ERR_NOPATH));
 	if (!params->data.tex_east.path)
-		return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "east path not set"));
+		return (ft_printf_fd(ERR_FD, "Error\n%s%s\n", ERR2, ERR_NOPATH));
 	if (params->data.ceilling_color == -1)
-		return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "ceiling color not set"));
+		return (ft_printf_fd(ERR_FD, "Error\n%s%s\n", ERR2, ERR_NOCOLOR));
 	if (params->data.floor_color == -1)
-		return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "floor color not set"));
+		return (ft_printf_fd(ERR_FD, "Error\n%s%s\n", ERR2, ERR_NOCOLOR));
 	if (params->player.init_userpos_x == -1)
-		return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "player position not set"));
+		return (ft_printf_fd(ERR_FD, "Error\n%s%s\n", ERR2, ERR_NOPLAYER));
 	return (0);
 }
 // static void call_struct(t_params *params)

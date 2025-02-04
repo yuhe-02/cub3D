@@ -6,7 +6,7 @@
 /*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 03:52:00 by yyamasak          #+#    #+#             */
-/*   Updated: 2025/02/03 14:46:57 by yyamasak         ###   ########.fr       */
+/*   Updated: 2025/02/04 15:11:06 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,13 @@ static int _check_open_file_(char *path)
 static int	_check_path_is_valid_(t_data *data)
 {
 	if (_check_open_file_(data->tex_north.path))
-		return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "north texture not found"));
+		return (ft_printf_fd(ERR_FD, "Error\n%s%s\n", ERR2, ERR_NOTEX));
 	if (_check_open_file_(data->tex_south.path))
-		return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "south texture not found"));
+		return (ft_printf_fd(ERR_FD, "Error\n%s%s\n", ERR2, ERR_NOTEX));
 	if (_check_open_file_(data->tex_west.path))
-		return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "west texture not found"));
+		return (ft_printf_fd(ERR_FD, "Error\n%s%s\n", ERR2, ERR_NOTEX));
 	if (_check_open_file_(data->tex_east.path))
-		return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "east texture not found"));
+		return (ft_printf_fd(ERR_FD, "Error\n%s%s\n", ERR2, ERR_NOTEX));
 	return (0);
 }
 
@@ -58,18 +58,18 @@ int	_init_data(t_data *data)
 	data->img.height = HEIGHT;
 	data->mlx = mlx_init();
 	if (!data->mlx)
-		return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "mlx init failed"));
+		return (ft_printf_fd(ERR_FD, "Error\n%s%s\n", ERR3, ERR_MLX));
 	data->win = mlx_new_window(data->mlx, data->img.width, data->img.height, "cub3D");
 	data->img.img = mlx_new_image(data->mlx, data->img.width, data->img.height);
 	data->img.addr = mlx_get_data_addr(data->img.img, &(data->img.bpp), &(data->img.llen),
 			&(data->img.eda));
 	if (_set_xpm_file_(&(data->tex_north), data))
-		return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "north texture not found"));
+		return (ft_printf_fd(ERR_FD, "Error\n%s%s\n", ERR2, ERR_NOTEX));
 	if (_set_xpm_file_(&(data->tex_south), data))
-		return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "south texture not found"));
+		return (ft_printf_fd(ERR_FD, "Error\n%s%s\n", ERR2, ERR_NOTEX));
 	if (_set_xpm_file_(&(data->tex_west), data))
-		return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "west texture not found"));
+		return (ft_printf_fd(ERR_FD, "Error\n%s%s\n", ERR2, ERR_NOTEX));
 	if (_set_xpm_file_(&(data->tex_east), data))
-		return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "east texture not found"));
+		return (ft_printf_fd(ERR_FD, "Error\n%s%s\n", ERR2, ERR_NOTEX));
 	return (0);
 }

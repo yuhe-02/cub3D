@@ -39,6 +39,19 @@
 # define ERR_EMPTY "player or field not locate near space"
 # define ERR_ASCII "found not valid ascii"
 # define ERR_EMPTY_LINE "empty line found in map"
+# define ERR2 "Invalid settings: "
+# define ERR_NOPATH "some texture not set"
+# define ERR_NOCOLOR "floor or ceiling color not set"
+# define ERR_NOCOLORFORM "floor or ceiling color have to be set as number split by ,"
+# define ERR_NOPLAYER "player position not set"
+# define ERR_NOTEX "some texture failed to open"
+# define ERR_DUBTEX "same texture settings cannot be applied more than once"
+# define ERR_DUBPAR "same parameter settings cannot be applied more than once"
+# define ERR_NOEXT "invalid extensions"
+# define ERR3 "Unexpected error: "
+# define ERR_MLX "mlx init failed"
+# define ERR_ALLOC "malloc failed"
+# define ERR_OPEN "open file failed"
 
 typedef struct s_vector
 {
