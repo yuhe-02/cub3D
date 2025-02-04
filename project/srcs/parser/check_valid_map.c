@@ -6,135 +6,112 @@
 /*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 14:13:22 by yyamasak          #+#    #+#             */
-/*   Updated: 2025/02/03 14:22:13 by yyamasak         ###   ########.fr       */
+/*   Updated: 2025/02/04 14:57:01 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "raycast.h"
 
-static int	is_valid_ascii_(char c)
+static void	assign_char_(t_map_info *info, char **line, int len, int start_index)
 {
-	return (c == 'S' || c == 'W' || c == 'E' || c == 'N'
-		|| c == '\t' || c == ' ' || c == '0' || c == '1');
+	int	height;
+
+	height = start_index + info->y;
+	if (info->y == 0)
+		info->above = 0;
+	else
+		info->above = line[height - 1][info->x];
+	if (info->y == len - 1)
+		info->bottom = 0;
+	else
+		info->bottom = line[height + 1][info->x];
+	info->current = line[height][info->x];
+	info->next = line[height][info->x + 1];
 }
 
-static	int is_space_(int c)
+static int _check_near_(t_map_info *info, int i, int len, int j)
 {
-	return (c == ' ' || c == '\t');
+	int	flg;
+	int	flg_next;
+
+	flg = (info->current  == '0') || is_user_dir(info->current);
+	flg_next = (info->next  == '0') || is_user_dir(info->next);
+	if (j == 0 && flg)
+		return (ft_printf_fd(ERR_FD, "Error\n%s%s\n", ERR1, ERR_EDGE));
+	if (flg && (is_space(info->next) || !info->next))
+		return (ft_printf_fd(ERR_FD, "Error\n%s%s\n", ERR1, ERR_EMPTY));
+	if (i == 0 && flg)
+		return (ft_printf_fd(ERR_FD, "Error\n%s%s\n", ERR1, ERR_EDGE));
+	if (i == len - 1 && flg)
+		return (ft_printf_fd(ERR_FD, "Error\n%s%s\n", ERR1, ERR_EDGE));
+	if (flg && is_space(info->above))
+		return (ft_printf_fd(ERR_FD, "Error\n%s%s\n", ERR1, ERR_EMPTY));
+	if (flg && is_space(info->bottom))
+		return (ft_printf_fd(ERR_FD, "Error\n%s%s\n", ERR1, ERR_EMPTY));
+	if (is_space(info->current) && flg_next)
+		return (ft_printf_fd(ERR_FD, "Error\n%s%s\n", ERR1, ERR_EMPTY));
+	if (!is_valid_ascii(info->current))
+		return (ft_printf_fd(ERR_FD, "Error\n%s%s\n", ERR1, ERR_ASCII));
+	return (0);
 }
 
-static	int is_user_dir_(char c)
+static int is_empty_line_(char *line)
 {
-	return (c == 'S' || c == 'W' || c == 'E' || c == 'N');
+	int j;
+
+	j = 0;
+	while (line[j])
+	{
+		if (!is_space(line[j]))
+			return (0);
+		j++;
+	}
+	return (1);
 }
-
-// static	int is_block_(char c)
-// {
-// 	return (c == '0' || c == '1');
-// }
-
-// static	int	check_horizontal_char_(char c, char top, char bottom)
-// {
-	
-// }
-
-int _check_valid_map(int len, int start_index, char **line)
+static int _check_empty_line_(t_map_info *info, char **line,
+	int len, int start_index)
 {
-	int	i;
-	int	j;
-	char	current_char;
-	char	next_char;
-	char	above_char;
-	char	bottom_char;
+	int		i;
+	int		j;
 
-	i = 0;
-	// TODO if 入力予期していないアスキーの場合の処理
-	// TODO if ユーザーの位置が存在しない、または複数候補があるとき
-	// TODO if 壁で囲まれていない場合
+	if (!is_empty_line_(line[start_index + info->y]))
+		return (0);
+	j = 0;
+	i = info->y + 1;
 	while (i < len)
 	{
 		j = 0;
 		while (line[start_index + i][j])
 		{
-			if (i == 0)
-				above_char = 0;
-			else
-				above_char = line[start_index + i - 1][j];
-			if (i == len - 1)
-				bottom_char = 0;
-			else
-				bottom_char = line[start_index + i + 1][j];
-			current_char = line[start_index + i][j];
-			next_char = line[start_index + i][j + 1];
-			// maybe leaks detected
-			// check 0 is not near space (horizontal check)
-			if (j == 0 && (current_char  == '0'))
-			{
-				return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "Invalid map: not locate field in left top"));
-			}
-			if (current_char  == '0' && (is_space_(next_char) || !next_char))
-			{
-				return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "Invalid map: found space or null next to field"));
-			}
-			if (is_space_(current_char) && next_char == '0')
-			{
-				return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "Invalid map: found space before field"));
-			}
-			// check 0 is not near space (vertical check)
-			if (i == 0 && current_char  == '0')
-			{
-				return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "Invalid map: not locate field in top"));
-			}
-			if (i == len - 1 && current_char  == '0')
-			{
-				return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "Invalid map: not locate field in bottom"));
-			}
-			if (current_char == '0' && is_space_(above_char))
-			{
-				return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "Invalid map: found space above"));
-			}
-			if (current_char == '0' && is_space_(bottom_char))
-			{
-				return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "Invalid map: found space bottom"));
-			}
-			// check player is not near space (horizontal check)
-			if (j == 0 && (is_user_dir_(current_char)))
-			{
-				return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "Invalid map: player not locate field in left top"));
-			}
-			if (is_user_dir_(current_char)&& (is_space_(next_char) || !next_char))
-			{
-				return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "Invalid map: found space or null next to player"));
-			}
-			if (is_space_(current_char) && is_user_dir_(current_char))
-			{
-				return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "Invalid map: found space before player"));
-			}
-			// check player is not near space (vertical check)
-			if (i == 0 && is_user_dir_(current_char))
-			{
-				return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "Invalid map: player not locate in top"));
-			}
-			if (i == len - 1 && is_user_dir_(current_char))
-			{
-				return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "Invalid map: player not locate in bottom"));
-			}
-			if (is_user_dir_(current_char) && is_space_(above_char))
-			{
-				return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "Invalid map: found space above player"));
-			}
-			if (is_user_dir_(current_char) && is_space_(bottom_char))
-			{
-				return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "Invalid map: found space bottom player"));
-			}
-			// check if valid ascii
-			if (!is_valid_ascii_(current_char))
-			{
-				return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "Invalid map: found invalid ascii"));
-			}
+			if (is_user_dir(line[start_index + i][j]) 
+				|| is_field(line[start_index + i][j]))
+				return (ft_printf_fd(ERR_FD, 
+					"Error\n%s%s\n", ERR1, ERR_EMPTY_LINE));
 			j++;
 		}
 		i++;
+	}
+	return (0);
+}
+
+int _check_valid_map(int len, int start_index, char **line)
+{
+	t_map_info	info;
+
+	info.y = 0;
+	while (info.y < len)
+	{
+		info.x = 0;
+		if (_check_empty_line_(&info, line, len, start_index))
+			return (1);
+		while (line[start_index + info.y][info.x])
+		{
+			assign_char_(&info, line, len, start_index);
+			if (_check_near_(&info, info.y, len, info.x))
+				return (1);
+			(info.x)++;
+		}
+		(info.y)++;
 	}
 	return (0);
 }

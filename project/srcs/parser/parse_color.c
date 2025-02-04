@@ -80,11 +80,11 @@ int		parse_color(char *line, int *color)
 
 	rgb = ft_split(line, ',');
 	if (!rgb)
-		return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "malloc failed"));
+		return (ft_printf_fd(ERR_FD, "Error\n%s%s\n", ERR3, ERR_ALLOC));
 	if (check_parsed_value_(rgb) || parse_rgb_values(rgb, rgb_color))
 	{
 		free_char_rgb(rgb);
-		return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "Invalid color format"));
+		return (ft_printf_fd(ERR_FD, "Error\n%s%s\n", ERR2, ERR_NOCOLORFORM));
 	}
 	free_char_rgb(rgb);
 	// printf("color: %d %d %d\n", rgb_color[0], rgb_color[1], rgb_color[2]);

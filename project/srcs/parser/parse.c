@@ -6,7 +6,7 @@
 /*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 14:53:47 by yyamasak          #+#    #+#             */
-/*   Updated: 2025/02/03 14:36:34 by yyamasak         ###   ########.fr       */
+/*   Updated: 2025/02/04 15:16:07 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,13 +85,13 @@ static	int	_read_map_(const char *map_file, char ***line)
 
 	line_len = count_lines_(map_file);
 	if (line_len == -1)
-		return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "failed to open file"));
+		return (ft_printf_fd(ERR_FD, "Error\n%s%s\n", ERR3, ERR_OPEN));
 	(*line) = malloc((line_len + 1) * sizeof(char *));
 	if (!(*line))
-		return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "malloc failed"));
+		return (ft_printf_fd(ERR_FD, "Error\n%s%s\n", ERR3, ERR_ALLOC));
 	fd = open(map_file, O_RDONLY);
 	if (fd == -1)
-		return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "failed to open file"));
+		return (ft_printf_fd(ERR_FD, "Error\n%s%s\n", ERR3, ERR_OPEN));
 	i = 0;
 	while (1)
 	{
@@ -116,7 +116,7 @@ int	_parse(const char *map_file, t_params *params)
 
 	tmp = ft_strrchr(map_file, '.');
 	if (!tmp || ft_strncmp(tmp, ".cub", 5))
-		return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "Invalid extensions"));
+		return (ft_printf_fd(ERR_FD, "Error\n%s%s\n", ERR2, ERR_NOEXT));
 	if (_read_map_(map_file, &line))
 		return (1);
 	err = _parse_map(line, params);

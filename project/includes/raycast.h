@@ -34,6 +34,25 @@
 # define ROT_SPEED PI / 200
 # define ERR_FD 2
 
+# define ERR1 "Invalid map: "
+# define ERR_EDGE "player or field not locate map edge"
+# define ERR_EMPTY "player or field not locate near space"
+# define ERR_ASCII "found not valid ascii"
+# define ERR_EMPTY_LINE "empty line found in map"
+# define ERR2 "Invalid settings: "
+# define ERR_NOPATH "some texture not set"
+# define ERR_NOCOLOR "floor or ceiling color not set"
+# define ERR_NOCOLORFORM "floor or ceiling color have to be set as number split by ,"
+# define ERR_NOPLAYER "player position not set"
+# define ERR_NOTEX "some texture failed to open"
+# define ERR_DUBTEX "same texture settings cannot be applied more than once"
+# define ERR_DUBPAR "same parameter settings cannot be applied more than once"
+# define ERR_NOEXT "invalid extensions"
+# define ERR3 "Unexpected error: "
+# define ERR_MLX "mlx init failed"
+# define ERR_ALLOC "malloc failed"
+# define ERR_OPEN "open file failed"
+
 typedef struct s_vector
 {
 	double		x;
@@ -110,6 +129,16 @@ typedef struct s_ray
 	int			side;
 }				t_ray;
 
+typedef struct s_map_info
+{
+	char	current;
+	char	next;
+	char	above;
+	char	bottom;
+	int		y;
+	int		x;
+}				t_map_info;
+
 typedef struct s_params
 {
 	t_data		data;
@@ -146,5 +175,9 @@ int		_parse_map_settings(char **line, t_params *params);
 int		_parse_map_data(char **line, int start_index, t_params *params);
 int	_parse(const char *map_file, t_params *params);
 int		_parse_map(char **line, t_params *params);
+int	is_valid_ascii(char c);
+int is_space(int c);
+int is_user_dir(char c);
+int is_field(char c);
 
 #endif

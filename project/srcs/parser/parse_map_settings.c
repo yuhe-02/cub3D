@@ -17,7 +17,7 @@ static int	_handle_texture_(char **line, int i, t_params *params)
 	else 
 		return (0);
 	if (*tmp)
-		return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "same texture already set"));
+		return (ft_printf_fd(ERR_FD, "Error\n%s%s\n", ERR2, ERR_DUBTEX));
 	*tmp = ft_strtrim(line[i] + 3, "\n");
 	return (-1);
 }
@@ -37,7 +37,7 @@ static int	_handle_floor_ceiling_color_(char **line, int i, t_params *params)
 	else 
 		return (0);
 	if (*tmp != -1)
-		return (ft_printf_fd(ERR_FD, "Error\n%s\n" , "same parameter already set"));
+		return (ft_printf_fd(ERR_FD, "Error\n%s%s\n", ERR2, ERR_DUBPAR));
 	tmp_line = ft_strtrim(line[i] + 2, "\n \t");
 	err = parse_color(tmp_line, tmp);
 	free(tmp_line);
