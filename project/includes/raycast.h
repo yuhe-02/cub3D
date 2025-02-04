@@ -162,5 +162,9 @@ int		_parse_map_settings(char **line, t_params *params);
 int		_parse_map_data(char **line, int start_index, t_params *params);
 int	_parse(const char *map_file, t_params *params);
 int		_parse_map(char **line, t_params *params);
+int	is_valid_ascii(char c);
+int is_space(int c);
+int is_user_dir(char c);
+int is_field(char c);
 
 #endif

@@ -6,32 +6,11 @@
 /*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 14:13:22 by yyamasak          #+#    #+#             */
-/*   Updated: 2025/02/04 14:48:38 by yyamasak         ###   ########.fr       */
+/*   Updated: 2025/02/04 14:57:01 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "raycast.h"
-
-static int	is_valid_ascii_(char c)
-{
-	return (c == 'S' || c == 'W' || c == 'E' || c == 'N'
-		|| c == '\t' || c == ' ' || c == '0' || c == '1');
-}
-
-static	int is_space_(int c)
-{
-	return (c == ' ' || c == '\t');
-}
-
-static	int is_user_dir_(char c)
-{
-	return (c == 'S' || c == 'W' || c == 'E' || c == 'N');
-}
-
-static	int is_field_(char c)
-{
-	return (c == '0' || c == '1');
-}
 
 static void	assign_char_(t_map_info *info, char **line, int len, int start_index)
 {
@@ -55,49 +34,59 @@ static int _check_near_(t_map_info *info, int i, int len, int j)
 	int	flg;
 	int	flg_next;
 
-	flg = (info->current  == '0') || is_user_dir_(info->current);
-	flg_next = (info->next  == '0') || is_user_dir_(info->next);
+	flg = (info->current  == '0') || is_user_dir(info->current);
+	flg_next = (info->next  == '0') || is_user_dir(info->next);
 	if (j == 0 && flg)
 		return (ft_printf_fd(ERR_FD, "Error\n%s%s\n", ERR1, ERR_EDGE));
-	if (flg && (is_space_(info->next) || !info->next))
+	if (flg && (is_space(info->next) || !info->next))
 		return (ft_printf_fd(ERR_FD, "Error\n%s%s\n", ERR1, ERR_EMPTY));
 	if (i == 0 && flg)
 		return (ft_printf_fd(ERR_FD, "Error\n%s%s\n", ERR1, ERR_EDGE));
 	if (i == len - 1 && flg)
 		return (ft_printf_fd(ERR_FD, "Error\n%s%s\n", ERR1, ERR_EDGE));
-	if (flg && is_space_(info->above))
+	if (flg && is_space(info->above))
 		return (ft_printf_fd(ERR_FD, "Error\n%s%s\n", ERR1, ERR_EMPTY));
-	if (flg && is_space_(info->bottom))
+	if (flg && is_space(info->bottom))
 		return (ft_printf_fd(ERR_FD, "Error\n%s%s\n", ERR1, ERR_EMPTY));
-	if (is_space_(info->current) && flg_next)
+	if (is_space(info->current) && flg_next)
 		return (ft_printf_fd(ERR_FD, "Error\n%s%s\n", ERR1, ERR_EMPTY));
-	if (!is_valid_ascii_(info->current))
+	if (!is_valid_ascii(info->current))
 		return (ft_printf_fd(ERR_FD, "Error\n%s%s\n", ERR1, ERR_ASCII));
 	return (0);
 }
 
-static int _check_empty_line_(t_map_info *info, char **line, int len, int start_index)
+static int is_empty_line_(char *line)
+{
+	int j;
+
+	j = 0;
+	while (line[j])
+	{
+		if (!is_space(line[j]))
+			return (0);
+		j++;
+	}
+	return (1);
+}
+static int _check_empty_line_(t_map_info *info, char **line,
+	int len, int start_index)
 {
 	int		i;
 	int		j;
 
-	i = info->y;
+	if (!is_empty_line_(line[start_index + info->y]))
+		return (0);
 	j = 0;
-	while (line[start_index + i][j])
-	{
-		if (!is_space_(line[start_index + i][j]))
-			return (0);
-		j++;
-	}
-	j = 0;
-	i++;
+	i = info->y + 1;
 	while (i < len)
 	{
 		j = 0;
 		while (line[start_index + i][j])
 		{
-			if (is_user_dir_(line[start_index + i][j]) || is_field_(line[start_index + i][j]))
-				return (ft_printf_fd(ERR_FD, "Error\n%s%s\n", ERR1, ERR_EMPTY_LINE));
+			if (is_user_dir(line[start_index + i][j]) 
+				|| is_field(line[start_index + i][j]))
+				return (ft_printf_fd(ERR_FD, 
+					"Error\n%s%s\n", ERR1, ERR_EMPTY_LINE));
 			j++;
 		}
 		i++;
