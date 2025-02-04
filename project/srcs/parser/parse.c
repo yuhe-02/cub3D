@@ -6,7 +6,7 @@
 /*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 14:53:47 by yyamasak          #+#    #+#             */
-/*   Updated: 2025/02/04 15:16:07 by yyamasak         ###   ########.fr       */
+/*   Updated: 2025/02/04 16:04:18 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,44 +44,25 @@ static int	count_lines_(const char *map_file)
 	return (map_size);
 }
 
-// static	char **_read_map_(const char *map_file)
-// {
-
-// 	char		**line;
-// 	int			fd;
-// 	char		*cur_line;
-// 	int			i;
-// 	char		*tmp;
-
-// 	line = malloc((count_lines_(map_file) + 1) * sizeof(char *));
-// 	if (!line)
-// 		error_exit("malloc failed\n", 1);
-// 	fd = open(map_file, O_RDONLY);
-// 	if (fd == -1)
-// 		error_exit("failed to open file\n", 1);
-// 	i = 0;
-// 	while (1)
-// 	{
-// 		cur_line = get_next_line(fd);
-// 		if (!cur_line)
-// 			break ;
-// 		tmp = ft_strtrim(cur_line, "\n");
-// 		free(cur_line);
-// 		line[i] = tmp;
-// 		i++;
-// 	}
-// 	close(fd);
-// 	line[i] = NULL;
-// 	return (line);
-// }
-
-static	int	_read_map_(const char *map_file, char ***line)
+static char	*gnl_without_nl(int fd)
 {
-	int			fd;
-	char		*cur_line;
-	int			i;
-	char		*tmp;
-	int			line_len;
+	char	*line;
+	char	*tmp;
+
+	line = get_next_line(fd);
+	if (!line)
+		return (0);
+	tmp = ft_strtrim(line, "\n");
+	free(line);
+	return (tmp);
+}
+
+static int	_read_map_(const char *map_file, char ***line)
+{
+	int		fd;
+	char	*cur_line;
+	int		i;
+	int		line_len;
 
 	line_len = count_lines_(map_file);
 	if (line_len == -1)
@@ -95,12 +76,10 @@ static	int	_read_map_(const char *map_file, char ***line)
 	i = 0;
 	while (1)
 	{
-		cur_line = get_next_line(fd);
+		cur_line = gnl_without_nl(fd);
 		if (!cur_line)
 			break ;
-		tmp = ft_strtrim(cur_line, "\n");
-		free(cur_line);
-		(*line)[i] = tmp;
+		(*line)[i] = cur_line;
 		i++;
 	}
 	close(fd);

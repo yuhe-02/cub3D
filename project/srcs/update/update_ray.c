@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   update_ray.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/05 00:30:52 by yyamasak          #+#    #+#             */
+/*   Updated: 2025/02/05 00:30:55 by yyamasak         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "raycast.h"
 
 static void	_detect_ray_diretion_(t_ray *ray, t_vector *player_pos)
@@ -8,10 +20,11 @@ static void	_detect_ray_diretion_(t_ray *ray, t_vector *player_pos)
 		ray->side_dist.x = (player_pos->x - ray->map.x) * ray->delta_dist.x;
 	}
 	else
-    {
-        ray->step.x = 1;
-        ray->side_dist.x = (ray->map.x + 1.0 - player_pos->x) * ray->delta_dist.x;
-    }
+	{
+		ray->step.x = 1;
+		ray->side_dist.x = (ray->map.x + 1.0 - player_pos->x)
+			* ray->delta_dist.x;
+	}
 	if (ray->ray_dir.y < 0)
 	{
 		ray->step.y = -1;
@@ -20,7 +33,8 @@ static void	_detect_ray_diretion_(t_ray *ray, t_vector *player_pos)
 	else
 	{
 		ray->step.y = 1;
-		ray->side_dist.y = (ray->map.y + 1.0 - player_pos->y) * ray->delta_dist.y;
+		ray->side_dist.y = (ray->map.y + 1.0 - player_pos->y)
+			* ray->delta_dist.y;
 	}
 }
 

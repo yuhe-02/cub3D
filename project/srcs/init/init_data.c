@@ -6,13 +6,13 @@
 /*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 03:52:00 by yyamasak          #+#    #+#             */
-/*   Updated: 2025/02/04 15:11:06 by yyamasak         ###   ########.fr       */
+/*   Updated: 2025/02/05 00:51:39 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "raycast.h"
 
-static int _check_open_file_(char *path)
+static int	_check_open_file_(char *path)
 {
 	int	fd;
 
@@ -40,12 +40,12 @@ static int	_check_path_is_valid_(t_data *data)
 
 static int	_set_xpm_file_(t_image *image, t_data *data)
 {
-	image->img = mlx_xpm_file_to_image(data->mlx, image->path,
-		&(image->width), &(image->height));
+	image->img = mlx_xpm_file_to_image(data->mlx, image->path, &(image->width),
+			&(image->height));
 	if (!image->img)
 		return (1);
-	image->addr = mlx_get_data_addr(image->img, &(image->bpp),
-		&(image->llen), &(image->eda));
+	image->addr = mlx_get_data_addr(image->img, &(image->bpp), &(image->llen),
+			&(image->eda));
 	return (0);
 }
 
@@ -59,10 +59,11 @@ int	_init_data(t_data *data)
 	data->mlx = mlx_init();
 	if (!data->mlx)
 		return (ft_printf_fd(ERR_FD, "Error\n%s%s\n", ERR3, ERR_MLX));
-	data->win = mlx_new_window(data->mlx, data->img.width, data->img.height, "cub3D");
+	data->win = mlx_new_window(data->mlx, data->img.width, data->img.height,
+			"cub3D");
 	data->img.img = mlx_new_image(data->mlx, data->img.width, data->img.height);
-	data->img.addr = mlx_get_data_addr(data->img.img, &(data->img.bpp), &(data->img.llen),
-			&(data->img.eda));
+	data->img.addr = mlx_get_data_addr(data->img.img, &(data->img.bpp),
+			&(data->img.llen), &(data->img.eda));
 	if (_set_xpm_file_(&(data->tex_north), data))
 		return (ft_printf_fd(ERR_FD, "Error\n%s%s\n", ERR2, ERR_NOTEX));
 	if (_set_xpm_file_(&(data->tex_south), data))

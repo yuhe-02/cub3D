@@ -1,7 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   raycast.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/05 00:52:54 by yyamasak          #+#    #+#             */
+/*   Updated: 2025/02/05 00:53:40 by yyamasak         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "raycast.h"
 
 // DDA algo
-static void _calc_hit_pos_(t_params *params, t_ray *ray)
+static void	_calc_hit_pos_(t_params *params, t_ray *ray)
 {
 	while (ray->hit == 0)
 	{
@@ -11,31 +23,36 @@ static void _calc_hit_pos_(t_params *params, t_ray *ray)
 			ray->map.x += ray->step.x;
 			ray->side = 0;
 		}
-		else 
+		else
 		{
 			ray->side_dist.y += ray->delta_dist.y;
 			ray->map.y += ray->step.y;
 			ray->side = 1;
 		}
-		if (params->map[ray->map.y][ray->map.x] == '1' || params->map[ray->map.y][ray->map.x] == '2')
+		if (params->map[ray->map.y][ray->map.x] == '1'
+			|| params->map[ray->map.y][ray->map.x] == '2')
 			ray->hit = 1;
 	}
 }
+
 // TODO なんでこの計算で行けるんだっけ、内側に行っている部分がよくわからないから上の関数と照らし合わせて理解する
 static double	calc_wall_distance_(t_ray *ray)
 {
 	double	dis;
 
 	// if (ray->side == 0)
-	// 	dis = (ray->map.x - player->pos.x + (1 - ray->step.x) / 2) / ray->ray_dir.x;
+	// 	dis = (ray->map.x - player->pos.x + (1 - ray->step.x) / 2)
+	//		/ ray->ray_dir.x;
 	// else
-	// 	dis = (ray->map.y - player->pos.y + (1 - ray->step.y) / 2) / ray->ray_dir.y;
+	// 	dis = (ray->map.y - player->pos.y + (1 - ray->step.y) / 2)
+	//		/ ray->ray_dir.y;
 	if (ray->side == 0)
 		dis = ray->side_dist.x - ray->delta_dist.x;
 	else
 		dis = ray->side_dist.y - ray->delta_dist.y;
 	return (dis);
 }
+
 // TODO ｙ座標の進行方向とインデックスの運用が逆なのになんでうまく行っているのか調査する
 // TODO なぜ魚眼効果が起きるのか
 /**

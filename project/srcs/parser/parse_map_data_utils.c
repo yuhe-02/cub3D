@@ -1,39 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_convert_u.c                                     :+:      :+:    :+:   */
+/*   parse_map_data_utils.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/03 11:16:48 by yyamasak          #+#    #+#             */
-/*   Updated: 2025/02/04 15:24:03 by yyamasak         ###   ########.fr       */
+/*   Created: 2025/02/05 00:34:56 by yyamasak          #+#    #+#             */
+/*   Updated: 2025/02/05 00:36:49 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "raycast.h"
 
-static int	ft_convert_u_h(int fd, unsigned int num, int res)
+int	calc_max_width(t_params *params, int start_index, char **line)
 {
-	int	tmp;
+	int	j;
+	int	len;
 
-	if (res == -1)
-		return (-1);
-	if (num >= 10)
+	j = 0;
+	len = 0;
+	while (j < params->map_height)
 	{
-		tmp = ft_convert_u_h(fd, num / 10, res);
-		if (tmp == -1)
-			return (-1);
-		else
-			res += tmp;
+		if ((int)(ft_strlen(line[j + start_index])) > len)
+			len = ft_strlen(line[j + start_index]);
+		j++;
 	}
-	tmp = ft_convert_c(fd, '0' + num % 10);
-	if (tmp == -1)
-		return (-1);
-	else
-		return (res + tmp);
+	return (len);
 }
 
-int	ft_convert_u(int fd, unsigned int num)
+int	count_map_height(int start_index, char **line)
 {
-	return (ft_convert_u_h(fd, num, 0));
+	int	i;
+
+	i = 0;
+	while (line[start_index + i])
+		i++;
+	return (i);
 }
