@@ -6,20 +6,20 @@
 /*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 04:14:10 by yyamasak          #+#    #+#             */
-/*   Updated: 2025/02/03 14:22:09 by yyamasak         ###   ########.fr       */
+/*   Updated: 2025/02/05 00:52:02 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "raycast.h"
 
-static void		_init_player_dir_(t_player *player)
+static void	_init_player_dir_(t_player *player)
 {
-
 	if (player->init_userdir_y != 0)
 	{
 		player->dir.x = 0;
 		player->dir.y = player->init_userdir_y;
-		player->plane.x = (-1 * player->init_userdir_y) * tan(convert_to_radian(33));
+		player->plane.x = (-1 * player->init_userdir_y)
+			* tan(convert_to_radian(33));
 		player->plane.y = 0;
 	}
 	else
