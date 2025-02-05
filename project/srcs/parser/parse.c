@@ -6,7 +6,7 @@
 /*   By: yyamasak <yyamasak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 14:53:47 by yyamasak          #+#    #+#             */
-/*   Updated: 2025/02/04 16:04:18 by yyamasak         ###   ########.fr       */
+/*   Updated: 2025/02/05 22:45:02 by yyamasak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,16 +57,12 @@ static char	*gnl_without_nl(int fd)
 	return (tmp);
 }
 
-static int	_read_map_(const char *map_file, char ***line)
+static int	_read_map_(const char *map_file, char ***line, int line_len)
 {
 	int		fd;
 	char	*cur_line;
 	int		i;
-	int		line_len;
 
-	line_len = count_lines_(map_file);
-	if (line_len == -1)
-		return (ft_printf_fd(ERR_FD, "Error\n%s%s\n", ERR3, ERR_OPEN));
 	(*line) = malloc((line_len + 1) * sizeof(char *));
 	if (!(*line))
 		return (ft_printf_fd(ERR_FD, "Error\n%s%s\n", ERR3, ERR_ALLOC));
@@ -92,11 +88,15 @@ int	_parse(const char *map_file, t_params *params)
 	char	**line;
 	char	*tmp;
 	int		err;
+	int		line_len;
 
 	tmp = ft_strrchr(map_file, '.');
 	if (!tmp || ft_strncmp(tmp, ".cub", 5))
 		return (ft_printf_fd(ERR_FD, "Error\n%s%s\n", ERR2, ERR_NOEXT));
-	if (_read_map_(map_file, &line))
+	line_len = count_lines_(map_file);
+	if (line_len == -1)
+		return (ft_printf_fd(ERR_FD, "Error\n%s%s\n", ERR3, ERR_OPEN));
+	if (_read_map_(map_file, &line, line_len))
 		return (1);
 	err = _parse_map(line, params);
 	free_all_line(line);
