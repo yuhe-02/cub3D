@@ -2,7 +2,6 @@
 objs
 .vscode
 .venv
-cub3D
 ./cub3D_dir/libft/libft.a
 ./cub3D_dir/Cub3D
 cub3d-tester

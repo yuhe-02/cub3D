@@ -1,0 +1,9 @@
+NO ./maps/texture/wall_north.xpm
+SO ./maps/texture/wall_south.xpm
+WE ./maps/texture/wall_west.xpm
+EA ./maps/texture/wall_east.xpm
+
+F 220,100,0
+C 225,30,100
+
+1
